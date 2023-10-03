@@ -30,33 +30,66 @@ display: flex;
 .primeira_caixa{
     display: flex;
     background-color: white;
-    height: 6vh;
+    height: 8vh;
     width: 86vw;
     border-radius: 5px;
-    margin-bottom: 1vw;
+    margin-bottom: 2%;
 }
 
 .conteiner_caixas{
     display: flex;
-    justify-content: space-around;
+    flex-direction: initial;
 }
 
 .caixas{
     background-color: white;
-    height: 10vh;
+    height: 13vh;
     width: 20vw;
     border-radius: 5px;
-    display: inline;
+    margin-right: 2vw;
 }
 
 .caixa_grande{
-    height: 10vh;
+    height: 78vh;
     width: 20vw;
     background-color: white;
     border-radius: 5px;
+    margin-right: 2vw;
 }
 
 .geralzinha{
     display: flex;
-    justify-content: space-around; 
+}
+
+.dash{
+    background-color: white;
+    height: 28vh;
+    width: 64vw;
+    border-radius: 5px;
+    display: flex;
+    margin-top: 17vh;
+    position: absolute;
+
+}
+
+.inferior{
+    display: flex;
+    margin-top: 50vh;
+    position: absolute;
+}
+
+.caixaUm{
+    background-color: white;
+    width: 32vw;
+    height: 26vh;
+    border-radius: 5px;
+}
+
+.caixaDois{
+    background-color: white;
+    width: 30vw;
+    height: 26vh;
+    margin-left: 2vw;
+    border-radius: 5px;
+
 }
