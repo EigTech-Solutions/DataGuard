@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Poppins:ital@0;1&display=swap');
 body{
     width: 100%;
-  
    background-color: #124559;
+   overflow: hidden;
 }
 header{
     
@@ -17,7 +18,7 @@ header{
     font-size: xx-large;
 }
 .container{
-    
+    width: auto;
     height: 50vh;
     display: flex;
     justify-content: space-around;
@@ -29,8 +30,8 @@ header{
     margin-top: 10vh;
 }
 .input{
-    width: 17vw;
-    height: 5vh;
+    width: 20vw;
+    height: 7vh;
     border-radius: 10px;
     color: white;
     font-size: large;
@@ -38,23 +39,26 @@ header{
 label{
     color: white;
     font-size: x-large;
+    font-family: 'Poppins', sans-serif;
+    
 }
 h1{
     color: white;
     font-size: xx-large;
+    font-family: 'Poppins', sans-serif;
 }
 button{
-    width: 17vw;
-    height: 5vh;
+    width: 20vw;
+    height: 7vh;
     background-color: #598392;
     color: white;
     font-size: x-large;
     border-radius: 10px;
 }
 .imagemTela{
-   margin-top: 8%;
+   margin-top: 10%;
     width: 50%;
-    height: 80%;
+    height: 70%;
     display: flex;
     align-items: center;
     justify-content: center;
