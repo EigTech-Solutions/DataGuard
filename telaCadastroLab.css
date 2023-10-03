@@ -45,7 +45,7 @@ button{
     height: 31vh;
 background-color: #A6CEE3;
 display: flex;
-justify-content: space-evenly;
+justify-content: space-around;
 }
 .campoInput{
     display: flex;
