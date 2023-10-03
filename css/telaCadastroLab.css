@@ -79,11 +79,20 @@ label{
     justify-content: space-around;
 }
 .cadastrar{
-    width: 20%;
+    width: 100%;
     font-size: x-large;
     font-family: 'Poppins', sans-serif;
     background-color: #124559;
     color: white;
-    border-color: #124559;
-    
+    border-color: #00000000;
+    border-radius: 0px 0px 25px 25px ;
 }
+
+
+
+.cadastrar:hover,
+.cadastrar:focus {
+  background: #062430;
+  transition: background 1s;
+}
+
