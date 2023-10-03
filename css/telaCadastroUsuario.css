@@ -23,20 +23,33 @@ body{
     display: flex;
     color: white;
     align-items: center;
-    justify-content: space-around;
 }
 .titulo{
 font-size: 3vh;
 font-family: 'Poppins', sans-serif;
 margin-right: 12vh;
+padding-left: 4%;
+width: 50%;
 }
-button{
+
+.botaoFechar{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 2%;
+}
+
+.botaoFechar button{
     width: 5vh;
     border-radius: 50px;
     background-color: #A6CEE3;
     font-size: xx-large;
-
+    
 }
+
+
 
 
 
@@ -47,14 +60,38 @@ background-color: #A6CEE3;
 display: flex;
 justify-content: space-around;
 }
+
+.divImagemUsuario{
+    width: 20%;
+    display : flex ;
+    align-items: center;
+
+}
+
+.imagemUsuario{
+    height: 100%;
+}
+
+
+
 .campoInput{
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     margin-top: 4vh;
+    width: 70%;
+    padding-right: 5%;
+
 }
-input{
-    width: 15vw;
-    height: 3vh;
+
+.campoInput label{
+    margin-right: auto;
+    padding-left: 24%;
+}
+
+.campoInput input{
+    width: 75%;
+    height: 15%;
     border-radius: 10px;
     border-color: white;
 }
@@ -66,27 +103,68 @@ label{
     height: 10vh;
     background-color: #A6CEE3 ;
     display: flex;
-    justify-content: space-around;
+}
+
+.campoInputSenha input{
+    height: 35%;
+    width: 86%;
+    border-radius: 10px;
+    border-color: white;
+}
+
+.senha{
+    width: 50%;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.senha input{
+    margin-top: -25px;
+    margin-right:4px ;
+}
+
+.senha label{
+    padding-right:72%;
 }
 
 
+.repetir_senha{
+    width: 50%;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.repetir_senha input{
+    margin-top: -25px;
+}
 
 
 .containerFinal{
     width: 100%;
     height: 12%;
     background-color: #124559;
-    border-radius: 0 0 25px 25px ;
     display: flex;
     color: white;
     justify-content: space-around;
+    border-radius: 0px 0px 25px 25px ;
 }
 .cadastrar{
-    width: 20%;
+    width: 100%;
     font-size: x-large;
     font-family: 'Poppins', sans-serif;
     background-color: #124559;
     color: white;
-    border-color: #124559;
-    
+    border-color: #00000000;
+    border-radius: 0px 0px 25px 25px ;
 }
+
+
+
+.cadastrar:hover,
+.cadastrar:focus {
+  background: #062430;
+  transition: background 1s;
+}
+
