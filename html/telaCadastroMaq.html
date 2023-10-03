@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tela cadastro Maquina</title>
-    <link rel="stylesheet" href="telaCadastroMaq.css">
+    <link rel="stylesheet" href="../css/telaCadastroMaq.css">
 </head>
 
 <body>
@@ -18,23 +18,23 @@
 
         <!--  topo do pop up  -->
 
+       
         <div class="topo">
-            <div class="titulo"> cadastro de máquina</div>
-            <button> x </button>
+            <div class="titulo"> Cadastro de Máquina </div>
+            <div class="botaoFechar"><button> x </button></div>
         </div>
-
 
         <!--  meio do pop up  -->
 
 
         <div class="meioPopUp">
             <div class="imagemPC">
-                <img  src="./assents/imagemPC.png" alt="">
+                <img  src="../assents/imagemPC.png" alt="">
             </div>
             <div class="campoInput">
-                <label for="">numero de série:</label>
-                <input class="inputMedio" placeholder="ex: enzin" type="text">
-                <label for="">IP:</label>
+                <label class="labelNumeroSerie"for="">Numero de série:</label>
+                <input class="inputMedio" placeholder="ex: Nivaldo" type="text">
+                <label class="labelIp" for="">IP:</label>
                 <input class="inputMedio"  placeholder="ex: 123.456.78" type="text">
             </div>
         </div>
@@ -44,11 +44,11 @@
         <!--  container2  -->
 
 <div class="container2">
-    <label for="">sistema operacional:</label>
+    <label for="">Sistema operacional:</label>
     <select   class="inputMaior" name="" id="">
-        <option value="">selecione...</option>
-        <option value="">windows</option>
-        <option value="">linux</option>
+        <option value="">Selecione...</option>
+        <option value="">Windows</option>
+        <option value="">Linux</option>
     </select>
 </div>
 
@@ -56,14 +56,14 @@
  <!--  container3  -->
 
  <div class="container3">
-    <div>
-        <label for="">capacidade memória:</label> <br>
+    <div class="divCapacidadeMemoria">
+        <label for="">Capacidade memória:</label> <br>
         <input placeholder="" type="number">
     </div>
-    <div>
-        <label for="">tipo de disco:</label> <br>
+    <div class="divTipoDisco">
+        <label for="">Tipo de disco:</label> <br>
         <select name="" id="">
-            <option value="">selecione...</option>
+            <option value="">Selecione...</option>
             <option value="">SSD</option>
             <option value="">HD</option>
         </select>
@@ -73,14 +73,14 @@
         <!--  container3  -->
 
         <div class="container3">
-            <div>
-                <label for="">processador:</label> <br>
+            <div class="divProcessador">
+                <label for="">Processador:</label> <br>
                 <input placeholder="" type="number">
             </div>
-            <div>
-                <label for="">laboratório:</label> <br>
+            <div class="divLaboratorio">
+                <label for="">Laboratório:</label> <br>
                 <select name=""  id="">
-                    <option value="">selecione...</option>
+                    <option value="">Selecione...</option>
                 </select>
             </div>
         </div>
@@ -88,7 +88,7 @@
         <!--  fim do pop up  -->
 
         <div class="containerFinal">
-            <button class="cadastrar">cadastrar</button>
+            <button class="cadastrar">Cadastrar</button>
         </div>
 
     </section>
