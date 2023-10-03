@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Poppins:ital@0;1&display=swap');
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  background-color: rgb(102, 102, 19);
+  font-family: 'Poppins', sans-serif;
+}
+.container1{
+    width: 40%;
+    height: 56vh;
+    background-color: rgb(85, 85, 209);
+    margin-top: 12%;
+    border-radius: 25px;
+}
+.topo{
+    width: 100%;
+    height: 12%;
+    background-color: #124559;
+    border-radius: 25px 25px 0 0 ;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: space-around;
+}
+.titulo{
+font-size: 3vh;
+font-family: 'Poppins', sans-serif;
+margin-right: 12vh;
+}
+button{
+    width: 5vh;
+    border-radius: 50px;
+    background-color: #A6CEE3;
+    font-size: xx-large;
+
+}
+
+
+.imagemPC{
+    margin-top: 4vh;
+    margin-left: 3vh;
+    width: 85%;
+}
+
+.meioPopUp{
+    width: 100%;
+    height: 22vh;
+background-color: #A6CEE3;
+display: flex;
+justify-content: space-around;
+}
+.campoInput{
+    display: flex;
+    flex-direction: column;
+    margin-top: 6vh;
+    margin-right: 3vh;
+}
+input{
+    width: 16vw;
+    height: 3vh;
+    border-radius: 10px;
+    border-color: white;
+}
+select{
+    width: 16vw;
+    height: 3vh;
+    border-radius: 10px;
+    border-color: white;
+}
+.inputMaior{
+    width: 36vw;
+    height: 3vh;
+    border-radius: 10px;
+    border-color: white;
+}
+.inputMedio{
+    width: 20vw;
+    height: 3vh;
+    border-radius: 10px;
+    border-color: white;
+}
+label{
+    font-size: large;
+}
+
+.container2{
+    width: 100%;
+    height: 8vh;
+    background-color: #A6CEE3 ;
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container3{
+    width: 100%;
+    height: 9vh;
+    background-color: #A6CEE3 ;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+
+.containerFinal{
+    width: 100%;
+    height: 12%;
+    background-color: #124559;
+    border-radius: 0 0 25px 25px ;
+    display: flex;
+    color: white;
+    justify-content: space-around;
+}
+.cadastrar{
+    width: 20%;
+    font-size: x-large;
+    font-family: 'Poppins', sans-serif;
+    background-color: #124559;
+    color: white;
+    border-color: #124559;
+    
+}
