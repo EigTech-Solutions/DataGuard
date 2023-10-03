@@ -4,6 +4,9 @@ body{
     width: 100%;
    background-color: #124559;
    overflow: hidden;
+   background-image: url(../DataGuard/assents/imgfundo_login.png);
+   background-size: 100vw 100vh;
+   background-repeat: no-repeat;
 }
 header{
     
