@@ -1,0 +1,62 @@
+body{
+    margin: 0px;
+}
+.header{
+    height: 7vb;
+    background-color: blue;
+}
+
+.menu_conteiner{
+display: flex;
+}
+
+.menu_lateral{
+    display: flex;
+    height: 93vh;
+    width: 20vw;
+    background-color: red;
+}
+
+.menu_central{
+    display: flex;
+    background-color: green;
+    height: 91vh;
+    width: 200vw;
+    padding-left: 2vw;
+    padding-top: 1vw;
+    flex-direction: column;
+}
+
+.primeira_caixa{
+    display: flex;
+    background-color: white;
+    height: 6vh;
+    width: 86vw;
+    border-radius: 5px;
+    margin-bottom: 1vw;
+}
+
+.conteiner_caixas{
+    display: flex;
+    justify-content: space-around;
+}
+
+.caixas{
+    background-color: white;
+    height: 10vh;
+    width: 20vw;
+    border-radius: 5px;
+    display: inline;
+}
+
+.caixa_grande{
+    height: 10vh;
+    width: 20vw;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.geralzinha{
+    display: flex;
+    justify-content: space-around; 
+}
