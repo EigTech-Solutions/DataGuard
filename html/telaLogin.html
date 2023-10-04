@@ -29,12 +29,12 @@
             <h1>Bem-Vindo(a) de Volta!</h1>
 
             <label for="">E-mail</label>
-            <input class="input" placeholder="exemplo@etec.sp.gov.b" type="text">
+            <input class="input" placeholder="exemplo@etec.sp.gov.b" id="ipt_email" type="text">
 
             <label for="">Senha</label>
-            <input class="input" placeholder="senha" type="password"> <br>
+            <input class="input" placeholder="senha" id="ipt_senha" type="password"> <br>
 
-            <button>entrar</button>
+            <button onclick="entrar()">entrar</button>
 
             <div class="linkEsqueciSenha">
                 vacilei esqueci a senha
@@ -66,3 +66,17 @@
 </body>
 
 </html>
+<script>
+function entrar(){
+
+var email = ipt_email.value
+var senha = ipt_senha.value
+
+if(email == 'enzin@gmail.com' && senha == 1234){
+alert("foi");
+}else{
+    alert("foi nn pae");
+}
+
+}
+</script>
