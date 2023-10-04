@@ -5,7 +5,7 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;  
-  background-color: rgb(102, 102, 19);
+  background-color: rgb(5, 14, 26);
   font-family: 'Poppins', sans-serif;
 }
 .container{
@@ -85,8 +85,7 @@ justify-content: space-around;
 }
 
 .campoInput label{
-    margin-right: auto;
-    padding-left: 24%;
+    width: 76%;
 }
 
 .campoInput input{
@@ -125,7 +124,7 @@ label{
 }
 
 .senha label{
-    padding-right:72%;
+    width: 88%;
 }
 
 

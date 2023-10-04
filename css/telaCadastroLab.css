@@ -5,7 +5,7 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;  
-  background-color: rgb(102, 102, 19);
+  background-color: rgb(5, 14, 26);
   font-family: 'Poppins', sans-serif;
 }
 .container{
@@ -79,11 +79,20 @@ label{
     justify-content: space-around;
 }
 .cadastrar{
-    width: 20%;
+    width: 100%;
     font-size: x-large;
     font-family: 'Poppins', sans-serif;
     background-color: #124559;
     color: white;
-    border-color: #124559;
-    
+    border-color: #00000000;
+    border-radius: 0px 0px 25px 25px ;
 }
+
+
+
+.cadastrar:hover,
+.cadastrar:focus {
+  background: #062430;
+  transition: background 1s;
+}
+
