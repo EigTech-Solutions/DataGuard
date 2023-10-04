@@ -1,95 +1,142 @@
-body{
-    margin: 0px;
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:ital,wght@0,400;0,700;0,900;1,400&family=Poppins&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
-.header{
-    height: 7vb;
+
+.header {
+    height: 20%;
     background-color: blue;
 }
 
-.menu_conteiner{
-display: flex;
+.tela_principal {
+    display: flex;
+    width: 100%;
+    height: 200vh;
 }
 
-.menu_lateral{
+/* .menu_conteiner {
     display: flex;
-    height: 93vh;
-    width: 20vw;
+} */
+
+.menu_lateral {
+    height: 100%;
+    width: 10%;
     background-color: red;
 }
 
-.menu_central{
+.container {
+    display: flex;
+    flex-direction: column;
+    background-color: #01161E;
+    height: 100%;
+    width: 100%;
+    padding: 1.25rem;
+}
+
+.container_select_dashboards {
+    margin-bottom: 2rem;
+}
+
+
+.select_dashboard {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: rgba(18, 69, 89, 0.5);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2rem;
+    padding: 0.5em 1em;
+    border: 0;
+    -webkit-box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+    -moz-box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+
+}
+
+
+.select_dashboard option {
+    background-color: #598392;
+}
+
+.informations_container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.dashboard_container {
+    width: 70%;
+    height: 100%;
+}
+
+.kpis_boxes_container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-right: 1.25rem;
+    height: auto;
+}
+
+.kpi_box {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    padding: 1rem 1rem;
+    background-color: rgba(18, 69, 89, 0.50);
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+}
+
+.kpi_title {
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 1rem;
+    font-style: normal;
+}
+
+.kpi_data {
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-style: normal;
+}
+
+.notifications_container {
+    width: 30%;
+    height: 100%;
+}
+
+.notification_box {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+}
+
+.chart_fluxo_rede_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: green;
+    height: 15%;
+    width: 95%;
+    margin-top: 1.5rem;
+    padding-right: 1.25rem;
+    border-radius: 10px;
+}
+
+.line_chart{
+    width: 95%;
+}
+
+.rankings_container{
     display: flex;
     background-color: green;
-    height: 91vh;
-    width: 200vw;
-    padding-left: 2vw;
-    padding-top: 1vw;
-    flex-direction: column;
-}
-
-.primeira_caixa{
-    display: flex;
-    background-color: white;
-    height: 8vh;
-    width: 86vw;
-    border-radius: 5px;
-    margin-bottom: 2%;
-}
-
-.conteiner_caixas{
-    display: flex;
-    flex-direction: initial;
-}
-
-.caixas{
-    background-color: white;
-    height: 13vh;
-    width: 20vw;
-    border-radius: 5px;
-    margin-right: 2vw;
-}
-
-.caixa_grande{
-    height: 78vh;
-    width: 20vw;
-    background-color: white;
-    border-radius: 5px;
-    margin-right: 2vw;
-}
-
-.geralzinha{
-    display: flex;
-}
-
-.dash{
-    background-color: white;
-    height: 28vh;
-    width: 64vw;
-    border-radius: 5px;
-    display: flex;
-    margin-top: 17vh;
-    position: absolute;
-
-}
-
-.inferior{
-    display: flex;
-    margin-top: 50vh;
-    position: absolute;
-}
-
-.caixaUm{
-    background-color: white;
-    width: 32vw;
-    height: 26vh;
-    border-radius: 5px;
-}
-
-.caixaDois{
-    background-color: white;
-    width: 30vw;
-    height: 26vh;
-    margin-left: 2vw;
-    border-radius: 5px;
-
+    height: 45%;
+    width: 95%;
+    margin-top: 1.5rem;
+    padding-right: 1.25rem;
+    border-radius: 10px;
 }
