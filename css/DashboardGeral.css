@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:ital,wght@0,400;0,700;0,900;1,400&family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Lato:ital,wght@0,400;0,700;0,900;1,400&family=Poppins&display=swap');
 
 body {
     margin: 0;
@@ -83,7 +83,7 @@ body {
 .kpi_box {
     display: flex;
     flex-direction: column;
-    width: 25%;
+    width: 27%;
     padding: 1rem 1rem;
     background-color: rgba(18, 69, 89, 0.50);
     border-radius: 10px;
@@ -93,14 +93,14 @@ body {
 .kpi_title {
     color: #FFF;
     font-family: Poppins;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-style: normal;
 }
 
 .kpi_data {
     color: #FFF;
     font-family: Poppins;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-style: normal;
 }
 
@@ -115,7 +115,7 @@ body {
     background-color: red;
 }
 
-.chart_fluxo_rede_container{
+.chart_fluxo_rede_container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -127,16 +127,86 @@ body {
     border-radius: 10px;
 }
 
-.line_chart{
+.line_chart {
     width: 95%;
 }
 
-.rankings_container{
+.rankings_container {
     display: flex;
-    background-color: green;
-    height: 45%;
+    height: auto;
     width: 95%;
     margin-top: 1.5rem;
-    padding-right: 1.25rem;
     border-radius: 10px;
+    justify-content: space-between;
+}
+
+.ranking_labs {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    padding: 1rem;
+    background-color: rgba(18, 69, 89, 0.50);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+    border-radius: 10px;
+}
+
+.chart_memoria_utilizada {
+    width: 40%;
+    padding: 1rem;
+    background-color: rgba(18, 69, 89, 0.50);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+    border-radius: 10px;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 1rem;
+}
+
+.ranking_labs_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 1rem;
+}
+
+.ranking_labs_header p {
+    margin: 0;
+}
+
+.ranking_labs_header .more_info_btn_img{
+    cursor: pointer;
+}
+
+.ranking_labs_header .more_info_btn_img:hover{
+    transform: scale(1.15);
+    transition: 0.4s;
+}
+
+.ranking_labs table {
+    color: #fff;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.1rem;
+    font-family: 'Inter', sans-serif;
+    border-radius: 0.25rem;
+    border: 1px solid #0B2545;
+    background-color: #124559;
+}
+
+.ranking_labs tr {
+    background-color: #FFFFFF0D;
+    line-height: 1.65rem;
+
+}
+
+.ranking_labs .table_rknLabs_pos {
+    width: 10%;
+    padding: 0.3rem;
+    text-align: center;
+}
+
+.ranking_labs .table_rknLabs_nomeLab{
+    padding: 0.25rem 0.5rem;
 }
