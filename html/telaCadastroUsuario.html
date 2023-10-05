@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tela cadastro usuario</title>
     <link rel="stylesheet" href="../css/telaCadastroUsuario.css">
+
 </head>
 
 <body>
@@ -33,11 +34,11 @@
             </div>
             <div class="campoInput">
                 <label for="">Nome:</label>
-                <input placeholder="ex: enzin" type="text">
+                <input placeholder="ex: enzin" id="ipt_nome" type="text">
                 <label for="">Email:</label>
-                <input placeholder="ex: enzin@gmail.com" type="text">
+                <input placeholder="ex: enzin@gmail.com" id="ipt_email" type="text">
                 <label for="">Telefone:</label>
-                <input placeholder="(11) 91234-5678" type="text">
+                <input placeholder="(11) 91234-5678" id="ipt_telefone" type="number">
             </div>
         </div>
 
@@ -47,26 +48,47 @@
         <div class="campoInputSenha">
             <div class="senha">
                 <label for="">Senha:</label> <br>
-                <input placeholder="*******" type="password">
+                <input placeholder="*******" id="ipt_senha" type="password">
             </div>
             <div class="repetir_senha">
                 <label for="">Repetir senha:</label> <br>
-                <input placeholder="*******" type="password">
+                <input placeholder="*******" id="ipt_repetirSenha" type="password">
             </div>
         </div>
 
         <!--  fim do pop up  -->
 
         <div class="containerFinal">
-            <button class="cadastrar">cadastrar</button>
+            <button class="cadastrar" onclick="cadastrar()">cadastrar</button>
         </div>
 
     </section>
 
     <!--  inicio do footer  -->
 
-
+   
 
 </body>
 
 </html>
+
+<script>
+    function cadastrar(){
+    
+    var nome = ipt_nome.value
+    var email = ipt_email.value
+    var telefone = ipt_telefone.value
+    var senha = ipt_senha.value
+    var repetirSenha = ipt_repetirSenha.value
+    
+    if(nome == "" || email == "" || telefone == "" || senha == "" || repetirSenha == "" ){
+alert("preencha todos os campos")
+    }else if(senha != repetirSenha){
+alert("erro ao repetir a senha")
+    }else{
+        alert("foi")
+    }
+   
+    
+    }
+    </script>
