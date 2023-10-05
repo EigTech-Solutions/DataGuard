@@ -13,7 +13,7 @@
         <ul>
             <li>
                 <a href="#" class="pgAtual">
-                    <img src="assents/carbon_dashboard.png" alt="icon dashboard"> Dashboard
+                    <img src="assents/dashboard.png" width="37px" alt="icon dashboard"> Dashboard
                 </a>
             </li>
             <li>
@@ -24,6 +24,11 @@
             <li>
                 <a href="#">
                     <img src="assents/icon_computer-outline.png" alt=""> Computadores
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assents/iwwa_user.png" alt=""> Usuários
                 </a>
             </li>
         </ul>
@@ -37,16 +42,23 @@
             <div class="usuario">
                 <span>Olá, <b>Username</b></span>
                 <select class="sl_perfil">
-                    <option value="0">Perf. Técnico</option>
-                    <option value="1">Perf. Admin</option>
+                    <option value="0">Perf. Admin</option>
+                    <option value="1" selected>Perf. Técnico</option>
                 </select>
             </div>
 
-            <button class="btn-logout">
+            <button class="btn-logout" onclick="logout()">
                 <img src="assents/Vector_logout.png" alt="icon logout"> Logout
             </button>
         </div>
-        <div class="conteudo-page"></div>
+
+        <!-- Codar o conteudo da página destas divs -->
+        <div class="container-page">
+            <div class="conteudo-page">
+                <!-- codar aqui -->
+            </div>
+        </div>
     </div>
 </body>
 </html>
+<script src="scriptBasePages.js"></script>
