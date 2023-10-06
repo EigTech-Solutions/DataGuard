@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tela de cadastro das métricas dos alertas
+    </title>
+    <link rel="stylesheet" href="../assets/css/basePages.css">
+    <link rel="stylesheet" href="..//assets/css/telaCadastroMetrica.css">
+</head>
+<body>
+    <div class="menu-lateral">
+        <img src="../assets/images/Logo.png" class="logo" alt="Logo">
+
+        <ul>
+            <li>
+                <a href="#" class="pgAtual">
+                    <img src="../assets/images/dashboard.png" width="37px" alt="icon dashboard"> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../assets/images/carbon_labs.png" alt="icon"> Laboratórios
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../assets/images/icon_computer-outline.png" alt=""> Computadores
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../assets/images/iwwa_user.png" alt=""> Usuários
+                </a>
+            </li>
+        </ul>
+
+        <div class="footer">
+            <span>EigTech - © 2023</span>
+        </div>
+    </div>
+    <div class="container-geral">
+        <div class="menu-top">
+            <div class="usuario">
+                <span>Olá, <b>Username</b></span>
+                <select class="sl_perfil">
+                    <option value="0">Perf. Admin</option>
+                    <option value="1" selected>Perf. Técnico</option>
+                </select>
+            </div>
+
+            <button class="btn-logout" onclick="logout()">
+                <img src="../assets/images/Vector_logout.png" alt="icon logout"> Logout
+            </button>
+        </div>
+
+        <!-- Codar o conteudo da página destas divs -->
+        <div class="container-page">
+            <div class="conteudo-page">
+                
+
+
+
+   
+ <!--  inicio do container titulo  -->             
+
+<div class="topo">
+    <h1>
+        cadastre as métricas dos seus alertas
+    </h1>
+</div>
+ 
+ <!--  inicio do container cpu  -->
+
+ 
+
+<section class="container">
+
+    <div>
+        <img src="" alt="imagem da cpu">
+    </div>
+
+ <div class="campoInput">
+    <label  for="">grau de atenção no uso da CPU:</label>
+    <input   placeholder="ex: 75%" type="text">
+    <br>
+    <label  for="">grau de risco no uso da CPU:</label>
+    <input   placeholder="ex: 75%" type="text">
+</div>   
+
+       
+</section>
+
+
+
+<!--  inicio do container disco  -->
+
+
+
+<section class="container">
+
+ <div class="campoInput">
+
+    <label  for="">grau de atenção no uso do Disco:</label>
+    <input   placeholder="ex: 75%" type="text">
+    <br>
+    <label  for="">grau de risco no uso do Disco:</label>
+    <input   placeholder="ex: 75%" type="text">
+    
+</div>   
+
+<div>
+    <img src="" alt="imagem do disco">
+</div>
+       
+</section>
+
+
+
+
+<!--  inicio do container memoria  -->
+
+
+
+<section class="container">
+
+    <div>
+        <img src="" alt="imagem da memoria">
+    </div>
+
+ <div class="campoInput">
+<label  for="">grau de atenção no uso da memória:</label>
+<input   placeholder="ex: 75%" type="text">
+<br>
+<label  for="">grau de risco no uso da memória:</label>
+<input   placeholder="ex: 75%" type="text">
+
+
+</div>   
+
+       
+</section>
+
+
+
+<!--  inicio do container rede  -->
+
+
+
+<section class="container">
+
+ <div class="campoInput">
+    <label  for="">grau de atenção no ping da rede:</label>
+    <input   placeholder="ex: 75%" type="text">
+    <br>
+    <label  for="">grau de risco no ping da rede:</label>
+    <input   placeholder="ex: 75%" type="text">
+    
+</div>   
+
+<div>
+    <img src="" alt="imagem de rede">
+</div>
+       
+</section>
+
+<!--  fim do container rede  -->
+
+
+
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="../assets/js/scriptBasePages.js"></script>
