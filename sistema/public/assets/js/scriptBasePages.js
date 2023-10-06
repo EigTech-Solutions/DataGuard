@@ -1,4 +1,4 @@
-var perfUsuario = 'técnico';
+var perfUsuario = "Técnico";
 
 // Recupera a página atual armazenada no localStorage
 var pageAtual = localStorage.getItem('pageAtual') || 'bntDashMenu';
@@ -11,7 +11,7 @@ menuLateral.innerHTML = `
 
     <ul id="menuList">
         <li>
-            <a href="#" id="bntDashMenu" class="menu-link" onclick="atualizarPageAtualMenu(this)">
+            <a href="DashboardGeral.html" id="bntDashMenu" class="menu-link" onclick="atualizarPageAtualMenu(this)">
                 <img src="../assets/images/dashboard.png" width="37px" alt="icon dashboard"> Dashboard
             </a>
         </li>
@@ -32,7 +32,7 @@ menuLateral.innerHTML = `
         </li>
         <li>
             <a href="#" id="bntConfigMenu" class="menu-link" onclick="atualizarPageAtualMenu(this)">
-                <img src="../assets/images/iwwa_user.png" alt=""> Configurações
+                <img src="../assets/images/carbon_settings-edit.png" alt=""> Configurações
             </a>
         </li>
     </ul>
@@ -45,7 +45,7 @@ menuLateral.innerHTML = `
 menuTop.innerHTML = `
     <div class="usuario">
         <span>Olá, <b>Username</b></span>
-        <select class="sl_perfil" id="sl_perfil">
+        <select class="sl_perfil" id="sl_perfil" onclick="atualizarPerfilExibicao()">
             <option value="admin">Perf. Admin</option>
             <option value="tecnico" selected>Perf. Técnico</option>
         </select>
@@ -59,11 +59,13 @@ menuTop.innerHTML = `
 // Restaura a classe pgAtual na página atual ao iniciar
 document.getElementById('bntDashMenu').classList.add('pgAtual');
 
-function atualizarPerfilExibicao(params) {
-    
+exibirMenuPerfil(perfUsuario);
+
+function atualizarPerfilExibicao() {
+    perfUsuario = sl_perfil.value;
+
+    exibirMenuPerfil(perfUsuario);
 }
-
-
 
 function exibirMenuPerfil(perfUsuario) {
     if (perfUsuario == "admin") {
