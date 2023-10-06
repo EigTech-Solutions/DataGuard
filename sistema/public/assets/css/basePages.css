@@ -154,10 +154,9 @@ body{
 }
 
 .conteudo-page{
-    border: solid blueviolet;
     background-color: blueviolet;
     width: 97%;
-    height: 86%;
+    /* height: 86%; */
     margin: 20px 0 50px 15px;
     display: flex;
     flex-direction: column;
