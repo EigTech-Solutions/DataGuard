@@ -72,11 +72,15 @@ function entrar(){
 var email = ipt_email.value
 var senha = ipt_senha.value
 
-if(email == 'enzin@gmail.com' && senha == 1234){
+if(email == 'admin@gmail.com' && senha == 1234){
 alert("foi");
+sessionStorage.PAGE_ATUAL = 'bntDashMenu';
+window.location = "area-restrita/telaBase.html";
+
 }else{
     alert("foi nn pae");
 }
 
 }
+
 </script>

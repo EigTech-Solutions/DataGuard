@@ -11,9 +11,7 @@ function validarSessao() {
     }
 }
 
-function limparSessao() {
-    sessionStorage.clear();
-    window.location = "../telaLogin.html";
-}
-
-export function limparSessao(){};
+// function limparSessao() {
+//     sessionStorage.clear();
+//     window.location = "../telaLogin.html";
+// }

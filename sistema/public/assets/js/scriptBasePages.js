@@ -1,6 +1,6 @@
 var perfUsuario = "Técnico";
 
-// Recupera a página atual armazenada no localStorage
+// Recupera a página atual armazenada na sessionStorage
 var pageAtual = sessionStorage.PAGE_ATUAL;
 
 
@@ -84,10 +84,11 @@ function atualizarPageAtualMenu(pageAtual) {
     // Adiciona a classe pgAtual ao link clicado
     elementoPageAtual.classList.add('pgAtual');
 
+    // Atualiza a sessionStotage com o id da page atual
     sessionStorage.PAGE_ATUAL = elementoPageAtual.id;
 }
 
 function logout() {
-    //...
+    sessionStorage.clear();
     window.location = "../telaLogin.html";
 }
