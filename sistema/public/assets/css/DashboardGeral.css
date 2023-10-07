@@ -45,8 +45,8 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding-right: 1.25rem;
     height: auto;
+    width: 97%;
 }
 
 .kpi_box {
@@ -91,22 +91,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: green;
+    flex-direction: column;
+    background-color: rgba(18, 69, 89, 0.50);
     width: 97%;
     margin-top: 1.10rem;
     border-radius: 10px;
-    text-align: center;
+    padding: 0.5rem 0rem;
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+}
+
+.chart_fluxo_header{
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .line_chart {
-    width: 95%;
-    height: 20vh;
+    width: 54vw;
+    height: 25vh;
 }
+
+
+.chart_fluxo_rede_title{
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 1rem;
+} 
 
 .rankings_container {
     display: flex;
     height: 35%;
-    width: 95%;
+    width: 97%;
     margin-top: 1.10rem;
     border-radius: 10px;
     justify-content: space-between;
@@ -146,11 +161,11 @@
     margin: 0;
 }
 
-.ranking_labs_header .more_info_btn_img {
+.ranking_labs_header .more_info_btn_img, .chart_fluxo_header .more_info_btn_img {
     cursor: pointer;
 }
 
-.ranking_labs_header .more_info_btn_img:hover {
+.ranking_labs_header .more_info_btn_img:hover, .chart_fluxo_header .more_info_btn_img:hover{
     transform: scale(1.15);
     transition: 0.4s;
 }
@@ -167,8 +182,8 @@
 
 .ranking_labs tr {
     background-color: #FFFFFF0D;
-    line-height: 1.45rem;
-    height: 2.5vh;
+    line-height: 1.4rem;
+    height: 2vh;
     font-family: Poppins;
 }
 
@@ -180,6 +195,11 @@
 
 .ranking_labs .table_rknLabs_nomeLab {
     padding: 0 0.5rem;
+}
+
+.ranking_labs table tbody tr:first-child{
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
 }
 
 .notifications img {
