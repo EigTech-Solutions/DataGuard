@@ -154,9 +154,9 @@ body{
 }
 
 .conteudo-page{
-    background-color:  #A6CEE3;
+    /* background-color:  #A6CEE3; */
     width: 97%;
-    height: 90%; 
+    /* height: 90%;  */
     margin: 20px 0 50px 15px;
     display: flex;
     flex-direction: column;
