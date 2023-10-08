@@ -111,13 +111,13 @@ body{
     gap: 5px;
     padding: 5px 10px;
     border: none;
-    margin-right: 3%;
+    margin-right: 2%;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .menu-top .btn-logout:hover{
-    padding: 6px 10px;
+    transform: scale(1.02);
     box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.25);
     font-weight: 600;
 }
@@ -156,7 +156,7 @@ body{
 .conteudo-page{
     background-color:  #A6CEE3;
     width: 97%;
-     height: 90%; 
+    height: 90%; 
     margin: 20px 0 50px 15px;
     display: flex;
     flex-direction: column;
