@@ -10,6 +10,9 @@ var app = express();
 
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
+var laboratorioRouter = require("./src/routes/laboratorios");
+var maquinaRouter = require("./src/routes/maquinas");
+var metricaRouter = require("./src/routes/metricas");
 var avisosRouter = require("./src/routes/avisos");
 var medidasRouter = require("./src/routes/medidas");
 var aquariosRouter = require("./src/routes/aquarios");
@@ -23,6 +26,9 @@ app.use(cors());
 
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
+app.use("/laboratorios", laboratorioRouter);
+app.use("/maquinas", maquinaRouter);
+app.use("/metricas", metricaRouter);
 app.use("/avisos", avisosRouter);
 app.use("/medidas", medidasRouter);
 app.use("/aquarios", aquariosRouter);

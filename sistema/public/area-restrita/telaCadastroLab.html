@@ -33,11 +33,11 @@
             </div>
             <div class="campoInput">
                 <label for="">nome do laboratório:</label>
-                <input placeholder="ex: Informática" type="text">
+                <input id="ipt_nomeLab" placeholder="ex: Informática" type="text">
                 <label for="">numero da sala:</label>
-                <input placeholder="ex: 1" type="number">
+                <input id="ipt_numLab" placeholder="ex: 1" type="number">
                 <label for="">técnico responsável:</label>
-                <input placeholder="selecione..." type="text">
+                <input id="ipt_respLab" placeholder="selecione..." type="text">
             </div>
         </div>
 
@@ -47,7 +47,7 @@
         <!--  fim do pop up  -->
 
         <div class="containerFinal">
-            <button class="cadastrar">cadastrar</button>
+            <button class="cadastrar" onclick="cadastrar()">cadastrar</button>
         </div>
 
     </section>
@@ -59,3 +59,40 @@
 </body>
 
 </html>
+<script>
+    function cadastrar(){
+    
+    var nomeLabVAR = ipt_nomeLab.value
+    var numLabVAR = ipt_numLab.value
+    var respLabVAR = ipt_respLab.value
+  
+    
+    if(nomeLabVAR == "" || numLabVAR == "" || respLabVAR == "" ){
+alert("preencha todos os campos")
+    }else{
+        alert("foi")
+        fetch("/usuarios/cadastrar",{
+        method : "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body:  JSON.stringify({
+            nomeLabServer: nomeLabVAR,
+            numLabServer: numLabVAR,
+            respLabServer: respLabVAR
+           
+        })
+    }).then(function (resposta) {
+        if(resposta.ok){
+            alert("cadastro realizado com sucesso!")
+        }else{
+            throw ("houve um erro ao tentar se cadastrar");
+        }
+    }).catch(function (resposta){
+        console.log(`#ERRO: ${resposta}`);
+    });
+        
+    }
+    }
+   
+    </script>

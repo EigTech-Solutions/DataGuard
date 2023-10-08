@@ -75,20 +75,41 @@
 <script>
     function cadastrar(){
     
-    var nome = ipt_nome.value
-    var email = ipt_email.value
-    var telefone = ipt_telefone.value
-    var senha = ipt_senha.value
-    var repetirSenha = ipt_repetirSenha.value
+    var nomeVAR = ipt_nome.value
+    var emailVAR = ipt_email.value
+    var telefoneVAR = ipt_telefone.value
+    var senhaVAR = ipt_senha.value
+    var repetirSenhaVAR = ipt_repetirSenha.value
     
-    if(nome == "" || email == "" || telefone == "" || senha == "" || repetirSenha == "" ){
+    if(nomeVAR == "" || emailVAR == "" || telefoneVAR == "" || senhaVAR == "" || repetirSenhaVAR == "" ){
 alert("preencha todos os campos")
-    }else if(senha != repetirSenha){
+    }else if(senhaVAR != repetirSenhaVAR){
 alert("erro ao repetir a senha")
     }else{
         alert("foi")
+        fetch("/usuarios/cadastrar",{
+        method : "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body:  JSON.stringify({
+            nomeServer: nomeVAR,
+            emailServer: emailVAR,
+            telefoneServer: telefoneVAR,
+            senhaServer: senhaVAR,
+            repetirSenhaServer: repetirSenhaVAR
+        })
+    }).then(function (resposta) {
+        if(resposta.ok){
+            alert("cadastro realizado com sucesso!")
+        }else{
+            throw ("houve um erro ao tentar se cadastrar");
+        }
+    }).catch(function (resposta){
+        console.log(`#ERRO: ${resposta}`);
+    });
+        
+    }
     }
    
-    
-    }
     </script>
