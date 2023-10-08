@@ -9,7 +9,7 @@ menuLateral.innerHTML = `
 
     <ul id="menuList">
         <li>
-            <a href="DashboardGeral.html" id="bntDashMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
+            <a href="dashboardGeral.html" id="bntDashMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
                 <img src="../assets/images/dashboard.png" width="37px" alt="icon dashboard"> Dashboard
             </a>
         </li>
