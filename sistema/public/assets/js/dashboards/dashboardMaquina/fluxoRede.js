@@ -1,4 +1,4 @@
-const cpu_chart = document.getElementById('cpu_chart').getContext("2d");
+const fluxo_rede = document.getElementById('fluxo_rede_chart').getContext("2d");
 
 // Configuração e dados de cada linha do chart
 var datasetLinhas = [
@@ -9,27 +9,27 @@ var datasetLinhas = [
 ]
 
 // Criando estrutura para plotar gráfico - legendas e dados
-let dadosCpu = {
+let dados = {
     labels: ['00:05', '00:10', '00:15', '00:20', '00:25', '00:30', '00:35', '00:40', '00:45', '00:50', '00:55', '01:00'],
     datasets: datasetLinhas,
 }
 
 // lista das cores das linhas
-const listaCorLinhaCpu = [
+const listaCorLinha = [
     '#A6CEE3'
 ]
 
 // Criando estrutura para plotar gráfico - configurações
-const configCpu = {
+const config = {
     type: 'line',
-    data: dadosCpu,
+    data: dados,
     options: {
         maintainAspectRatio: false,
         tension: 0.5,
         pointHoverRadius: 7,
         pointHoverBorderWidth: 2,
-        borderColor: listaCorLinhaCpu,
-        backgroundColor: listaCorLinhaCpu,
+        borderColor: listaCorLinha,
+        backgroundColor: listaCorLinha,
         borderWidth: 2,
         pointRadius: 3,
         plugins: {
@@ -64,7 +64,7 @@ const configCpu = {
 };
 
 // Adicionando gráfico criado em um canvas na tela
-let chartCpu = new Chart(
-    cpu_chart,
-    configCpu,
+let chartFluxoRede = new Chart(
+    fluxo_rede,
+    config,
 );
