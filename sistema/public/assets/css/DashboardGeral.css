@@ -97,6 +97,10 @@
     margin-right: 0.5vh;
 }
 
+.notification_subtitle a{
+    color: white;
+}
+
 .linha{
     background-color: white;
     height: 0.2vh;
@@ -251,11 +255,52 @@
 .alertas_notification{
     margin-top: 1vw;
     width: auto;
-    height: 18vh;
+    height: 20vh;
     background-color: #8aa8b2;
+    display: flex;
 }
 
 .caixa_de_alertas{
     overflow-y: scroll;
     height: 60vh;
+}
+
+.alertas_notification img{
+    height: 12vh;
+    margin-top: 3vh;
+    margin-left: 1vw;
+}
+.mensagens{
+    margin-top: 1.5vh;
+    margin-left: 2vh;
+    font-size: 1.8vh;
+}
+
+.conf_coputador{
+    display: flex;
+    font-size: 1.8vh;
+    margin-top: 0.5vw;
+    margin-left: 5vh;
+}
+
+.conf_coputador a{
+    color: #AEC3B0;
+    font-size: 2vh;
+}
+
+.data_mensagem{
+    font-size: 1.8vh;
+    margin-top: 0.5vw;
+    margin-left: 20vh;
+}
+
+.mensagem_comp{
+    margin-top: 0.5vw;
+}
+
+.mensagem_comp span{
+    color: #AEC3B0;
+}
+.mensagem_lab{
+    color: #AEC3B0;
 }
