@@ -84,7 +84,7 @@
     background-color: #3e5b66;
     padding-top: 2vh;
     border-radius: 15px;
-    padding-bottom: 5vh;
+    padding-bottom: 1.5vh;
 }
 
 .notification_title{
@@ -258,6 +258,7 @@
     height: 20vh;
     background-color: #8aa8b2;
     display: flex;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .caixa_de_alertas{
@@ -266,8 +267,8 @@
 }
 
 .alertas_notification img{
-    height: 12vh;
-    margin-top: 3vh;
+    height: 10vh;
+    margin-top: 5vh;
     margin-left: 1vw;
 }
 .mensagens{
@@ -303,4 +304,14 @@
 }
 .mensagem_lab{
     color: #AEC3B0;
+}
+
+.notfication_vermais{
+    margin-top: 1vh;
+    text-align: center;
+    font-size: 2vh;
+}
+
+.notfication_vermais a{
+    color: white;
 }
