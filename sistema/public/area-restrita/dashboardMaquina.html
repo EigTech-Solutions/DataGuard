@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/images/icon_logo.png" type="image/x-icon">
     <title>Dashboard Maquina</title>
     <link rel="stylesheet" href="../assets/css/basePages.css">
     <link rel="stylesheet" href="../assets/css/dashboardMaquina.css">
@@ -20,8 +21,51 @@
                 <div class="container">
                     <div class="header">
                         <span class="header_title">Informações da Máquina</span>
-                        <input class="header_input_search" type="text" placeholder="123.456.78">
+                        <input class="header_input_search" id="input_search" type="text" placeholder="123.456.78">
                     </div>
+                    <section class="infos_maquina_container">
+                        <div class="infos_maquina">
+                            <img class="maquina_img" src="../assets/images/imagemMaquina.png"
+                                alt="imagem de uma Máquina">
+                            <div class="dados_maquina">
+                                <p class="dado"><span class="dado_title">Local: </span> <span class="dado_content"
+                                        id="local_maquina">Laboratório 1</span></p>
+                                <p class="dado"><span class="dado_title">N° de Serie: </span> <span class="dado_content"
+                                        id="num_serie_maquina">123.456.789-10</span></p>
+                                <p class="dado"><span class="dado_title">IP: </span> <span class="dado_content"
+                                        id="ip_maquina">123.456.78</span></p>
+                                <p class="dado"><span class="dado_title">SO: </span> <span class="dado_content"
+                                        id="so_maquina">Windows 11</span></p>
+                                <p class="dado"><span class="dado_title">Processador: </span> <span class="dado_content"
+                                        id="processador_maquina">Intel Core i5</span></p>
+                                <p class="dado"><span class="dado_title">Disco: </span> <span class="dado_content"
+                                        id="disco_maquina">SSD 255GB</span></p>
+                                <p class="dado"><span class="dado_title">Memoria RAM: </span> <span class="dado_content"
+                                        id="memoria_maquina">16 GB</span></p>
+                            </div>
+                        </div>
+                        <div class="status_maquina_container">
+                            <div class="kpi_status">
+                                <span class="kpi_title">Status</span>
+                                <span class="kpi_data ativo">Ativo</span>
+                            </div>
+                            <div class="kpi_situacao">
+                                <span class="kpi_title">Situação</span>
+                                <span class="kpi_data atencao">Atenção</span>
+                            </div>
+                            <div class="kpi_fonte_energia">
+                                <span class="kpi_title">Fonte de energia</span>
+                                <span class="kpi_data">Ativada</span>
+                            </div>
+                            <div class="kpi_qtdPerifericos">
+                                <span class="kpi_title">Qtd. de periféricos conectados</span>
+                                <span class="kpi_data">3</span>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="maquina_charts_container">
+
+                    </section>
                 </div>
             </div>
         </div>
