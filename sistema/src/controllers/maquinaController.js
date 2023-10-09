@@ -1,6 +1,6 @@
 var usuarioModel = require("../models/usuarioModel");
 var aquarioModel = require("../models/aquarioModel");
-
+var maquinaModel = require("../models/maquinaModel");
 
 
 // cadastro das Maquinas
