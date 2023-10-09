@@ -39,7 +39,7 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-top: 1.25rem;
+    margin-top: 1.1rem;
 }
 
 .infos_maquina {
@@ -47,14 +47,14 @@
     align-items: center;
     background: rgba(18, 69, 89, 0.50);
     box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
-    padding: 0.5rem 0.5rem;
+    padding: 0.9rem 0.5rem;
     border-radius: 10px;
     width: 50%;
-    height: 30vh;
+    height: 27vh;
 }
 
 .maquina_img {
-    height: 35vh;
+    height: 30vh;
     margin: 0 2rem;
     margin-right: 1rem;
 }
@@ -70,9 +70,10 @@
 
 .status_maquina_container {
     display: grid;
-    grid-template-columns: 45% 45%;
+    grid-template-columns: 50% 50%;
     width: 45%;
     gap: 10px;
+    padding: 0 0.5rem;
 }
 
 .kpi_status,
@@ -90,7 +91,7 @@
     display: block;
     color: #FFF;
     font-family: Poppins;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .kpi_data,
@@ -112,10 +113,45 @@
     color: rgba(255, 255, 255, 176, 1);
 }
 
-.atencao{
+.atencao {
     color: #FF8039;
 }
 
-.urgente{
+.urgente {
     color: #E31A1C;
+}
+
+.maquina_charts_container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.9rem 0rem;
+    width: 100%;
+    height: auto;
+}
+
+.line_charts_container {
+    width: 65%;
+}
+
+.cpu_chart,
+.fluxo_rede_chart {
+    padding: 0.5rem 0.5rem;
+    width: 100%;
+    height: 25vh;
+    border-radius: 10px;
+    background: rgba(18, 69, 89, 0.50);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+}
+
+.fluxo_rede_chart {
+    margin-top: 0.9rem;
+}
+
+.memoria_ram_container{
+    width: 30%;
+    height: 25vh;
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+    background: rgba(18, 69, 89, 0.50);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
 }

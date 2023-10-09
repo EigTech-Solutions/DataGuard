@@ -64,7 +64,24 @@
                         </div>
                     </section>
                     <section class="maquina_charts_container">
-
+                        <div class="line_charts_container">
+                            <div class="cpu_chart">
+                                <canvas id="cpu_chart"></canvas>
+                            </div>
+                            <div>
+                                <div class="fluxo_rede_chart">
+                                    <canvas id="fluxo_rede_chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="memorias_chart_container">
+                            <div class="memoria_disco_container">
+                                <canvas id="chart_memoria_disco"></canvas>
+                            </div>
+                            <div class="memoria_ram_container">
+                                <canvas id="chart_memoria_ram"></canvas>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div>
@@ -74,5 +91,7 @@
 
 </html>
 <!-- Importando o JavaScript da página -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/scriptBasePages.js"></script>
+<script src="../assets/js/dashboards/dashboardMaquina/cpu.js"></script>
 <!-- <script src="../assets/js/sessao.js"></script> -->
