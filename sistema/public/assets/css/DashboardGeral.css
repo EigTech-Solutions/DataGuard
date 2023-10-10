@@ -95,6 +95,9 @@
     font-size: 0.7vw;
     margin-left: 7.5vh;
     margin-right: 0.5vh;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .notification_subtitle a{
@@ -252,13 +255,17 @@
     margin-top: 2.5vw;
 }
 
-.alertas_notification{
+.alertas_nao_lido{
     margin-top: 1vw;
     width: auto;
     height: 20vh;
-    background-color: #8aa8b2;
     display: flex;
+    background-color: #124559;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.alertas_lido{
+    background-color: #8aa8b2;
 }
 
 .caixa_de_alertas{
@@ -266,7 +273,7 @@
     height: 60vh;
 }
 
-.alertas_notification img{
+.alertas_nao_lido img{
     height: 10vh;
     margin-top: 5vh;
     margin-left: 1vw;
