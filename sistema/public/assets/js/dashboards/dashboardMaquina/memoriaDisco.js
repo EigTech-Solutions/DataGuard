@@ -1,4 +1,4 @@
-const chart_memoria_utilizada = document.getElementById('chart_memoria_utilizada').getContext("2d");
+const memoriaDisco = document.getElementById('chart_memoria_disco').getContext("2d");
 
 // Configuração e dados de cada linha do chart
 var datasetsMemoria = [
@@ -46,7 +46,7 @@ const memoriaConfig = {
 };
 
 // Adicionando gráfico criado em um canvas na tela
-let chartMemoriaUtilizada = new Chart(
-    chart_memoria_utilizada,
+let chartMemoriaDisco = new Chart(
+    memoriaDisco,
     memoriaConfig,
 );

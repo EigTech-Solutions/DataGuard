@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var laboratorioModel = require("../models/laboratorioModel");
 
 function listar(req, res) {
@@ -18,6 +19,11 @@ function listar(req, res) {
             }
         );
 }
+=======
+var usuarioModel = require("../models/usuarioModel");
+var aquarioModel = require("../models/aquarioModel");
+var laboratorioModel = require("../models/laboratorioModel");
+>>>>>>> 3d38f5e39a7fd34a8093ce406602de1b36450420
 
 // cadastro dos laboratorios
 function cadastrar(req, res) {

@@ -21,7 +21,7 @@
     -webkit-box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
     -moz-box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
     box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
-
+    outline: none;
 }
 
 
@@ -81,10 +81,38 @@
 
 .notification_box {
     width: 100%;
-    height: 100%;
-    background-color: #124559;
-    padding-top: 6vh;
+    background-color: #3e5b66;
+    padding-top: 2vh;
     border-radius: 15px;
+    padding-bottom: 1.5vh;
+}
+
+.notification_title{
+    margin-left: 3vh;
+}
+
+.notification_subtitle{
+    font-size: 0.7vw;
+    margin-left: 7.5vh;
+    margin-right: 0.5vh;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.notification_subtitle a{
+    color: white;
+}
+
+.linha{
+    background-color: white;
+    height: 0.2vh;
+}
+
+.linha2{
+    background-color: white;
+    height: 0.2vh;
+    margin-top: 0.4vw;
 }
 
 .chart_fluxo_rede_container {
@@ -213,7 +241,84 @@
     font-weight: bold;
 }
 
-.notifications img {
-    width: 100%;
-    height: 32.9vh;
+.imagem_notification{
+    background-color: #acc1c8;
+    margin-top: 0.5vh;
+    width: auto;
+    height: 25vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.texto_notification{
+    margin-left: 3vh;
+    margin-top: 2.5vw;
+}
+
+.alertas_nao_lido{
+    margin-top: 1vw;
+    width: auto;
+    height: 20vh;
+    display: flex;
+    background-color: #124559;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.alertas_lido{
+    background-color: #8aa8b2;
+}
+
+.caixa_de_alertas{
+    overflow-y: scroll;
+    height: 60vh;
+}
+
+.alertas_nao_lido img{
+    height: 10vh;
+    margin-top: 5vh;
+    margin-left: 1vw;
+}
+.mensagens{
+    margin-top: 1.5vh;
+    margin-left: 2vh;
+    font-size: 1.8vh;
+}
+
+.conf_coputador{
+    display: flex;
+    font-size: 1.8vh;
+    margin-top: 0.5vw;
+    margin-left: 5vh;
+}
+
+.conf_coputador a{
+    color: #AEC3B0;
+    font-size: 2vh;
+}
+
+.data_mensagem{
+    font-size: 1.8vh;
+    margin-top: 0.5vw;
+    margin-left: 20vh;
+}
+
+.mensagem_comp{
+    margin-top: 0.5vw;
+}
+
+.mensagem_comp span{
+    color: #AEC3B0;
+}
+.mensagem_lab{
+    color: #AEC3B0;
+}
+
+.notfication_vermais{
+    margin-top: 1vh;
+    text-align: center;
+    font-size: 2vh;
+}
+
+.notfication_vermais a{
+    color: white;
 }

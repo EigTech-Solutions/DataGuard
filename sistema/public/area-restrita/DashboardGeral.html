@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/basePages.css">
     <link rel="stylesheet" href="../assets/css/dashboardGeral.css">
+    <link rel="shortcut icon" href="../assets/images/icon_logo.png" type="image/x-icon">
     <title>Dashboard Geral</title>
 </head>
 
@@ -117,9 +118,106 @@
                         </section>
                         <section class="notifications_container">
                             <div class="notification_box">
-                                <div class="notifications">
-                                    <img src="../assets/images/Group 1.png" alt="">
+                                <span class="notification_title">
+                                    <b>NOTIFICAÇÕES</b>
+                                </span>
+                                <span class="notification_subtitle">
+                                    <a onclick="marcarTodosLido()">MARCAR TODOS COMO LIDO</a>
+                                </span>
+                                <div class="linha"></div>
+                                <div class="imagem_notification">
+                                    <span class="texto_notification">
+                                        <b>CONFIRMA QUAIS FORAM OS ÚLTIMOS ALERTAS</b>
+                                    </span>
+                                    <img src="../assets/images/notification.png" alt="">
                                 </div>
+                                <div class="linha2"></div>
+                                <div class="caixa_de_alertas" id="caixa_de_alertas">
+                                    <div class="alertas_nao_lido" name="alertas_nao_lido">
+                                        <img src="../assets/images/alertaPerigo.png" alt="">
+                                        <div class="mensagens">
+                                            <div class="mensagem_erro">
+                                                <p>Problema ocorrido no LAB DE DS</p>
+                                            </div>
+                                            <div class="mensagem_lab">
+                                                <p><b>(LABORATÓRIO 01)</b></p>
+                                            </div>
+                                            <div class="mensagem_comp">
+                                                <p>Computador <span><b>C3PO parou de funcionar</b></span></p>
+                                            </div>
+                                            <div class="conf_coputador">
+                                                <p><b><a href="">Conferir Computador</a></b></p>
+                                            </div>
+                                            <div class="data_mensagem">
+                                                <p>30/09/2023 - 17:04</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alertas_nao_lido" name="alertas_nao_lido">
+                                        <img src="../assets/images/alertaAviso.png" alt="">
+                                        <div class="mensagens">
+                                            <div class="mensagem_erro">
+                                                <p>Problema ocorrido no LAB DE DS</p>
+                                            </div>
+                                            <div class="mensagem_lab">
+                                                <p><b>(LABORATÓRIO 02)</b></p>
+                                            </div>
+                                            <div class="mensagem_comp">
+                                                <p>Computador <span><b>Anakin com lentidão</b></span></p>
+                                            </div>
+                                            <div class="conf_coputador">
+                                                <p><b><a href="">Conferir Computador</a></b></p>
+                                            </div>
+                                            <div class="data_mensagem">
+                                                <p>30/09/2023 - 17:04</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alertas_nao_lido" name="alertas_nao_lido">
+                                        <img src="../assets/images/alertaAviso.png" alt="">
+                                        <div class="mensagens">
+                                            <div class="mensagem_erro">
+                                                <p>Problema ocorrido no LAB DE DS</p>
+                                            </div>
+                                            <div class="mensagem_lab">
+                                                <p><b>(LABORATÓRIO 03)</b></p>
+                                            </div>
+                                            <div class="mensagem_comp">
+                                                <p>Computador <span><b>Darthvader com lentidão</b></span></p>
+                                            </div>
+                                            <div class="conf_coputador">
+                                                <p><b><a href="">Conferir Computador</a></b></p>
+                                            </div>
+                                            <div class="data_mensagem">
+                                                <p>30/09/2023 - 17:04</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alertas_nao_lido" name="alertas_nao_lido">
+                                        <img src="../assets/images/alertaPerigo.png" alt="">
+                                        <div class="mensagens">
+                                            <div class="mensagem_erro">
+                                                <p>Problema ocorrido no LAB DE DS</p>
+                                            </div>
+                                            <div class="mensagem_lab">
+                                                <p><b>(LABORATÓRIO 04)</b></p>
+                                            </div>
+                                            <div class="mensagem_comp">
+                                                <p>Computador <span><b>R2D2 parou de funcionar</b></span></p>
+                                            </div>
+                                            <div class="conf_coputador">
+                                                <p><b><a href="">Conferir Computador</a></b></p>
+                                            </div>
+                                            <div class="data_mensagem">
+                                                <p>30/09/2023 - 17:04</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="notfication_vermais">
+                                    <p><b><a href="">VER MAIS</a></b></p>
+                                </div>
+                            </div>
                         </section>
                     </div>
                 </div>
@@ -134,4 +232,5 @@
 <script src="../assets/js/scriptBasePages.js"></script>
 <script src="../assets/js/dashboards/dashboardGeral/fluxoRede.js"></script>
 <script src="../assets/js/dashboards/dashboardGeral/mediaMemoriaDiscoUtilizada.js"></script>
+<script src="../assets/js/dashboards/notification.js"></script>
 <!-- <script src="../assets/js/sessao.js"></script> -->

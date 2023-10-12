@@ -13,7 +13,7 @@
 .header .header_title {
     color: rgba(132, 150, 157, 1);
     font-family: Poppins;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: 400;
 }
@@ -23,5 +23,194 @@
     border-radius: 0.3rem;
     background: rgba(18, 69, 89, 0.50);
     box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+    padding: 0.5rem 1rem;
+    width: 20%;
+    outline: none;
+    color: #fff;
+    font-size: 1.1rem;
+    text-align: start;
+    background-image: url("/sistema/public/assets/images/search_icon.png");
+    background-repeat: no-repeat;
+    background-position: 95%;
+    background-size: 12%;
+}
 
+.infos_maquina_container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1.1rem;
+}
+
+.infos_maquina {
+    display: flex;
+    align-items: center;
+    background: rgba(18, 69, 89, 0.50);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+    padding: 0.9rem 0.5rem;
+    border-radius: 10px;
+    width: 50%;
+    height: 27vh;
+}
+
+.maquina_img {
+    height: 30vh;
+    margin: 0 2rem;
+    margin-right: 1rem;
+}
+
+.dado_title {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.dado_content {
+    font-size: 0.9rem;
+}
+
+.status_maquina_container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: 45%;
+    gap: 10px;
+    padding: 0 0.5rem;
+}
+
+.kpi_status,
+.kpi_situacao,
+.kpi_fonte_energia,
+.kpi_qtdPerifericos {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    background: rgba(18, 69, 89, 0.50);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+    padding: 0.5rem;
+}
+
+.kpi_title {
+    display: block;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 0.9rem;
+}
+
+.kpi_data,
+.ativo,
+.desativo,
+.atencao,
+.urgente {
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 2.25rem;
+    line-height: 130%;
+}
+
+.ativo {
+    color: rgba(181, 255, 176, 1);
+}
+
+.desativo {
+    color: rgba(255, 255, 255, 176, 1);
+}
+
+.atencao {
+    color: #FF8039;
+}
+
+.urgente {
+    color: #E31A1C;
+}
+
+.maquina_charts_container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.9rem 0rem;
+    width: 100%;
+    height: auto;
+}
+
+.line_charts_container {
+    width: 67%;
+}
+
+.cpu_chart_header,
+.fluxo_rede_chart_header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.cpu_chart_header .more_info_btn_img,
+.fluxo_rede_chart_header .more_info_btn_img {
+    cursor: pointer;
+}
+
+.fluxo_rede_chart_header .more_info_btn_img:hover,
+.cpu_chart_header .more_info_btn_img:hover {
+    transform: scale(1.15);
+    transition: 0.4s;
+}
+
+.cpu_chart,
+.fluxo_rede_chart {
+    padding: 0.5rem 0.5rem;
+    width: 100%;
+    height: 25vh;
+    border-radius: 10px;
+    background: rgba(18, 69, 89, 0.50);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+}
+
+.cpu_chart_header span {
+    font-size: 1rem;
+}
+
+.fluxo_rede_chart {
+    margin-top: 0.9rem;
+}
+
+.cpu_chart_container,
+.fluxo_rede_chart_container {
+    height: 20vh;
+}
+
+
+.memorias_chart_container {
+    width: 28%;
+    height: 55vh;
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+    background: rgba(18, 69, 89, 0.50);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+}
+
+.memoria_center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+.memoria_disco_container{
+    width: 100%;
+    height: 30vh;
+}
+
+.memoria_ram_bar_container{
+    width: 80%;
+    height: 2rem;
+    background-color: rgba(18, 69, 89, 1);
+    border-radius: 20px;
+    margin: 0 0.5rem;
+}
+
+.memoria_ram_porcentagem{
+    color: #598392;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.memoria_ram_bar_filled{
+    background-color: #598392;
+    height: 2rem;
+    border-radius: 20px;
 }
