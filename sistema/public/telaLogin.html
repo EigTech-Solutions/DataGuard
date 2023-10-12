@@ -69,21 +69,8 @@
 </body>
 
 </html>
-<script>
-function entrar(){
-
-var email = ipt_email.value
-var senha = ipt_senha.value
-
-if(email == 'admin@gmail.com' && senha == 1234){
-alert("foi");
-sessionStorage.PAGE_ATUAL = 'bntDashMenu';
-window.location = "area-restrita/telaBase.html";
-
-}else{
-    alert("foi nn pae");
-}
-
-}
-
-</script>
+<!-- Importando o JavaScript da página -->
+<script src="./assets/js/login.js"></script>
+<script src="../assets/js/sessao.js"></script>
+<!-- importando a biblioteca da API sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

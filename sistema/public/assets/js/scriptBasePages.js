@@ -14,12 +14,12 @@ menuLateral.innerHTML = `
             </a>
         </li>
         <li>
-            <a href="teste.html" id="bntLabMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
+            <a href="telaLaboratorios.html" id="bntLabMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
                 <img src="../assets/images/carbon_labs.png" alt="icon laboratório"> Laboratórios
             </a>
         </li>
         <li>
-            <a href="#" id="bntPCsMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
+            <a href="telaMaquinas.html" id="bntPCsMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
                 <img src="../assets/images/icon_computer-outline.png" alt="icon PC"> Computadores
             </a>
         </li>
@@ -42,7 +42,7 @@ menuLateral.innerHTML = `
 
 menuTop.innerHTML = `
     <div class="usuario">
-        <span>Olá, <b>Username</b></span>
+        <span>Olá, <b id="b_usuario">Username</b></span>
         <select class="sl_perfil" id="sl_perfil" onclick="atualizarPerfilExibicao()">
             <option value="admin">Perf. Admin</option>
             <option value="tecnico" selected>Perf. Técnico</option>
