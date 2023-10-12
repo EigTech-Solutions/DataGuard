@@ -1,4 +1,4 @@
-var perfUsuario = "Técnico";
+var perfUsuario = sessionStorage.PERFIL_ATUAL;
 
 // Recupera a página atual armazenada na sessionStorage
 var pageAtual = sessionStorage.PAGE_ATUAL;
@@ -40,22 +40,46 @@ menuLateral.innerHTML = `
     </div>
 `;
 
+exibirMenuPerfil(perfUsuario);
+
+
 menuTop.innerHTML = `
     <div class="usuario">
         <span>Olá, <b id="b_usuario">Username</b></span>
         <select class="sl_perfil" id="sl_perfil" onclick="atualizarPerfilExibicao()">
-            <option value="admin">Perf. Admin</option>
-            <option value="tecnico" selected>Perf. Técnico</option>
         </select>
     </div>
-
+        
     <button class="btn-logout" onclick="logout()">
         <img src="../assets/images/Vector_logout.png" alt="icon logout"> Logout
     </button>
 `;
 
+if (sessionStorage.ACESSO_ADMIN != 0 && sessionStorage.ACESSO_TECNICO != 0) {
+    if (perfUsuario == "admin") {
+        sl_perfil.innerHTML += `
+            <option value="admin" selected>Perf. Admin</option>
+            <option value="tecnico">Perf. Técnico</option>
+        `;
+    } else {
+        sl_perfil.innerHTML += `
+            <option value="admin">Perf. Admin</option>
+            <option value="tecnico" selected>Perf. Técnico</option>
+        `;
+    }
+
+} else if (sessionStorage.ACESSO_ADMIN != 0) {
+    sl_perfil.innerHTML += `
+            <option value="admin" selected>Perf. Admin</option>
+    `;
+
+} else {
+    sl_perfil.innerHTML += `
+        <option value="tecnico" selected>Perf. Técnico</option>
+    `;
+}
+
 atualizarPageAtualMenu(pageAtual);
-exibirMenuPerfil(perfUsuario);
 
 function atualizarPerfilExibicao() {
     perfUsuario = sl_perfil.value;
