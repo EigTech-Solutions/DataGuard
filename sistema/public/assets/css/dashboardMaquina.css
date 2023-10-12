@@ -35,6 +35,11 @@
     background-size: 12%;
 }
 
+.div_line{
+    margin: 0.9rem 0rem;
+    border: #124559 0.05rem solid;
+}
+
 .infos_maquina_container {
     display: flex;
     justify-content: space-between;
