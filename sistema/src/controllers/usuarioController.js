@@ -80,7 +80,9 @@ function cadastrarUsuario(req, res) {
 }
 
 function listarTecnicos(req, res) {
-    usuarioModel.listarTecnicos()
+    var idInstituicao = req.params.idInstituicao;
+
+    usuarioModel.listarTecnicos(idInstituicao)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 res.status(200).json(resultado);

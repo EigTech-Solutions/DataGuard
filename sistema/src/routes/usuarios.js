@@ -12,7 +12,7 @@ router.post("/autenticar", function (req, res) {
     usuarioController.autenticar(req, res);
 });
 
-router.get("/listarTecnicos", function (req, res) {
+router.get("/listarTecnicos/:idInstituicao", function (req, res) {
     usuarioController.listarTecnicos(req, res);
 });
 

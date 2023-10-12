@@ -7,11 +7,15 @@ router.get("/listar/:idInstituicao", function (req, res) {
     laboratorioController.listar(req, res);
 });
 
+router.get("/buscarLab/:idLab/:idInstituicao", function (req, res) {
+    laboratorioController.buscarLab(req, res);
+});
+
 router.post("/cadastrar", function (req, res) {
     laboratorioController.cadastrar(req, res);
 });
 
-router.put("/atualizar", function (req, res) {
+router.put("/atualizar/:idLab/:idInstituicao", function (req, res) {
     laboratorioController.atualizar(req, res);
 });
 
