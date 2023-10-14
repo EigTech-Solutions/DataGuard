@@ -1,18 +1,18 @@
-.conteudo-page{
+.conteudo-page {
     gap: 15px;
 }
 
-.title-page{
+.title-page {
     display: flex;
     justify-content: space-between;
     /* border: solid 1px; */
 }
 
-.title-page h2{
+.title-page h2 {
     color: #84969D;
 }
 
-.title-page .btnAdd{
+.title-page .btnAdd {
     width: 250px;
     height: 40px;
     border-radius: 8px;
@@ -25,12 +25,12 @@
     cursor: pointer;
 }
 
-.title-page .btnAdd:hover{
+.title-page .btnAdd:hover {
     transform: scale(1.04);
-    
+
 }
 
-hr{
+hr {
     width: 100%;
     border: solid 2px;
     border-color: #124559;
@@ -38,7 +38,7 @@ hr{
     margin-bottom: 25px;
 }
 
-.div-cards{
+.div-cards {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -47,7 +47,7 @@ hr{
     padding-bottom: 35px;
 }
 
-.card-exibicao{
+.card-exibicao {
     width: 450px;
     height: fit-content;
     border-radius: 20px;
@@ -61,29 +61,33 @@ hr{
     gap: 10px;
 }
 
-.top-card{
+.top-card {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
-.top-card span{
+.top-card span {
     font-weight: bold;
     font-size: 25px;
     color: rgba(255, 255, 255, 0.50);
 }
 
-.top-card img{
+.top-card img {
     width: 40%;
 }
 
-.top-card .btns-alteracoes{
+.top-card .imgPC {
+    width: 60%;
+}
+
+.top-card .btns-alteracoes {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.top-card .btns-alteracoes button{
+.top-card .btns-alteracoes button {
     width: 45px;
     height: 40px;
     border-radius: 10px;
@@ -94,16 +98,16 @@ hr{
     transition: ease-in-out;
 }
 
-.top-card .btns-alteracoes button img{
+.top-card .btns-alteracoes button img {
     width: 25px;
 }
 
-.top-card .btns-alteracoes button:hover{
+.top-card .btns-alteracoes button:hover {
     transform: scale(1.05);
     /* transform: rotateY(-5px); */
 }
 
-.card-exibicao table{
+.card-exibicao table {
     width: 100%;
     background-color: #01161E;
     border-radius: 5px;
@@ -111,16 +115,16 @@ hr{
     font-size: 15px;
 }
 
-.card-exibicao table tr{
+.card-exibicao table tr {
     height: 35px;
 }
 
-.card-exibicao table th{
+.card-exibicao table th {
     width: 33.33%;
     background-color: #0E2229;
 }
 
-.card-exibicao button{
+.card-exibicao button {
     width: 40%;
     padding: 7px 0;
     border: none;
@@ -132,7 +136,7 @@ hr{
     cursor: pointer;
 }
 
-.card-exibicao button:hover{
+.card-exibicao button:hover {
     transform: scale(1.03);
 }
 
@@ -149,7 +153,7 @@ hr{
     z-index: 5;
 }
 
-.divModal .containerModalLab{
+.divModal .containerModalLab {
     position: fixed;
     width: 37%;
     height: fit-content;
@@ -157,10 +161,10 @@ hr{
     border-radius: 25px;
 }
 
-.divModal .topo{
+.divModal .topo {
     width: 100%;
     background-color: #124559;
-    border-radius: 25px 25px 0 0 ;
+    border-radius: 25px 25px 0 0;
     display: flex;
     color: white;
     align-items: center;
@@ -168,7 +172,7 @@ hr{
     padding: 10px 0;
 }
 
-.divModal .titulo{
+.divModal .titulo {
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
     margin-left: 20px;
@@ -176,7 +180,7 @@ hr{
     font-weight: bold;
 }
 
-.botaoFechar{
+.botaoFechar {
     width: 30px;
     height: 30px;
     margin-right: 15px;
@@ -184,62 +188,121 @@ hr{
     transition: all 1s;
 }
 
-.botaoFechar:hover{
+.botaoFechar:hover {
     transform: scale(1.1);
 }
 
-.divModal .meioPopUp{
+.divModal .meioPopUp {
     width: 100%;
     height: 32vh;
     background-color: #A6CEE3;
     display: flex;
     justify-content: space-around;
- 
+
 }
 
-.divModal .campoInput{
+.divModal .campoInput {
     display: flex;
     flex-direction: column;
     margin-top: 4vh;
 }
 
-.divModal input, .divModal select{
+.divModal input {
     width: 16vw;
-    height: 3vh;
+    height: 3.5vh;
     border-radius: 5px;
     border: 1px solid #01161E;
     background: #FAFAFA;
     padding-left: 5px;
 }
 
-.divModal label{
-    font-size: large;
+.divModal select {
+    width: 16.5vw;
+    height: 3.8vh;
+    border-radius: 5px;
+    border: 1px solid #01161E;
+    background: #FAFAFA;
+    padding-left: 5px;
 }
 
-.divModal .containerFinal{
+.divModal label {
+    font-size: 15px;
+    color: #000000;
+    font-weight: bold;
+}
+
+.divModal .containerFinal {
     width: 100%;
     background-color: #124559;
-    border-radius: 0 0 25px 25px ;
+    border-radius: 0 0 25px 25px;
     display: flex;
     color: white;
     justify-content: space-around;
     padding: 5px 0;
 }
 
-.divModal .btnCadastrar{
+.divModal .btnCadastrar {
     width: 100%;
     font-size: 19px;
     font-family: 'Poppins', sans-serif;
     background-color: #124559;
     color: white;
     border-color: #00000000;
-    border-radius: 0px 0px 25px 25px ;
+    border-radius: 0px 0px 25px 25px;
     text-transform: uppercase;
     cursor: pointer;
 }
 
-.divModal .btnCadastrar:hover{
-   font-weight: bold;
-   transition: 0.3s ease-in-out;
-   transform: translateY(-2px)
+.divModal .btnCadastrar:hover {
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+    transform: translateY(-2px)
+}
+
+.divModal .containerModalPC {
+    position: fixed;
+    width: 37%;
+    height: fit-content;
+    background-color: #A6CEE3;
+    border-radius: 25px;
+}
+
+.divModal .containerModalPC .meioPopUp {
+    width: 100%;
+    height: 22vh;
+    background-color: #A6CEE3;
+    display: flex;
+    justify-content: space-around;
+}
+
+.divModal .containerModalPC .labelNumeroSerie, .divModal .containerModalPC .labelIp {
+    width: 83%;
+}
+
+
+.divModal .containerModalPC .labelIp {
+    width: 83%;
+}
+
+.divModal .containerModalPC .containerModalPC2 {
+    width: 95%;
+    background-color: #A6CEE3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.divModal .containerModalPC .containerModalPC2 label{
+    width: 100%;
+}
+
+.divModal .containerModalPC .containerModalPC3 {
+    width: 95%;
+    background-color: #A6CEE3;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    margin-bottom: 15px;
 }

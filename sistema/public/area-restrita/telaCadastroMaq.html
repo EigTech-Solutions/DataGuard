@@ -12,74 +12,65 @@
 
 
 
-    <!--  inicio do container1  -->
+    <!--  inicio do containerModalPC1  -->
 
-    <section class="container1">
-
+    <div class="containerModalPC1">
         <!--  topo do pop up  -->
-
-       
         <div class="topo">
             <div class="titulo"> Cadastro de Máquina </div>
             <div class="botaoFechar"><button> x </button></div>
         </div>
 
         <!--  meio do pop up  -->
-
-
         <div class="meioPopUp">
             <div class="imagemPC">
-                <img  src="../assets/images/imagemPC.png" alt="">
+                <img src="../assets/images/imagemPC.png" alt="">
             </div>
             <div class="campoInput">
-                <label class="labelNumeroSerie"for="">Numero de série:</label>
+                <label class="labelNumeroSerie" for="">Numero de série:</label>
                 <input class="inputMedio" id="ipt_numeroSerie" placeholder="ex: Nivaldo" type="text">
                 <label class="labelIp" for="">IP:</label>
-                <input class="inputMedio" id="ipt_IP"  placeholder="ex: 123.456.78" type="text">
+                <input class="inputMedio" id="ipt_IP" placeholder="ex: 123.456.78" type="text">
             </div>
+        </div>
+        <!--  containerModalPC2  -->
+
+        <div class="containerModalPC2">
+            <label for="">Sistema operacional:</label>
+            <select class="inputMaior" name="" id="ipt_tipoSO">
+                <option value="">Selecione...</option>
+                <option value="1">Windows</option>
+                <option value="2">Linux</option>
+            </select>
         </div>
 
 
-      
-        <!--  container2  -->
+        <!--  containerModalPC3  -->
 
-<div class="container2">
-    <label for="">Sistema operacional:</label>
-    <select   class="inputMaior" name="" id="ipt_tipoSO">
-        <option value="">Selecione...</option>
-        <option value="1">Windows</option>
-        <option value="2">Linux</option>
-    </select>
-</div>
+        <div class="containerModalPC3">
+            <div class="divCapacidadeMemoria">
+                <label for="">Capacidade memória:</label> <br>
+                <input placeholder="" id="ipt_capMemoria" type="number">
+            </div>
+            <div class="divTipoDisco">
+                <label for="">Tipo de disco:</label> <br>
+                <select name="" id="ipt_tipoDisco">
+                    <option value="">Selecione...</option>
+                    <option value="1">SSD</option>
+                    <option value="2">HD</option>
+                </select>
+            </div>
+        </div>
+        <!--  containerModalPC3  -->
 
-
- <!--  container3  -->
-
- <div class="container3">
-    <div class="divCapacidadeMemoria">
-        <label for="">Capacidade memória:</label> <br>
-        <input placeholder="" id="ipt_capMemoria" type="number">
-    </div>
-    <div class="divTipoDisco">
-        <label for="">Tipo de disco:</label> <br>
-        <select name="" id="ipt_tipoDisco">
-            <option value="">Selecione...</option>
-            <option value="1">SSD</option>
-            <option value="2">HD</option>
-        </select>
-    </div>
-</div>
-
-        <!--  container3  -->
-
-        <div class="container3">
+        <div class="containerModalPC3">
             <div class="divProcessador">
                 <label for="">Processador:</label> <br>
                 <input placeholder="" id="ipt_Processador" type="number">
             </div>
             <div class="divLaboratorio">
                 <label for="">Laboratório:</label> <br>
-                <select name=""  id="ipt_lab">
+                <select name="" id="ipt_lab">
                     <option value="">Selecione...</option>
                 </select>
             </div>
@@ -87,11 +78,10 @@
 
         <!--  fim do pop up  -->
 
-        <div class="containerFinal">
+        <div class="containerModalPCFinal">
             <button class="cadastrar" onclick="cadastrar()">Cadastrar</button>
         </div>
-
-    </section>
+    </div>
 
     <!--  inicio do footer  -->
 
@@ -101,45 +91,45 @@
 
 </html>
 <script>
-    function cadastrar(){
-    
-    var numeroSerieVAR = ipt_numeroSerie.value
-    var IpVAR = ipt_IP.value
-    var sistemaOperacionalVAR = ipt_tipoSO.value
-    var capMemoriaVAR = ipt_capMemoria.value
-    var tipoDiscoVAR = ipt_tipoDisco.value
-    var processadorVAR = ipt_Processador.value
-    var laboratorioVAR = ipt_lab.value
-    
-    if(numeroSerieVAR == "" || IpVAR == "" || sistemaOperacionalVAR == "" || capMemoriaVAR == "" || tipoDiscoVAR == "" || processadorVAR == "" || laboratorioVAR == "" ){
-alert("preencha todos os campos")
-    }else{
-        alert("foi")
-        fetch("/usuarios/cadastrar",{
-        method : "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body:  JSON.stringify({
-            numeroSerieServer: numeroSerieVAR,
-            IpServer: IpVAR,
-            sistemaOperacionalServer: sistemaOperacionalVAR,
-            capMemoriaServer: capMemoriaVAR,
-            tipoDiscoServer: tipoDiscoVAR,
-            processadorServer: processadorVAR,
-            laboratorioServer: laboratorioVAR
-        })
-    }).then(function (resposta) {
-        if(resposta.ok){
-            alert("cadastro realizado com sucesso!")
-        }else{
-            throw ("houve um erro ao tentar se cadastrar");
+    function cadastrar() {
+
+        var numeroSerieVAR = ipt_numeroSerie.value
+        var IpVAR = ipt_IP.value
+        var sistemaOperacionalVAR = ipt_tipoSO.value
+        var capMemoriaVAR = ipt_capMemoria.value
+        var tipoDiscoVAR = ipt_tipoDisco.value
+        var processadorVAR = ipt_Processador.value
+        var laboratorioVAR = ipt_lab.value
+
+        if (numeroSerieVAR == "" || IpVAR == "" || sistemaOperacionalVAR == "" || capMemoriaVAR == "" || tipoDiscoVAR == "" || processadorVAR == "" || laboratorioVAR == "") {
+            alert("preencha todos os campos")
+        } else {
+            alert("foi")
+            fetch("/usuarios/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    numeroSerieServer: numeroSerieVAR,
+                    IpServer: IpVAR,
+                    sistemaOperacionalServer: sistemaOperacionalVAR,
+                    capMemoriaServer: capMemoriaVAR,
+                    tipoDiscoServer: tipoDiscoVAR,
+                    processadorServer: processadorVAR,
+                    laboratorioServer: laboratorioVAR
+                })
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    alert("cadastro realizado com sucesso!")
+                } else {
+                    throw ("houve um erro ao tentar se cadastrar");
+                }
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
         }
-    }).catch(function (resposta){
-        console.log(`#ERRO: ${resposta}`);
-    });
-        
     }
-    }
-   
-    </script>
+
+</script>

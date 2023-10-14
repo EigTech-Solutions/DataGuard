@@ -39,9 +39,7 @@ menuLateral.innerHTML = `
         <span>EigTech - © 2023</span>
     </div>
 `;
-
 exibirMenuPerfil(perfUsuario);
-
 
 menuTop.innerHTML = `
     <div class="usuario">
