@@ -30,7 +30,7 @@ function listarPCs() {
                         <div class="card-exibicao">
                             <div class="top-card">  
                                 <span>${numCardExibido}</span>
-                                <img class="imgPC" src="../assets/images/imagemPC.png" alt="icon laboratório">
+                                <img class="imgPC" src="../assets/images/imagemPC.png" alt="icon Máquina">
                                 <div class="btns-alteracoes">
                                     <button onclick="abrirModalEditarPC(${maquina.idMaquina})"><img src="../assets/images/bxs_edit.png" alt="icon editar"></button>
                                     <button onclick="excluirPC(${maquina.idMaquina})"><img src="../assets/images/ph_trash-duotone.png" alt="icon deletar"></button>
@@ -175,8 +175,8 @@ function atualizar(idPC) {
 
 function excluirPC(idPC) {
     Swal.fire({
-        title: 'Tem certeza que deseja excluir esse Laboratório?',
-        text: "Após excluído você irá perder todos os dados referentes a esse laboratório! Essa ação não poderá ser desfeita.",
+        title: 'Tem certeza que deseja excluir essa máquina?',
+        text: "Após excluído você irá perder todos os dados referentes a essa máquina! Essa ação não poderá ser desfeita.",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -194,7 +194,7 @@ function excluirPC(idPC) {
                 if (resposta.ok) {
                     Swal.fire(
                         'Deletado!',
-                        'Laboratório excluído com sucesso!',
+                        'Máquina excluída com sucesso!',
                         'success'
                     );
                     listarPCs();
@@ -283,7 +283,7 @@ function abrirModalCardastarPC() {
                     <input placeholder="" id="ipt_Processador" type="text">
                 </div>
                 <div class="divLaboratorio">
-                    <label for="">Laboratório:</label> <br>
+                    <label for="">Máquina:</label> <br>
                     <select name="ipt_lab" id="ipt_lab">
                         <option value="0" selected disabled>Selecione...</option>
                     </select>
@@ -414,7 +414,7 @@ function abrirModalEditarPC(idPC) {
                                 <input placeholder="" id="ipt_Processador" type="text"  value="${maquina.processador}">
                             </div>
                             <div class="divLaboratorio">
-                                <label for="">Laboratório:</label> <br>
+                                <label for="">Máquina:</label> <br>
                                 <select name="ipt_lab" id="ipt_lab">
                                     <option value="0" selected disabled>Selecione...</option>
                                 </select>
@@ -503,4 +503,3 @@ function abrirModalEditarPC(idPC) {
 function fecharModal(){
     divModal.style.display = "none";
 }
-

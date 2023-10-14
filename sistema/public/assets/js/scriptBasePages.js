@@ -24,7 +24,7 @@ menuLateral.innerHTML = `
             </a>
         </li>
         <li>
-            <a href="#" id="bntUsersMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
+            <a href="telaUsuarios.html" id="bntUsersMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
                 <img src="../assets/images/iwwa_user.png" alt="icon usuários"> Usuários
             </a>
         </li>

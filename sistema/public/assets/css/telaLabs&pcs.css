@@ -124,6 +124,10 @@ hr {
     background-color: #0E2229;
 }
 
+.card-exibicao table .th_user {
+    width: 25%;
+}
+
 .card-exibicao button {
     width: 40%;
     padding: 7px 0;

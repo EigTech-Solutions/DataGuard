@@ -1,7 +1,4 @@
 var usuarioModel = require("../models/usuarioModel");
-var aquarioModel = require("../models/aquarioModel");
-
-
 
 function autenticar(req, res) {
     var email = req.body.emailServer;
@@ -39,9 +36,47 @@ function autenticar(req, res) {
 
 }
 
-// cadastro dos usuarios
+function listar(req, res) {
+    var idInstituicao = req.params.idInstituicao;
 
-function cadastrarUsuario(req, res) {
+    usuarioModel.listar(idInstituicao)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function buscarUser(req, res) {
+    var idPC = req.params.idPC;
+    var idInstituicao = req.params.idInstituicao;
+
+    usuarioModel.buscarUser(idPC, idInstituicao)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+// cadastro dos usuarios
+function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
@@ -98,9 +133,30 @@ function listarTecnicos(req, res) {
         );
 }
 
+function deletar(req, res) {
+    var idUser = req.params.idUser;
+    var idInstituicao = req.params.idInstituicao;
+
+    usuarioModel.deletar(idUser, idInstituicao)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao deletar a maquina: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
 
 module.exports = {
     autenticar,
-    cadastrarUsuario,
-    listarTecnicos
+    listar,
+    buscarUser,
+    cadastrar,
+    listarTecnicos,
+    deletar
 }
