@@ -21,7 +21,7 @@ const doughnutLabel = [{
         ctx.save();
         const xCoor = chart.getDatasetMeta(0).data[0].x;
         const yCoor = chart.getDatasetMeta(0).data[0].y;
-        ctx.font = 'normal 20px Poppins';
+        ctx.font = 'normal 17px Poppins';
         ctx.fillStyle = 'rgba(255, 255, 255, 1)';
         ctx.textAlign = 'center';
         ctx.textBaseLine = 'middle';
