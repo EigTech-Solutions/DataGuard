@@ -14,7 +14,7 @@ var laboratorioRouter = require("./src/routes/laboratorios");
 var maquinaRouter = require("./src/routes/maquinas");
 var metricaRouter = require("./src/routes/metricas");
 var avisosRouter = require("./src/routes/avisos");
-var medidasRouter = require("./src/routes/medidas");
+var dashboardsRouter = require("./src/routes/dashboards");
 var aquariosRouter = require("./src/routes/aquarios");
 var empresasRouter = require("./src/routes/empresas");
 
@@ -30,7 +30,7 @@ app.use("/laboratorios", laboratorioRouter);
 app.use("/maquinas", maquinaRouter);
 app.use("/metricas", metricaRouter);
 app.use("/avisos", avisosRouter);
-app.use("/medidas", medidasRouter);
+app.use("/dashboards", dashboardsRouter);
 app.use("/aquarios", aquariosRouter);
 app.use("/empresas", empresasRouter);
 

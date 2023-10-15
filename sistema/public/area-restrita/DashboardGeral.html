@@ -21,8 +21,6 @@
                     <div class="container_select_dashboards">
                         <select class="select_dashboard" name="select_dashboard" id="select_dashboard">
                             <option value="dashboardGeral">Dashboard Geral</option>
-                            <option value="dashboardLab01">Laboratorio 1</option>
-                            <option value="dashboardLab02">Laboratorio 2</option>
                         </select>
                     </div>
                     <div class="informations_container">
@@ -30,15 +28,15 @@
                             <div class="kpis_boxes_container">
                                 <div class="kpi_box">
                                     <span class="kpi_title">Qtd. Máquinas Ativas</span>
-                                    <span class="kpi_data">480</span>
+                                    <span class="kpi_data" id="kpi_qtd_maquinas_ativas">0</span>
                                 </div>
                                 <div class="kpi_box">
                                     <span class="kpi_title">Qtd. Laboratorios</span>
-                                    <span class="kpi_data">6</span>
+                                    <span class="kpi_data" id="kpi_qtd_labs">0</span>
                                 </div>
                                 <div class="kpi_box">
                                     <span class="kpi_title">Qtd. Alertas - 24h</span>
-                                    <span class="kpi_data">15</span>
+                                    <span class="kpi_data" id="kpi_qtd_alertas">0</span>
                                 </div>
                             </div>
                             <div class="chart_fluxo_rede_container">
@@ -232,5 +230,6 @@
 <script src="../assets/js/scriptBasePages.js"></script>
 <script src="../assets/js/dashboards/dashboardGeral/fluxoRede.js"></script>
 <script src="../assets/js/dashboards/dashboardGeral/mediaMemoriaDiscoUtilizada.js"></script>
+<script src="../assets/js/dashboards/dashboardGeral/obterDadosIniciais.js"></script>
 <script src="../assets/js/dashboards/notification.js"></script>
 <!-- <script src="../assets/js/sessao.js"></script> -->
