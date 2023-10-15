@@ -17,7 +17,6 @@ function obterLaboratorios() {
     }).then(function (resposta) {
         if (resposta.ok) {
             resposta.json().then(json => {
-                console.log(json);
                 // adicionando os laboratórios a um objeto para futuras pesquisas
                 json.map((resposta, i) => {
                     labsInstituicao.push(

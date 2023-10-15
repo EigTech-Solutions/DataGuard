@@ -256,12 +256,15 @@
 }
 
 .alertas_nao_lido{
-    margin-top: 1vw;
+    margin-top: 1.25vh;
     width: auto;
     height: 20vh;
     display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #124559;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding: 0.5rem;
 }
 
 .alertas_lido{
@@ -269,37 +272,34 @@
 }
 
 .caixa_de_alertas{
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 60vh;
 }
 
 .alertas_nao_lido img{
     height: 10vh;
-    margin-top: 5vh;
-    margin-left: 1vw;
 }
 .mensagens{
-    margin-top: 1.5vh;
     margin-left: 2vh;
-    font-size: 1.8vh;
+    font-size: 0.75rem;
 }
 
 .conf_coputador{
     display: flex;
-    font-size: 1.8vh;
     margin-top: 0.5vw;
     margin-left: 5vh;
 }
 
 .conf_coputador a{
     color: #AEC3B0;
-    font-size: 2vh;
+    font-size: 0.7rem;
+
 }
 
 .data_mensagem{
-    font-size: 1.8vh;
+    font-size: 0.65rem;
     margin-top: 0.5vw;
-    margin-left: 20vh;
+    text-align: end;
 }
 
 .mensagem_comp{

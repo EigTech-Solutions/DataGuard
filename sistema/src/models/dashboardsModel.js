@@ -51,8 +51,32 @@ function buscarMedidasEmTempoReal(idAquario) {
     return database.executar(instrucaoSql);
 }
 
+function buscarNotificacoes(idInstituicao) {
+
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select l.nomeSala, l.numeroSala, m.idMaquina, m.ipMaquina, a.tipo, a.dataHora from laboratorio l 
+            right join maquina m on m.fkLaboratorio = l.idLaboratorio 
+            right join alertas a on a.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} 
+            order by a.dataHora desc;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 
 module.exports = {
     buscarUltimosKPIs,
-    buscarMedidasEmTempoReal
+    buscarMedidasEmTempoReal,
+    buscarNotificacoes
 }
