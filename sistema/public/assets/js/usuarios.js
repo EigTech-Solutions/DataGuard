@@ -11,21 +11,38 @@ function listarUsuarios() {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
-    
+
             resposta.json().then(function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
+                console.log(resposta);
 
                 divCards.innerHTML = "";
-    
+
                 for (let i = 0; i < resposta.length; i++) {
                     var usuario = resposta[i];
 
-                    var numCardExibido = i+1;
+                    var numCardExibido = i + 1;
 
                     if (numCardExibido < 10) {
                         numCardExibido = '0' + numCardExibido;
                     }
-    
+
+
+                    let admin;
+                    let tec;
+
+                    if (usuario.acessoAdmin == 0) {
+                        admin = "Não"
+                    } else {
+                        admin = "Sim"
+                    }
+
+                    if (usuario.acessoTecnico == 0) {
+                        tec = "Não"
+                    } else {
+                        tec = "Sim"
+                    }
+
                     divCards.innerHTML += `
                         <div class="card-exibicao">
                             <div class="top-card">  
@@ -45,8 +62,8 @@ function listarUsuarios() {
                                     <th class="th_user">Telefone</th>
                                 </tr>
                                 <tr>
-                                    <td id="td_acesso_adm"></td>
-                                    <td id="td_acesso_tec"></td>
+                                    <td id="td_acesso_adm">${admin}</td>
+                                    <td id="td_acesso_tec">${tec}</td>
                                     <td>${usuario.email}</td>
                                     <td>${usuario.telefone}</td>
                                 </tr>
@@ -54,20 +71,8 @@ function listarUsuarios() {
                         </div>
                     `;
 
-                    if (usuario.acessoAdmin == 0) {
-                        td_acesso_adm.innerHTML = `Não`;
-                    } else {
-                        td_acesso_adm.innerHTML = `Sim`;
-                    }
-
-                    if (usuario.acessoTecnico == 0) {
-                        td_acesso_tec.innerHTML = `Não`;
-                    } else {
-                        td_acesso_tec.innerHTML = `Sim`;
-                    }       
-
                 }
-    
+
                 // finalizarAguardar();
             });
         } else {
@@ -77,7 +82,7 @@ function listarUsuarios() {
         console.error(resposta);
         // finalizarAguardar();
     });
-    
+
 }
 
 function excluirUser(idUser) {
@@ -117,6 +122,6 @@ function excluirUser(idUser) {
     });
 }
 
-function fecharModal(){
+function fecharModal() {
     divModal.style.display = "none";
 }
