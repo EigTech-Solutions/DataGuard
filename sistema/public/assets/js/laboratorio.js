@@ -12,12 +12,12 @@ function listarLabs() {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
-    
+
             resposta.json().then(function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                 divCards.innerHTML = "";
-    
+
                 for (let i = 0; i < resposta.length; i++) {
                     var laboratorio = resposta[i];
 
@@ -26,7 +26,7 @@ function listarLabs() {
                     if (numCardExibido < 10) {
                         numCardExibido = '0' + numCardExibido;
                     }
-    
+
                     divCards.innerHTML += `
                         <div class="card-exibicao">
                             <div class="top-card">  
@@ -50,11 +50,11 @@ function listarLabs() {
                                     <td>${laboratorio.situacao}</td>
                                 </tr>
                             </table>
-                            <button>ver mais</button>
+                            <button onclick="redirecionarParaLab(${laboratorio.idLaboratorio})">ver mais</button>
                         </div>
                     `;
                 }
-    
+
                 // finalizarAguardar();
             });
         } else {
@@ -64,7 +64,7 @@ function listarLabs() {
         console.error(resposta);
         // finalizarAguardar();
     });
-    
+
 }
 
 function cadastrar() {
@@ -72,28 +72,28 @@ function cadastrar() {
     var numLabVAR = ipt_numLab.value;
     var respLabVAR = ipt_respLab.value;
     var idInstituicaoVAR = sessionStorage.ID_INSTITUICAO;
-  
-    
-    if(nomeLabVAR == "" || numLabVAR == "" || respLabVAR == "" ){
+
+
+    if (nomeLabVAR == "" || numLabVAR == "" || respLabVAR == "") {
         Swal.fire(
             'Campo obrigatório vazio.',
             'Preencha todos os campos para continuar!',
             'error'
         );
-    }else{
-        fetch("/laboratorios/cadastrar",{
-            method : "POST",
+    } else {
+        fetch("/laboratorios/cadastrar", {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body:  JSON.stringify({
+            body: JSON.stringify({
                 nomeLabServer: nomeLabVAR,
                 numLabServer: numLabVAR,
                 respLabServer: respLabVAR,
-                idInstituicaoServer: idInstituicaoVAR       
+                idInstituicaoServer: idInstituicaoVAR
             })
         }).then(function (resposta) {
-            if(resposta.ok){
+            if (resposta.ok) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -103,13 +103,13 @@ function cadastrar() {
                 });
                 listarLabs();
                 fecharModal();
-            }else{
+            } else {
                 throw ("houve um erro ao tentar se cadastrar");
             }
-        }).catch(function (resposta){
+        }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
         });
-        
+
     }
 }
 
@@ -117,26 +117,26 @@ function atualizar(idLab) {
     var nomeLabVAR = ipt_nomeLab.value;
     var numLabVAR = ipt_numLab.value;
     var respLabVAR = ipt_respLab.value;
-    
-    if(nomeLabVAR == "" || numLabVAR == "" || respLabVAR == "" ){
+
+    if (nomeLabVAR == "" || numLabVAR == "" || respLabVAR == "") {
         Swal.fire(
             'Campo obrigatório vazio.',
             'Preencha todos os campos para continuar!',
             'error'
         );
-    }else{
-        fetch(`/laboratorios/atualizar/${idLab}/${sessionStorage.ID_INSTITUICAO}`,{
-            method : "PUT",
+    } else {
+        fetch(`/laboratorios/atualizar/${idLab}/${sessionStorage.ID_INSTITUICAO}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body:  JSON.stringify({
+            body: JSON.stringify({
                 nomeLabServer: nomeLabVAR,
                 numLabServer: numLabVAR,
-                respLabServer: respLabVAR    
+                respLabServer: respLabVAR
             })
         }).then(function (resposta) {
-            if(resposta.ok){
+            if (resposta.ok) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -146,13 +146,13 @@ function atualizar(idLab) {
                 });
                 listarLabs();
                 fecharModal();
-            }else{
+            } else {
                 throw ("houve um erro ao tentar se cadastrar");
             }
-        }).catch(function (resposta){
+        }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
         });
-        
+
     }
 }
 
@@ -166,7 +166,7 @@ function excluirLab(idLab) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Sim, deletar!',
         cancelButtonText: 'Cancelar'
-      }).then((result) => {
+    }).then((result) => {
         if (result.isConfirmed) {
             fetch(`/laboratorios/deletar/${idLab}/${sessionStorage.ID_INSTITUICAO}`, {
                 method: "DELETE",
@@ -190,12 +190,12 @@ function excluirLab(idLab) {
                 console.log(`#ERRO: ${resposta}`);
             });
         }
-      });
+    });
 }
 
 function abrirModalCardastarLab() {
     divModal.style.display = "flex";
-    
+
     divModal.innerHTML = `
         <div class="containerModalLab">
 
@@ -240,18 +240,18 @@ function abrirModalCardastarLab() {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
-    
+
             resposta.json().then(function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
-    
+
                 for (let i = 0; i < resposta.length; i++) {
                     var usuario = resposta[i];
-    
+
                     ipt_respLab.innerHTML += `
                         <option value="${usuario.idUsuario}">${usuario.nome}</option>
                     `;
                 }
-    
+
                 // finalizarAguardar();
             });
         } else {
@@ -260,12 +260,12 @@ function abrirModalCardastarLab() {
     }).catch(function (resposta) {
         console.error(resposta);
         // finalizarAguardar();
-    });   
+    });
 }
 
 function abrirModalEditarLab(idLab) {
     divModal.style.display = "flex";
-    
+
     fetch(`/laboratorios/buscarLab/${idLab}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
             if (resposta.status == 204) {
@@ -276,7 +276,7 @@ function abrirModalEditarLab(idLab) {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
-    
+
             resposta.json().then(function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
                 var laboratorio = resposta[0];
@@ -314,7 +314,7 @@ function abrirModalEditarLab(idLab) {
 
                     </div>
                 `;
-                            
+
                 fetch(`/usuarios/listarTecnicos/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
                     if (resposta.ok) {
                         if (resposta.status == 204) {
@@ -325,24 +325,24 @@ function abrirModalEditarLab(idLab) {
                             console.log("Nenhum resultado encontrado.");
                             throw "Nenhum resultado encontrado!!";
                         }
-                
+
                         resposta.json().then(function (resposta) {
                             console.log("Dados recebidos: ", JSON.stringify(resposta));
-                
+
                             for (let i = 0; i < resposta.length; i++) {
                                 var usuario = resposta[i];
-                
+
                                 if (laboratorio.fkResponsavel == usuario.idUsuario) {
                                     ipt_respLab.innerHTML += `
                                         <option value="${usuario.idUsuario}" selected>${usuario.nome}</option>
-                                    `; 
+                                    `;
                                 } else {
                                     ipt_respLab.innerHTML += `
                                         <option value="${usuario.idUsuario}">${usuario.nome}</option>
-                                    `;                        
+                                    `;
                                 }
                             }
-                
+
                             // finalizarAguardar();
                         });
                     } else {
@@ -351,7 +351,7 @@ function abrirModalEditarLab(idLab) {
                 }).catch(function (resposta) {
                     console.error(resposta);
                     // finalizarAguardar();
-                });  
+                });
                 // finalizarAguardar();
             });
         } else {
@@ -360,10 +360,14 @@ function abrirModalEditarLab(idLab) {
     }).catch(function (resposta) {
         console.error(resposta);
         // finalizarAguardar();
-    });    
+    });
 }
 
-function fecharModal(){
+function fecharModal() {
     divModal.style.display = "none";
 }
 
+
+function redirecionarParaLab(id) {
+    window.location = `dashboardLaboratorio.html?id=${id}`
+}

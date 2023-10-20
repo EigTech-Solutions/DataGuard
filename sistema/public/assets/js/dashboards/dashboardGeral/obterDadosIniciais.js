@@ -77,7 +77,21 @@ function obterKpis() {
     return false;
 }
 
+//função para redirecionar para o lab correto quando o usuário mudar o select
+function redirecionarParaLab(id) {
+    window.location = `dashboardLaboratorio.html?id=${id}`
+}
+
 window.addEventListener("load", function () {
     obterKpis();
     obterLaboratorios();
 });
+
+
+window.addEventListener("change", function () {
+    var idLabSelecionado = document.getElementById('select_dashboard').options[document.getElementById('select_dashboard').selectedIndex].value;
+    if (idLabSelecionado == "dashboardGeral") {
+        return
+    }
+    redirecionarParaLab(idLabSelecionado);
+})

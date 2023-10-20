@@ -11,21 +11,21 @@ function listarPCs() {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
-    
+
             resposta.json().then(function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                 divCards.innerHTML = "";
-    
+
                 for (let i = 0; i < resposta.length; i++) {
                     var maquina = resposta[i];
 
-                    var numCardExibido = i+1;
+                    var numCardExibido = i + 1;
 
                     if (numCardExibido < 10) {
                         numCardExibido = '0' + numCardExibido;
                     }
-    
+
                     divCards.innerHTML += `
                         <div class="card-exibicao">
                             <div class="top-card">  
@@ -49,11 +49,11 @@ function listarPCs() {
                                     <td>${maquina.situacao}</td>
                                 </tr>
                             </table>
-                            <button>ver mais</button>
+                            <button onclick="redirecionarParaMaq(${maquina.idMaquina})">ver mais</button>
                         </div>
                     `;
                 }
-    
+
                 // finalizarAguardar();
             });
         } else {
@@ -63,7 +63,7 @@ function listarPCs() {
         console.error(resposta);
         // finalizarAguardar();
     });
-    
+
 }
 
 function cadastrar() {
@@ -136,13 +136,13 @@ function atualizar(idPC) {
             'Preencha todos os campos para continuar!',
             'error'
         );
-    }else{
-        fetch(`/maquinas/atualizar/${idPC}/${sessionStorage.ID_INSTITUICAO}`,{
-            method : "PUT",
+    } else {
+        fetch(`/maquinas/atualizar/${idPC}/${sessionStorage.ID_INSTITUICAO}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body:  JSON.stringify({
+            body: JSON.stringify({
                 numeroSerieServer: numeroSerieVAR,
                 ipServer: ipVAR,
                 sistemaOperacionalServer: sistemaOperacionalVAR,
@@ -153,7 +153,7 @@ function atualizar(idPC) {
                 laboratorioServer: laboratorioVAR
             })
         }).then(function (resposta) {
-            if(resposta.ok){
+            if (resposta.ok) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -163,13 +163,13 @@ function atualizar(idPC) {
                 });
                 listarPCs();
                 fecharModal();
-            }else{
+            } else {
                 throw ("houve um erro ao tentar se cadastrar");
             }
-        }).catch(function (resposta){
+        }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
         });
-        
+
     }
 }
 
@@ -212,7 +212,7 @@ function excluirPC(idPC) {
 
 function abrirModalCardastarPC() {
     divModal.style.display = "flex";
-    
+
     divModal.innerHTML = `
         <div class="containerModalPC">
             <!--  topo do pop up  -->
@@ -307,18 +307,18 @@ function abrirModalCardastarPC() {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
-    
+
             resposta.json().then(function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
-    
+
                 for (let i = 0; i < resposta.length; i++) {
                     var laboratorio = resposta[i];
-    
+
                     ipt_lab.innerHTML += `
                         <option value="${laboratorio.idLaboratorio}">${laboratorio.nomeSala}</option>
                     `;
                 }
-    
+
                 // finalizarAguardar();
             });
         } else {
@@ -327,12 +327,12 @@ function abrirModalCardastarPC() {
     }).catch(function (resposta) {
         console.error(resposta);
         // finalizarAguardar();
-    });   
+    });
 }
 
 function abrirModalEditarPC(idPC) {
     divModal.style.display = "flex";
-    
+
     fetch(`/maquinas/buscarPC/${idPC}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
             if (resposta.status == 204) {
@@ -343,7 +343,7 @@ function abrirModalEditarPC(idPC) {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
-    
+
             resposta.json().then(function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
                 var maquina = resposta[0];
@@ -451,7 +451,7 @@ function abrirModalEditarPC(idPC) {
                         <option value="HD" selected>HD</option>
                     `;
                 }
-                            
+
                 fetch(`/laboratorios/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
                     if (resposta.ok) {
                         if (resposta.status == 204) {
@@ -462,10 +462,10 @@ function abrirModalEditarPC(idPC) {
                             console.log("Nenhum resultado encontrado.");
                             throw "Nenhum resultado encontrado!!";
                         }
-                
+
                         resposta.json().then(function (resposta) {
                             console.log("Dados recebidos: ", JSON.stringify(resposta));
-                
+
                             for (let i = 0; i < resposta.length; i++) {
                                 var laboratorio = resposta[i];
 
@@ -479,7 +479,7 @@ function abrirModalEditarPC(idPC) {
                                     `;
                                 }
                             }
-                
+
                             // finalizarAguardar();
                         });
                     } else {
@@ -488,7 +488,7 @@ function abrirModalEditarPC(idPC) {
                 }).catch(function (resposta) {
                     console.error(resposta);
                     // finalizarAguardar();
-                }); 
+                });
                 // finalizarAguardar();
             });
         } else {
@@ -497,9 +497,13 @@ function abrirModalEditarPC(idPC) {
     }).catch(function (resposta) {
         console.error(resposta);
         // finalizarAguardar();
-    });    
+    });
 }
 
-function fecharModal(){
+function fecharModal() {
     divModal.style.display = "none";
+}
+
+function redirecionarParaMaq(id) {
+    window.location = `dashboardMaquina.html?id=${id}`
 }
