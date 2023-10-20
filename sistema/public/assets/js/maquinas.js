@@ -228,9 +228,9 @@ function abrirModalCardastarPC() {
                 </div>
                 <div class="campoInput">
                     <label class="labelNumeroSerie" for="">Numero de série:</label>
-                    <input class="inputMedio" id="ipt_numeroSerie" placeholder="Ex: 12345678B" type="text">
+                    <input class="inputMedio" id="ipt_numeroSerie" placeholder="Ex: 12345678B" type="text" maxlength="12">
                     <label class="labelIp" for="">IP:</label>
-                    <input class="inputMedio" id="ipt_IP" placeholder="ex: 123.456.78.90" type="text">
+                    <input class="inputMedio" id="ipt_IP" placeholder="ex: 123.456.78.90" type="text" maxlength="12">
                 </div>
             </div>
 
@@ -280,10 +280,10 @@ function abrirModalCardastarPC() {
             <div class="containerModalPC3">
                 <div class="divProcessador">
                     <label for="">Processador:</label> <br>
-                    <input placeholder="" id="ipt_Processador" type="text">
+                    <input placeholder="" id="ipt_Processador" type="text" maxlength="45">
                 </div>
                 <div class="divLaboratorio">
-                    <label for="">Máquina:</label> <br>
+                    <label for="">Laboratório:</label> <br>
                     <select name="ipt_lab" id="ipt_lab">
                         <option value="0" selected disabled>Selecione...</option>
                     </select>
@@ -363,9 +363,9 @@ function abrirModalEditarPC(idPC) {
                             </div>
                             <div class="campoInput">
                                 <label class="labelNumeroSerie" for="">Numero de série:</label>
-                                <input class="inputMedio" id="ipt_numeroSerie" placeholder="Ex: 12345678B" type="text" value="${maquina.numeroDeSerie}">
+                                <input class="inputMedio" id="ipt_numeroSerie" placeholder="Ex: 12345678B" type="text" value="${maquina.numeroDeSerie}" maxlength="12">
                                 <label class="labelIp" for="">IP:</label>
-                                <input class="inputMedio" id="ipt_IP" placeholder="ex: 123.456.78.90" type="text" value="${maquina.ipMaquina}">
+                                <input class="inputMedio" id="ipt_IP" placeholder="ex: 123.456.78.90" type="text" value="${maquina.ipMaquina}" maxlength="12">
                             </div>
                         </div>
             
@@ -411,10 +411,10 @@ function abrirModalEditarPC(idPC) {
                         <div class="containerModalPC3">
                             <div class="divProcessador">
                                 <label for="">Processador:</label> <br>
-                                <input placeholder="" id="ipt_Processador" type="text"  value="${maquina.processador}">
+                                <input placeholder="" id="ipt_Processador" type="text"  value="${maquina.processador}" maxlength="45">
                             </div>
                             <div class="divLaboratorio">
-                                <label for="">Máquina:</label> <br>
+                                <label for="">Laboratório:</label> <br>
                                 <select name="ipt_lab" id="ipt_lab">
                                     <option value="0" selected disabled>Selecione...</option>
                                 </select>

@@ -53,6 +53,8 @@ menuTop.innerHTML = `
     </button>
 `;
 
+b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
 if (sessionStorage.ACESSO_ADMIN != 0 && sessionStorage.ACESSO_TECNICO != 0) {
     if (perfUsuario == "admin") {
         sl_perfil.innerHTML += `

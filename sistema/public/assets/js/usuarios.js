@@ -54,17 +54,18 @@ function listarUsuarios() {
                         </div>
                     `;
 
-                    if (usuario.acessoAdmin != 0) {
-                        td_acesso_adm.innerHTML = `Sim`;
-                    } else {
+                    if (usuario.acessoAdmin == 0) {
                         td_acesso_adm.innerHTML = `Não`;
+                    } else {
+                        td_acesso_adm.innerHTML = `Sim`;
                     }
 
-                    if (usuario.acessoTecnico != 0) {
-                        td_acesso_tec.innerHTML = `Sim`;
-                    } else {
+                    if (usuario.acessoTecnico == 0) {
                         td_acesso_tec.innerHTML = `Não`;
-                    }
+                    } else {
+                        td_acesso_tec.innerHTML = `Sim`;
+                    }       
+
                 }
     
                 // finalizarAguardar();
