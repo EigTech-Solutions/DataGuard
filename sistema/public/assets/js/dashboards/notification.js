@@ -5,6 +5,8 @@ function marcarTodosLido() {
     }
 }
 
+idInstituicao = sessionStorage.ID_INSTITUICAO
+
 function obterNotificacoes() {
     fetch(`/dashboards/notificacoes/${idInstituicao}`, {
         method: "GET",
@@ -47,7 +49,7 @@ function obterNotificacoes() {
                                     <p>Computador <span><b>${ipMaquina} parou de funcionar</b></span></p>
                                 </div>
                                 <div class="conf_coputador">
-                                    <p><b><a href="${idMaquina}">Conferir Computador</a></b></p>
+                                    <p><b><a href="dashboardMaquina.html?id=${idMaquina}">Conferir Computador</a></b></p>
                                 </div>
                                 <div class="data_mensagem">
                                     <p>${dataHoraFormatada}</p>
