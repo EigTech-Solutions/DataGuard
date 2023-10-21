@@ -66,7 +66,21 @@ function deletar(idLab, idInstituicao) {
         DELETE FROM laboratorio WHERE idLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao};
     `;
     console.log("Executando a instrução SQL: \n" + instrucao1 + "\n" + instrucao2);
-    return database.executar(instrucao1, instrucao2);
+    database.executar(instrucao1).then(
+        function (resultado) {
+            console.log(resultado);
+        }
+    ).catch(
+        function (erro) {
+            console.log(erro);
+            console.log(
+                "\nHouve um erro ao realizar o cadastro! Erro: ",
+                erro.sqlMessage
+            );
+            res.status(500).json(erro.sqlMessage);
+        }
+    );
+    return database.executar(instrucao2);
 }
 
 

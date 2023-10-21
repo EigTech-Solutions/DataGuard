@@ -49,7 +49,7 @@ header{
 .input{
     width: 22vw;
     height: 5.5vh;
-    border-radius: 10px;
+    border-radius: 6px;
     border: none;
     color: black;
     font-size: large;
@@ -96,7 +96,7 @@ button{
     font-weight: bold;
     text-transform: uppercase;
     border: none;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
     transition: ease-in-out 0.2s;
 }

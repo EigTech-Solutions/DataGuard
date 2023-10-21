@@ -21,14 +21,18 @@ router.get("/listarTecnicos/:idInstituicao", function (req, res) {
 
 //Recebendo os dados do html e direcionando para a função cadastrar de usuarioController.js
 router.post("/cadastrar", function (req, res) {
-    usuarioController.cadastrarUsuario(req, res);
+    usuarioController.cadastrar(req, res);
+});
+
+router.post("/cadastrarAcesso", function (req, res) {
+    usuarioController.cadastrarAcesso(req, res);
 });
 
 router.put("/atualizar/:idUser/:idInstituicao", function (req, res) {
     usuarioController.atualizar(req, res);
 });
 
-router.delete("/deletar/:idPC/:idInstituicao", function (req, res) {
+router.delete("/deletar/:idUser/:idInstituicao", function (req, res) {
     usuarioController.deletar(req, res);
 });
 

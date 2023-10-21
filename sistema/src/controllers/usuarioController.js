@@ -82,7 +82,7 @@ function cadastrar(req, res) {
     var email = req.body.emailServer;
     var telefone = req.body.telefoneServer
     var senha = req.body.senhaServer;
-    
+    var idInstituicao = req.body.idInstituicaoServer;
 
     // Faça as validações dos valores
     if (nome == undefined) {
@@ -96,7 +96,40 @@ function cadastrar(req, res) {
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, email, telefone, senha)
+        usuarioModel.cadastrar(nome, email, telefone, senha, idInstituicao)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
+function cadastrarAcesso(req, res) {
+    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
+    var idUser = req.body.idUserServer;
+    var idInstituicao = req.body.idInstituicaoServer;
+    var idAcesso = req.body.idAcessoServer
+
+    // Faça as validações dos valores
+    if (idAcesso == undefined) {
+        res.status(400).send("Seu nome está undefined!");
+    } else if (idUser == undefined) {
+        res.status(400).send("Seu email está undefined!");
+    } else if (idInstituicao == undefined) {
+        res.status(400).send("Sua senha está undefined!");
+    } else {
+        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+        usuarioModel.cadastrarAcesso(idUser, idInstituicao, idAcesso)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -156,7 +189,8 @@ module.exports = {
     autenticar,
     listar,
     buscarUser,
-    cadastrar,
     listarTecnicos,
+    cadastrar,
+    cadastrarAcesso,
     deletar
 }

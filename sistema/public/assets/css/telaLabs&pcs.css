@@ -310,3 +310,74 @@ hr {
     margin: auto;
     margin-bottom: 15px;
 }
+
+.divModal .containerModalUser {
+    position: fixed;
+    width: 37%;
+    height: fit-content;
+    background-color: #A6CEE3;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.divModal .containerModalUser .meioPopUp{
+    width: 93%;
+    height: 32vh;
+    background-color: #A6CEE3;
+    display: flex;
+    justify-content: space-between;
+}
+
+.divModal .containerModalUser .divImagemUsuario{
+    width: 30%;
+    display: flex ;
+    align-items: center;
+}
+
+.divModal .containerModalUser .checkboxs{
+    width: 16vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    color: #000000;
+
+}
+
+.divModal .containerModalUser .checkboxs input[type="checkbox"] {
+    width: 16px; 
+    height: 16px;
+    margin-right: -25px;
+}
+
+
+.divModal .containerModalUser .imagemUsuario{
+    height: 100%;
+    margin-top: 20px;
+}
+
+.divModal .containerModalUser .campoInputSenha{
+    width: 93%;
+    background-color: #A6CEE3 ;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.divModal .containerModalUser .senha{
+    display: flex;
+    flex-direction: column;
+}
+
+.divModal .containerModalUser .senha input{
+    margin-top: -25px;
+}
+
+.divModal .containerModalUser .repetir_senha{
+    width: 50%;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
