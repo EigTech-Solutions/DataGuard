@@ -3,8 +3,22 @@ const fluxo_rede = document.getElementById('fluxo_rede_chart').getContext("2d");
 // Configuração e dados de cada linha do chart
 var datasetLinhas = [
     {
-        label: 'Lab 1',
+        label: 'Media - Download',
         data: [Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51),],
+        borderColor: 'rgba(251, 154, 153, 1)',
+        backgroundColor: 'rgba(251, 154, 153, 1)',
+    },
+    {
+        label: 'Media - Upload',
+        data: [Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51),],
+        borderColor: 'rgba(158, 171, 240, 1)',
+        backgroundColor: 'rgba(158, 171, 240, 1)',
+    },
+    {
+        label: 'Media - Ping',
+        data: [Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51),],
+        borderColor: '#A6CEE3',
+        backgroundColor: '#A6CEE3'
     },
 ]
 

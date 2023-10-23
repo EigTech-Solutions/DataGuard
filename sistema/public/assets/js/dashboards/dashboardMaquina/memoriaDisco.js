@@ -4,7 +4,7 @@ const memoriaDisco = document.getElementById('chart_memoria_disco').getContext("
 var datasetsMemoria = [
     {
         label: 'Memoria Disco',
-        data: [75, 500],
+        data: [15, 85],
         backgroundColor: [
             'rgba(163, 163, 163, 1)',
             'rgba(18, 69, 89, 1)',

@@ -4,7 +4,7 @@ const chart_memoria_utilizada = document.getElementById('chart_memoria_utilizada
 var datasetsMemoria = [
     {
         label: 'Memoria Disco',
-        data: [75, 500],
+        data: [85, 15],
         backgroundColor: [
             'rgba(163, 163, 163, 1)',
             'rgba(18, 69, 89, 1)',
