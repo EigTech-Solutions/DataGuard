@@ -87,11 +87,11 @@
     padding-bottom: 1.5vh;
 }
 
-.notification_title{
+.notification_title {
     margin-left: 3vh;
 }
 
-.notification_subtitle{
+.notification_subtitle {
     font-size: 0.7vw;
     margin-left: 7.5vh;
     margin-right: 0.5vh;
@@ -100,16 +100,16 @@
     text-decoration: underline;
 }
 
-.notification_subtitle a{
+.notification_subtitle a {
     color: white;
 }
 
-.linha{
+.linha {
     background-color: white;
     height: 0.2vh;
 }
 
-.linha2{
+.linha2 {
     background-color: white;
     height: 0.2vh;
     margin-top: 0.4vw;
@@ -184,7 +184,7 @@
     font-size: 0.9rem;
 }
 
-.chart_memoria_utilizada{
+.chart_memoria_utilizada {
     width: 25vw;
     height: 30vh;
 }
@@ -241,7 +241,7 @@
     font-weight: bold;
 }
 
-.imagem_notification{
+.imagem_notification {
     background-color: #acc1c8;
     margin-top: 0.5vh;
     width: auto;
@@ -250,12 +250,12 @@
     flex-direction: row;
 }
 
-.texto_notification{
+.texto_notification {
     margin-left: 3vh;
     margin-top: 2.5vw;
 }
 
-.alertas_nao_lido{
+.alertas {
     margin-top: 1.25vh;
     width: auto;
     height: 20vh;
@@ -267,58 +267,68 @@
     padding: 0.5rem;
 }
 
-.alertas_lido{
+.alertas_lido {
+    margin-top: 1.25vh;
+    width: auto;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #8aa8b2;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding: 0.5rem;
 }
 
-.caixa_de_alertas{
+.caixa_de_alertas {
     overflow-y: auto;
     height: 60vh;
 }
 
-.alertas_nao_lido img{
+.alertas_nao_lido img {
     height: 10vh;
 }
-.mensagens{
+
+.mensagens {
     margin-left: 2vh;
     font-size: 0.75rem;
 }
 
-.conf_coputador{
+.conf_coputador {
     display: flex;
     margin-top: 0.5vw;
     margin-left: 5vh;
 }
 
-.conf_coputador a{
+.conf_coputador a {
     color: #AEC3B0;
     font-size: 0.7rem;
 
 }
 
-.data_mensagem{
+.data_mensagem {
     font-size: 0.65rem;
     margin-top: 0.5vw;
     text-align: end;
 }
 
-.mensagem_comp{
+.mensagem_comp {
     margin-top: 0.5vw;
 }
 
-.mensagem_comp span{
-    color: #AEC3B0;
-}
-.mensagem_lab{
+.mensagem_comp span {
     color: #AEC3B0;
 }
 
-.notfication_vermais{
+.mensagem_lab {
+    color: #AEC3B0;
+}
+
+.notfication_vermais {
     margin-top: 1vh;
     text-align: center;
     font-size: 2vh;
 }
 
-.notfication_vermais a{
+.notfication_vermais a {
     color: white;
 }

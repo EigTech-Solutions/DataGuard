@@ -20,25 +20,6 @@ function buscarDadosKpis(req, res) {
 }
 
 
-function buscarMedidasEmTempoReal(req, res) {
-
-    var idAquario = req.params.idAquario;
-
-    console.log(`Recuperando medidas em tempo real`);
-
-    medidaModel.buscarMedidasEmTempoReal(idAquario).then(function (resultado) {
-        if (resultado.length > 0) {
-            res.status(200).json(resultado);
-        } else {
-            res.status(204).send("Nenhum resultado encontrado!")
-        }
-    }).catch(function (erro) {
-        console.log(erro);
-        console.log("Houve um erro ao buscar as ultimas medidas.", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-    });
-}
-
 function buscarNotificacoes(req, res) {
     var idInstituicao = req.params.idInstituicao;
 
@@ -52,13 +33,50 @@ function buscarNotificacoes(req, res) {
         }
     }).catch(function (erro) {
         console.log(erro);
-        console.log("Houve um erro ao buscar os KPIs.", erro.sqlMessage);
+        console.log("Houve um erro ao buscar as notificações.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarFluxoRede(req, res) {
+    var idInstituicao = req.params.idInstituicao;
+
+    console.log(`Recuperando dados de fluxo de rede`);
+
+    dashboardsModel.buscarFluxoRede(idInstituicao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de fluxo de rede.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarFluxoRedeTempoReal(req, res) {
+    var idInstituicao = req.params.idInstituicao;
+
+    console.log(`Recuperando dados de fluxo de rede em tempo real`);
+
+    dashboardsModel.buscarFluxoRedeTempoReal(idInstituicao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de fluxo de rede.", erro.sqlMessage);
         res.status(500).json(erro.sqlMessage);
     });
 }
 
 module.exports = {
     buscarDadosKpis,
-    buscarMedidasEmTempoReal,
-    buscarNotificacoes
+    buscarNotificacoes,
+    buscarFluxoRede,
+    buscarFluxoRedeTempoReal
 }
