@@ -50,12 +50,18 @@ const configCpu = {
                 grid: {
                     lineWidth: 1,
                     color: "#124559"
+                },
+                ticks: {
+                    color: "#c2c2c2"
                 }
             },
             x: {
                 grid: {
                     lineWidth: 1,
                     color: "#124559"
+                },
+                ticks: {
+                    color: "#c2c2c2"
                 }
             }
 

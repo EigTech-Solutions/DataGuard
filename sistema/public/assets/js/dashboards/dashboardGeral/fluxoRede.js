@@ -57,7 +57,8 @@ const config = {
                 ticks: {
                     callback: (value, index, values) => {
                         return `${value} Mbps/Ms`;
-                    }
+                    },
+                    color: "#C2C2C2"
                 },
                 grid: {
                     lineWidth: 1,
@@ -65,6 +66,9 @@ const config = {
                 }
             },
             x: {
+                ticks: {
+                    color: "#C2C2C2",
+                },
                 grid: {
                     lineWidth: 1,
                     color: "#124559"

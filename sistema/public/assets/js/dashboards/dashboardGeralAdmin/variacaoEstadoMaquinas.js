@@ -45,7 +45,7 @@ const config = {
                     useBorderRadius: true,
                     borderRadius: 3.5,
                     boxWidth: 25,
-                    font:{
+                    font: {
                         family: "Poppins"
                     }
                 },
@@ -57,9 +57,15 @@ const config = {
                 grid: {
                     lineWidth: 1,
                     color: "#124559"
+                },
+                ticks: {
+                    color: "#c2c2c2"
                 }
             },
             x: {
+                ticks: {
+                    color: "#c2c2c2"
+                },
                 grid: {
                     lineWidth: 1,
                     color: "#124559"
