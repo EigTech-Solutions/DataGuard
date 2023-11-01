@@ -37,7 +37,7 @@ function buscarLab(idLab, idInstituicao) {
 // cadastro de laboratorios
 function cadastrar(nomeLab, numLab, respLab, idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nomeLab, numLab, respLab);
-    
+
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucao = `
@@ -57,30 +57,23 @@ function atualizar(idLab, nomeLab, numLab, idRespLab, idInstituicao) {
     return database.executar(instrucao);
 }
 
+function preDelete(idLab, idInstituicao) {
+    console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function deletar():", idLab);
+    var instrucao = `
+        UPDATE maquina SET fkLaboratorio = NULL WHERE fkInstitucional = ${idInstituicao} AND fkLaboratorio = ${idLab};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+
+    return database.executar(instrucao);
+}
+
 function deletar(idLab, idInstituicao) {
     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function deletar():", idLab);
-    var instrucao1 = `
-        UPDATE maquina SET fkLaboratorio = NULL WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao};
+    var instrucao = `
+        DELETE FROM laboratorio WHERE fkInstitucional = ${idInstituicao} AND idLaboratorio = ${idLab};
     `;
-    var instrucao2 = `
-        DELETE FROM laboratorio WHERE idLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao};
-    `;
-    console.log("Executando a instrução SQL: \n" + instrucao1 + "\n" + instrucao2);
-    database.executar(instrucao1).then(
-        function (resultado) {
-            console.log(resultado);
-        }
-    ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao realizar o cadastro! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
-    );
-    return database.executar(instrucao2);
+    console.log("Executando a instrução SQL: " + instrucao);
+    return database.executar(instrucao);
 }
 
 
@@ -90,5 +83,6 @@ module.exports = {
     buscarLab,
     cadastrar,
     atualizar,
-    deletar
+    deletar,
+    preDelete
 };

@@ -46,7 +46,7 @@ function cadastrar(req, res) {
     var numLab = req.body.numLabServer;
     var respLab = req.body.respLabServer;
     var idInstituicaoLab = req.body.idInstituicaoServer;
-   
+
 
     // Faça as validações dos valores
     if (nomeLab == undefined) {
@@ -81,12 +81,12 @@ function cadastrar(req, res) {
 function atualizar(req, res) {
     var idLab = req.params.idLab;
     var idInstituicaoLab = req.params.idInstituicao;
-    
+
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nomeLab = req.body.nomeLabServer;
     var numLab = req.body.numLabServer;
     var respLab = req.body.respLabServer;
-   
+
 
     // Faça as validações dos valores
     if (nomeLab == undefined) {
@@ -119,6 +119,28 @@ function atualizar(req, res) {
             );
     }
 }
+function preDelete(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicaoLab = req.params.idInstituicao;
+
+    // Passe os valores como parâmetro e vá para o arquivo laboratorioModel.js
+    laboratorioModel.preDelete(idLab, idInstituicaoLab)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar o preDelete! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 
 function deletar(req, res) {
     var idLab = req.params.idLab;
@@ -145,5 +167,6 @@ module.exports = {
     buscarLab,
     cadastrar,
     atualizar,
-    deletar
+    deletar,
+    preDelete
 }

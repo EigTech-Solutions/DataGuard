@@ -106,6 +106,7 @@ function buscarDadosFluxoDeRede() {
     return false;
 }
 
+//Iniciando o gráfico de fluxo de redes com os valores iniciais
 function plotarGraficoFluxoDeRede(dadosParam) {
     //atualizando as legendas (data e hora dos registros)
     let novoLabels = [];
@@ -131,6 +132,7 @@ function plotarGraficoFluxoDeRede(dadosParam) {
 
 }
 
+//Função recursiva para atualizar os dados do gráfico fluxo de rede a cada 5s
 function atualizarGraficoFluxoRede() {
     setInterval(() => {
         fetch(`/dashboards/dashboardGeral/fluxoRede/tempoReal/${sessionStorage.ID_INSTITUICAO}`, {
@@ -141,9 +143,18 @@ function atualizarGraficoFluxoRede() {
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(response => {
-                    console.log(response[0].dataHora);
-                    console.log(dados.labels[9]);
-                    if (response[0].dataHora == dados.labels[9]) {
+                    if ((dados.labels.length < 10) && (response[0].dataHora != dados.labels[dados.labels.length - 1])) {
+                        console.log("Novos dados menor que 10!",);
+                        dados.labels.push(response[0].dataHora);
+                        //download
+                        dados.datasets[0].data.push(response[0].MediaDownload)
+                        //upload
+                        dados.datasets[1].data.push(response[0].MediaUpload)
+                        // //ping
+                        dados.datasets[2].data.push(response[0].MediaLatencia)
+
+                        chartFluxoRede.update();
+                    } else if (response[0].dataHora == dados.labels[9] || (response[0].dataHora == dados.labels[dados.labels.length - 1])) {
                         console.log("Sem novos registros!");
                     } else {
                         console.log("Novos dados!",);
@@ -175,10 +186,84 @@ function atualizarGraficoFluxoRede() {
     }, 5000);
 }
 
+// função para buscar os dados do gráfico "Status Maquinas"
+function buscarDadosStatusMaquinas() {
+    fetch(`/dashboards/dashboardGeral/statusMaquinas/${sessionStorage.ID_INSTITUICAO}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            resposta.json().then(dados => {
+                plotarGraficoStatusMaquinas(dados);
+            });
+        } else {
+            console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
+            resposta.text().then(texto => {
+                console.error(texto);
+            });
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+    })
+    return false;
+}
+
+//Iniciando o gráfico de Status Maquinas com os valores iniciais
+function plotarGraficoStatusMaquinas(dadosParam) {
+    //atualizando as legendas (data e hora dos registros)
+    let novosDados = [dadosParam[0].qtdAtivas, dadosParam[0].qtdDesativadas];
+
+    datasetsStatus[0].data = novosDados;
+
+    chartStatusMaquinas.update();
+
+    atualizarGraficoStatusMaquinas();
+
+}
+
+//Função recursiva para atualizar os dados do gráfico Status Maquina a cada 5s
+function atualizarGraficoStatusMaquinas() {
+    setInterval(() => {
+        fetch(`/dashboards/dashboardGeral/statusMaquinas/${sessionStorage.ID_INSTITUICAO}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(response => {
+                    let qtdAtivas = response[0].qtdAtivas;
+                    let qtdDesativadas = response[0].qtdDesativadas;
+                    console.log(datasetsStatus[0].data);
+                    if (qtdAtivas != datasetsStatus[0].data[0] || qtdDesativadas != datasetsStatus[0].data[1]) {
+                        console.log("UEEPAAA");
+                    } else {
+                        console.log("nada novo aqui");
+                    }
+
+                    chartFluxoRede.update();
+
+                });
+            } else {
+                console.log("Houve um erro ao tentar obter os dados de fluxo de rede em tempo real :c");
+                resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+        return false;
+    }, 5000);
+}
+
 window.addEventListener("load", function () {
     obterKpis();
     obterLaboratorios();
     buscarDadosFluxoDeRede();
+    buscarDadosStatusMaquinas();
 });
 
 

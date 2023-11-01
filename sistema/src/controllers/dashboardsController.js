@@ -74,9 +74,28 @@ function buscarFluxoRedeTempoReal(req, res) {
     });
 }
 
+function buscarStatusMaquinas(req, res) {
+    var idInstituicao = req.params.idInstituicao;
+
+    console.log(`Recuperando dados de status maquinas`);
+
+    dashboardsModel.buscarStatusMaquinas(idInstituicao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de fluxo de rede.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     buscarDadosKpis,
     buscarNotificacoes,
     buscarFluxoRede,
-    buscarFluxoRedeTempoReal
+    buscarFluxoRedeTempoReal,
+    buscarStatusMaquinas
 }

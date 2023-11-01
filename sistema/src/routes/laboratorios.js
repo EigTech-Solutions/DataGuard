@@ -19,9 +19,15 @@ router.put("/atualizar/:idLab/:idInstituicao", function (req, res) {
     laboratorioController.atualizar(req, res);
 });
 
+router.put("/preDelete/:idLab/:idInstituicao", function (req, res) {
+    laboratorioController.preDelete(req, res);
+});
+
 router.delete("/deletar/:idLab/:idInstituicao", function (req, res) {
     laboratorioController.deletar(req, res);
 });
+
+
 
 
 module.exports = router;

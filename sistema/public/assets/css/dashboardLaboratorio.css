@@ -216,11 +216,30 @@
 
 .ranking_labs table {
     color: #fff;
-    width: 100%;
     font-size: 0.75rem;
+    line-height: 1rem;
+    font-family: 'Inter', sans-serif;
     border-radius: 0.25rem;
     border: 1px solid #0B2545;
     background-color: #124559;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.ranking_labs td{
+    border-bottom: 3px solid #124559;
+}
+
+.ranking_labs td:first-child{
+    border-right: 1px solid #124559;
+    border-bottom: 3px solid #124559;
+}
+
+
+.table_rknLabs_qtdAlertas{
+    padding: 0 0.75rem;
+    text-align: center;
+    color: #F43B32;
 }
 
 .tabela_overflow {
@@ -236,13 +255,15 @@
 }
 
 .ranking_labs .table_rknLabs_pos {
-    width: auto;
+    width: 10%;
     padding: 0.1rem;
     text-align: center;
 }
 
 .ranking_labs .table_rknLabs_nomeLab {
-    padding: 0 0.5rem;
+    padding: 0 0.75rem;
+    width: 50%;
+    text-align: center;
 }
 
 .ranking_labs table tbody tr:first-child {

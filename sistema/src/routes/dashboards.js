@@ -19,4 +19,8 @@ router.get("/dashboardGeral/fluxoRede/tempoReal/:idInstituicao", function (req, 
     dashboardsController.buscarFluxoRedeTempoReal(req, res);
 })
 
+router.get("/dashboardGeral/statusMaquinas/:idInstituicao", function (req, res) {
+    dashboardsController.buscarStatusMaquinas(req, res);
+})
+
 module.exports = router;

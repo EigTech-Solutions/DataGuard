@@ -168,29 +168,44 @@ function excluirLab(idLab) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/laboratorios/deletar/${idLab}/${sessionStorage.ID_INSTITUICAO}`, {
-                method: "DELETE",
+            fetch(`/laboratorios/preDelete/${idLab}/${sessionStorage.ID_INSTITUICAO}`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
-                }
+                },
             }).then(function (resposta) {
                 if (resposta.ok) {
-                    Swal.fire(
-                        'Deletado!',
-                        'Laboratório excluído com sucesso!',
-                        'success'
-                    );
-                    listarLabs();
-                } else if (resposta.status == 404) {
-                    window.alert("Deu 404!");
+                    console.log("atualizei");
+                    fetch(`/laboratorios/deletar/${idLab}/${sessionStorage.ID_INSTITUICAO}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }).then(function (resposta) {
+                        if (resposta.ok) {
+                            Swal.fire(
+                                'Deletado!',
+                                'Laboratório excluído com sucesso!',
+                                'success'
+                            );
+                            listarLabs();
+                        } else if (resposta.status == 404) {
+                            window.alert("Deu 404!");
+                        } else {
+                            throw ("Houve um erro ao tentar deletar o campo! Código da resposta: " + resposta.status);
+                        }
+                    }).catch(function (resposta) {
+                        console.log(`#ERRO: ${resposta}`);
+                    });
+
                 } else {
-                    throw ("Houve um erro ao tentar deletar o campo! Código da resposta: " + resposta.status);
+                    throw ("houve um erro ao tentar se cadastrar");
                 }
             }).catch(function (resposta) {
                 console.log(`#ERRO: ${resposta}`);
             });
         }
-    });
+    })
 }
 
 function abrirModalCardastarLab() {
