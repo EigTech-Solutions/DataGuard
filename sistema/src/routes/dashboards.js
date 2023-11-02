@@ -23,4 +23,8 @@ router.get("/dashboardGeral/statusMaquinas/:idInstituicao", function (req, res) 
     dashboardsController.buscarStatusMaquinas(req, res);
 })
 
+router.get("/dashboardGeral/rankingLabs/:idInstituicao", function (req, res) {
+    dashboardsController.buscarRankingLabs(req, res);
+})
+
 module.exports = router;

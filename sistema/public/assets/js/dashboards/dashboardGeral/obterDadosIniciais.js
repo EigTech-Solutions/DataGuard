@@ -64,6 +64,7 @@ function obterKpis() {
                     document.getElementById('kpi_qtd_labs').innerHTML = resposta.qtdLabs
                     document.getElementById('kpi_qtd_alertas').innerHTML = resposta.qtdAlertas
                 })
+                atualizarKpis();
             });
         } else {
             console.log("Houve um erro ao tentar obter os KPIs :c");
@@ -75,6 +76,40 @@ function obterKpis() {
         console.log(erro);
     })
     return false;
+}
+
+//Atualizando os KPIs a cada 5s
+function atualizarKpis() {
+    setInterval(() => {
+        fetch(`/dashboards/dashboardGeral/kpis/${idInstituicao}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(response => {
+                    if (response[0].qtdMaquinas != Number(document.getElementById('kpi_qtd_maquinas_ativas').innerText)) {
+                        document.getElementById('kpi_qtd_maquinas_ativas').innerHTML = response[0].qtdMaquinas
+                    }
+                    if (response[0].qtdLabs != Number(document.getElementById('kpi_qtd_labs').innerHTML)) {
+                        document.getElementById('kpi_qtd_labs').innerHTML = response[0].qtdLabs
+                    }
+                    if (response[0].qtdAlertas != Number(document.getElementById('kpi_qtd_alertas').innerHTML)) {
+                        document.getElementById('kpi_qtd_alertas').innerHTML = response[0].qtdAlertas
+                    }
+                });
+            } else {
+                console.log("Houve um erro ao tentar obter os dados do ranking de labs em tempo real :c");
+                resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+        return false;
+    }, 5000);
 }
 
 //função para redirecionar para o lab correto quando o usuário mudar o select
@@ -123,7 +158,6 @@ function plotarGraficoFluxoDeRede(dadosParam) {
     // //ping
     let novosDadosPing = [];
     dadosParam.map((dados) => { novosDadosPing.push(dados.MediaLatencia) })
-    console.log(dadosParam);
     dados.datasets[2].data = novosDadosPing.reverse();
 
     chartFluxoRede.update();
@@ -144,7 +178,6 @@ function atualizarGraficoFluxoRede() {
             if (resposta.ok) {
                 resposta.json().then(response => {
                     if ((dados.labels.length < 10) && (response[0].dataHora != dados.labels[dados.labels.length - 1])) {
-                        console.log("Novos dados menor que 10!",);
                         dados.labels.push(response[0].dataHora);
                         //download
                         dados.datasets[0].data.push(response[0].MediaDownload)
@@ -236,18 +269,92 @@ function atualizarGraficoStatusMaquinas() {
                 resposta.json().then(response => {
                     let qtdAtivas = response[0].qtdAtivas;
                     let qtdDesativadas = response[0].qtdDesativadas;
-                    console.log(datasetsStatus[0].data);
                     if (qtdAtivas != datasetsStatus[0].data[0] || qtdDesativadas != datasetsStatus[0].data[1]) {
-                        console.log("UEEPAAA");
+                        datasetsStatus[0].data = [qtdAtivas, qtdDesativadas];
                     } else {
-                        console.log("nada novo aqui");
+                        console.log("Sem novos status de maquinas");
                     }
 
-                    chartFluxoRede.update();
+                    chartStatusMaquinas.update();
 
                 });
             } else {
                 console.log("Houve um erro ao tentar obter os dados de fluxo de rede em tempo real :c");
+                resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+        return false;
+    }, 5000);
+}
+
+// função que cria a tabela de ranking recebendo um conjunto de dados
+function atualizarTable(tableData) {
+    let table = document.getElementById('table_ranking_labs');
+    table.innerHTML = "";
+    tableData.forEach((lab, i) => {
+        table.innerHTML += `
+        <tr>
+            <td class="table_rknLabs_pos">${i + 1}°</td>
+            <td class="table_rknLabs_nomeLab">Laboratório ${lab.numeroSala}</td>
+            <td class="table_rknLabs_qtdAlertas">${lab.qtdAlertas} Alertas</td>
+        </tr>
+        `
+    });
+}
+
+//Funcão para buscar os dados do ranking de labs
+function buscarRankingLabs() {
+    fetch(`/dashboards/dashboardGeral/rankingLabs/${sessionStorage.ID_INSTITUICAO}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            resposta.json().then(dados => {
+                atualizarTable(dados);
+                atualizarRankingLabs(dados);
+            });
+        } else {
+            console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
+            resposta.text().then(texto => {
+                console.error(texto);
+            });
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+    })
+    return false;
+}
+
+//Função para atualizar o ranking de labs a cada 5s
+function atualizarRankingLabs(tabelaAnterior) {
+    setInterval(() => {
+        fetch(`/dashboards/dashboardGeral/rankingLabs/${sessionStorage.ID_INSTITUICAO}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(response => {
+                    if (response.length > tabelaAnterior.length) {
+                        atualizarTable(response);
+                    } else {
+                        response.forEach((lab, i) => {
+                            if (lab.numeroSala !== tabelaAnterior[i].numeroSala || lab.qtdAlertas !== tabelaAnterior[i].qtdAlertas) {
+                                atualizarTable(response)
+                                return;
+                            }
+                        })
+                    }
+                });
+            } else {
+                console.log("Houve um erro ao tentar obter os dados do ranking de labs em tempo real :c");
                 resposta.text().then(texto => {
                     console.error(texto);
                 });
@@ -264,8 +371,8 @@ window.addEventListener("load", function () {
     obterLaboratorios();
     buscarDadosFluxoDeRede();
     buscarDadosStatusMaquinas();
+    buscarRankingLabs();
 });
-
 
 window.addEventListener("change", function () {
     var idLabSelecionado = document.getElementById('select_dashboard').options[document.getElementById('select_dashboard').selectedIndex].value;
@@ -273,4 +380,4 @@ window.addEventListener("change", function () {
         return
     }
     redirecionarParaLab(idLabSelecionado);
-})
+})  

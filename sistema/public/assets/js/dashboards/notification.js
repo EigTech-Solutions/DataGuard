@@ -16,9 +16,7 @@ function obterNotificacoes() {
     }).then(function (resposta) {
         if (resposta.ok) {
             resposta.json().then(json => {
-                console.log(json);
                 json.forEach(alerta => {
-                    console.log(alerta);
                     let nomeSala = alerta.nomeSala;
                     let numeroSala = alerta.numeroSala >= 10 ? alerta.numeroSala : `0${alerta.numeroSala}`;
                     let idMaquina = alerta.idMaquina;
@@ -33,9 +31,7 @@ function obterNotificacoes() {
                     let horaData = dataHora.getHours() >= 10 ? dataHora.getHours() : `0${dataHora.getHours()}`;
                     let minutosData = dataHora.getMinutes() >= 10 ? dataHora.getMinutes() : `0${dataHora.getMinutes()}`
                     let dataHoraFormatada = `${dataDia}/${dataMes}/${dataAno} - ${horaData}:${minutosData}`
-                    console.log(alerta.lido);
                     let lido = alerta.lido != 1 ? 'alertas' : 'alertas_lido';
-                    console.log(lido);
 
                     var imgAlerta = tipoAlerta.toLowerCase() == "urgente" ? "../assets/images/alertaPerigo.png" : "../assets/images/alertaAviso.png";
                     document.getElementById('caixa_de_alertas').innerHTML +=

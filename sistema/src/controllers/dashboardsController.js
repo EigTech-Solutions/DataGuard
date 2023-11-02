@@ -19,7 +19,6 @@ function buscarDadosKpis(req, res) {
     });
 }
 
-
 function buscarNotificacoes(req, res) {
     var idInstituicao = req.params.idInstituicao;
 
@@ -87,7 +86,25 @@ function buscarStatusMaquinas(req, res) {
         }
     }).catch(function (erro) {
         console.log(erro);
-        console.log("Houve um erro ao buscar os ultimos dados de fluxo de rede.", erro.sqlMessage);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarRankingLabs(req, res){
+    var idInstituicao = req.params.idInstituicao;
+
+    console.log(`Recuperando o ranking de laboratórios`);
+
+    dashboardsModel.buscarRankingLabs(idInstituicao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados do ranking de labs.", erro.sqlMessage);
         res.status(500).json(erro.sqlMessage);
     });
 }
@@ -97,5 +114,6 @@ module.exports = {
     buscarNotificacoes,
     buscarFluxoRede,
     buscarFluxoRedeTempoReal,
-    buscarStatusMaquinas
+    buscarStatusMaquinas,
+    buscarRankingLabs
 }
