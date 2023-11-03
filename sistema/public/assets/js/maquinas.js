@@ -39,11 +39,13 @@ function listarPCs() {
                             <h3>Máquina ${maquina.numeroDeSerie}</h3>
                             <table>
                                 <tr>
-                                    <th>Local</th>
-                                    <th>Alertas</th>
-                                    <th>Situação</th>
+                                    <th class="th_maq">Status</th>
+                                    <th th class="th_maq">Local</th>
+                                    <th th class="th_maq">Alertas</th>
+                                    <th th class="th_maq">Situação</th>
                                 </tr>
                                 <tr>
+                                    <td id="statusMaquina"></td>
                                     <td>${maquina.local}</td>
                                     <td>${maquina.quantidadeAlertasUltimoMes}</td>
                                     <td>${maquina.situacao}</td>
@@ -52,6 +54,12 @@ function listarPCs() {
                             <button onclick="redirecionarParaMaq(${maquina.idMaquina})">ver mais</button>
                         </div>
                     `;
+
+                    if (maquina.status == 0) {
+                        statusMaquina.innerHTML = "Desativada";
+                    } else {
+                        statusMaquina.innerHTML = "Ativa";
+                    }
                 }
 
                 // finalizarAguardar();
@@ -363,7 +371,7 @@ function abrirModalEditarPC(idPC) {
                             </div>
                             <div class="campoInput">
                                 <label class="labelNumeroSerie" for="">Numero de série:</label>
-                                <input class="inputMedio" id="ipt_numeroSerie" placeholder="Ex: 12345678B" type="text" value="${maquina.numeroDeSerie}" maxlength="12">
+                                <input class="inputMedio" id="ipt_numeroSerie" placeholder="Ex: 12345678B" type="text" value="${maquina.numeroDeSerie}" maxlength="12" disabled>
                                 <label class="labelIp" for="">IP:</label>
                                 <input class="inputMedio" id="ipt_IP" placeholder="ex: 123.456.78.90" type="text" value="${maquina.ipMaquina}" maxlength="12">
                             </div>

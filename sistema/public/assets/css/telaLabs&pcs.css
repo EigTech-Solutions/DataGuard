@@ -124,7 +124,7 @@ hr {
     background-color: #0E2229;
 }
 
-.card-exibicao table .th_user {
+.card-exibicao table .th_user, .card-exibicao table .th_maq {
     width: 25%;
 }
 

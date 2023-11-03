@@ -82,7 +82,14 @@ if (sessionStorage.ACESSO_ADMIN != 0 && sessionStorage.ACESSO_TECNICO != 0) {
 atualizarPageAtualMenu(pageAtual);
 
 function atualizarPerfilExibicao() {
-    perfUsuario = sl_perfil.value;
+    sessionStorage.PERFIL_ATUAL = sl_perfil.value;
+    perfUsuario = sessionStorage.PERFIL_ATUAL;
+
+    // if (perfUsuario == "admin") {
+    //     window.location = "dashboardGeralAdmin.html";
+    // } else {
+    //     window.location = "DashboardGeral.html";  
+    // }
 
     exibirMenuPerfil(perfUsuario);
 }
@@ -91,10 +98,17 @@ function exibirMenuPerfil(perfUsuario) {
     if (perfUsuario == "admin") {
         bntUsersMenu.style.display = 'flex';
         bntConfigMenu.style.display = 'none';
+        bntLabMenu.style.display = 'none';
+        bntPCsMenu.style.display = 'none';
+        bntDashMenu.href = "dashboardGeralAdmin.html";
         
     } else {
         bntUsersMenu.style.display = 'none';
         bntConfigMenu.style.display = 'flex';
+        bntLabMenu.style.display = 'flex';
+        bntPCsMenu.style.display = 'flex';
+        bntDashMenu.href = "DashboardGeral.html";
+
     }    
 }
 

@@ -159,7 +159,8 @@ function buscarRankingLabs(idInstituicao) {
             `
             select l.idLaboratorio, l.numeroSala, count(a.idAlertas) qtdAlertas from laboratorio l 
             left join maquina m on m.fkLaboratorio = l.idLaboratorio 
-            left join alertas a on a.fkMaquina = m.idMaquina where l.fkInstitucional = ${idInstituicao} group by l.idLaboratorio, l.numeroSala order by qtdAlertas desc;
+            left join alertas a on a.fkMaquina = m.idMaquina where l.fkInstitucional = ${idInstituicao} 
+            group by l.idLaboratorio, l.numeroSala order by qtdAlertas desc;
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");

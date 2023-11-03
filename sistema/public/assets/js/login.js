@@ -55,7 +55,7 @@ function entrar() {
 
                 if (sessionStorage.ACESSO_ADMIN != 0) {
                     setTimeout(function () {
-                        window.location = "./area-restrita/DashboardGeral.html";
+                        window.location = "./area-restrita/DashboardGeralAdmin.html";
                         sessionStorage.PERFIL_ATUAL = "admin";
                     }, 1000); // apenas para exibir o loading    
                 } else {
