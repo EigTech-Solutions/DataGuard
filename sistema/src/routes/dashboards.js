@@ -7,11 +7,11 @@ router.get("/dashboardGeral/kpis/:idInstituicao", function (req, res) {
     dashboardsController.buscarDadosKpis(req, res);
 });
 
-router.get("/notificacoes/:idInstituicao", function (req, res) {
+router.get("/notificacoes/:idInstituicao/:idTecnico", function (req, res) {
     dashboardsController.buscarNotificacoes(req, res);
 })
 
-router.get("/notificacoes/tempoReal/:idInstituicao", function (req, res) {
+router.get("/notificacoes/tempoReal/:idInstituicao/:idTecnico", function (req, res) {
     dashboardsController.buscarNotificacoesTempoReal(req, res);
 })
 

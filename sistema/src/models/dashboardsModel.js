@@ -8,10 +8,14 @@ function buscarUltimosKPIs(idInstituicao) {
         instrucaoSql = ``;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
-            `select count(idMaquina) 'qtdMaquinas', 
-        (select count(idLaboratorio) from laboratorio where laboratorio.fkInstitucional = ${idInstituicao}) 'qtdLabs', 
-        (select count(idAlertas) from alertas join maquina on maquina.idMaquina = alertas.fkMaquina where maquina.fkInstitucional = ${idInstituicao} AND dataHora >= now() - INTERVAL 1 DAY) 'qtdAlertas' 
-        from maquina where fkInstitucional = ${idInstituicao} AND status = 'ativado';`;
+            `
+            select count(idMaquina) 'qtdMaquinas', 
+            (select count(idLaboratorio) from laboratorio where laboratorio.fkInstitucional = 2) 'qtdLabs', 
+            (select count(idAlertas) as 'qtdAlertas' from alertas a
+                join medicoes me on a.fkMonitoramento = me.idMonitoramento 
+                join maquina m on m.idMaquina = me.fkMaquina where m.fkInstitucional = ${idInstituicao} AND me.dataHora >= now() - INTERVAL 1 DAY) 'qtdAlertas' 
+                from maquina where fkInstitucional = ${idInstituicao} AND status = 'Ativa';
+            `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
         return
@@ -30,8 +34,25 @@ function buscarFluxoRede(idInstituicao) {
 
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql = `
-        select avg(dm.latenciaRede) 'MediaLatencia', avg(dm.uploadRede) 'MediaUpload', avg(dm.downloadRede) 'MediaDownload', DATE_FORMAT (dm.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora' FROM dados_monitoramento dm
-        JOIN maquina m ON dm.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} group by dataHora order by dataHora desc limit 10;`
+            SELECT 
+            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = "Ping" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = "Download" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = "Upload" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            FROM 
+                medicoes me
+            JOIN 
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+                maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+                (cm.tipo = "Ping" OR cm.tipo = "Download" OR cm.tipo = "Upload") AND m.fkInstitucional = ${idInstituicao}
+            GROUP BY 
+                me.dataHora
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 10;
+        `
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
         return
@@ -50,8 +71,25 @@ function buscarFluxoRedeTempoReal(idInstituicao) {
 
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql = `
-        select avg(dm.latenciaRede) 'MediaLatencia', avg(dm.uploadRede) 'MediaUpload', avg(dm.downloadRede) 'MediaDownload', DATE_FORMAT (dm.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora' FROM dados_monitoramento dm
-        JOIN maquina m ON dm.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} group by datahora order by dataHora desc limit 1`;
+        SELECT 
+            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = "Ping" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = "Download" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = "Upload" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            FROM 
+                medicoes me
+            JOIN 
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+                maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+                (cm.tipo = "Ping" OR cm.tipo = "Download" OR cm.tipo = "Upload") AND m.fkInstitucional = ${idInstituicao}
+            GROUP BY 
+                me.dataHora
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 1;
+                `
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
         return
@@ -61,7 +99,7 @@ function buscarFluxoRedeTempoReal(idInstituicao) {
     return database.executar(instrucaoSql);
 }
 
-function buscarNotificacoes(idInstituicao) {
+function buscarNotificacoes(idInstituicao, idTecnico) {
 
     instrucaoSql = ''
 
@@ -70,11 +108,13 @@ function buscarNotificacoes(idInstituicao) {
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select l.nomeSala, l.numeroSala, m.idMaquina, m.ipMaquina, a.tipo,  DATE_FORMAT (a.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', a.lido from laboratorio l 
-            right join maquina m on m.fkLaboratorio = l.idLaboratorio 
-            right join alertas a on a.fkMaquina = m.idMaquina 
-            where m.fkInstitucional = ${idInstituicao} AND a.dataHora >= now() - INTERVAL 1 DAY
-            order by a.dataHora desc;
+            select a.lido, a.tipo, DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', cm.componente, m.ipMaquina, l.nomeSala, l.numeroSala from alertas a 
+            join medicoes me on a.fkMonitoramento = me.idMonitoramento 
+            join componenteMonitorado cm on me.fkComponente = cm.idComponente 
+            join maquina m on cm.fkMaquina = m.idMaquina
+            join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+            where l.fkInstitucional = ${idInstituicao} AND l.fkResponsavel = ${idTecnico} AND me.dataHora >= now() - INTERVAL 1 DAY
+            order by me.dataHora desc;
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -85,7 +125,7 @@ function buscarNotificacoes(idInstituicao) {
     return database.executar(instrucaoSql);
 }
 
-function buscarNotificacoesTempoReal(idInstituicao) {
+function buscarNotificacoesTempoReal(idInstituicao, idTecnico) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
@@ -93,11 +133,13 @@ function buscarNotificacoesTempoReal(idInstituicao) {
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select l.nomeSala, l.numeroSala, m.idMaquina, m.ipMaquina, a.tipo,  DATE_FORMAT (a.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', a.lido from laboratorio l 
-            right join maquina m on m.fkLaboratorio = l.idLaboratorio 
-            right join alertas a on a.fkMaquina = m.idMaquina 
-            where m.fkInstitucional = ${idInstituicao} AND a.dataHora >= now() - INTERVAL 1 DAY
-            order by a.dataHora desc limit 1;
+            select a.lido, a.tipo, DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', cm.componente, m.ipMaquina, l.nomeSala, l.numeroSala from alertas a 
+            join medicoes me on a.fkMonitoramento = me.idMonitoramento 
+            join componenteMonitorado cm on me.fkComponente = cm.idComponente 
+            join maquina m on cm.fkMaquina = m.idMaquina
+            join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+            where l.fkInstitucional = ${idInstituicao} AND l.fkResponsavel = ${idTecnico} AND me.dataHora >= now() - INTERVAL 1 DAY
+            order by me.dataHora desc limit 1;
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -136,8 +178,8 @@ function buscarStatusMaquinas(idInstituicao) {
         instrucaoSql =
             `
             select count(idMaquina) 'qtdMaquinas',
-	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = "ativado") 'qtdAtivas',
-	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = "inativado") 'qtdDesativadas' from maquina where fkInstitucional = ${idInstituicao};
+	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = "Ativa") 'qtdAtivas',
+	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = "Inativa") 'qtdDesativadas' from maquina where fkInstitucional = ${idInstituicao};
 
             `;
     } else {

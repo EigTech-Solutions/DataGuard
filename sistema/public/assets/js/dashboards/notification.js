@@ -3,7 +3,7 @@ var notificacoes = [];
 idInstituicao = sessionStorage.ID_INSTITUICAO
 
 function obterNotificacoes() {
-    fetch(`/dashboards/notificacoes/${idInstituicao}`, {
+    fetch(`/dashboards/notificacoes/${idInstituicao}/${sessionStorage.ID_USUARIO}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -63,7 +63,7 @@ function obterNotificacoes() {
 
 function atualizarNotificacoes() {
     setInterval(() => {
-        fetch(`/dashboards/notificacoes/tempoReal/${idInstituicao}`, {
+        fetch(`/dashboards/notificacoes/tempoReal/${idInstituicao}/${sessionStorage.ID_USUARIO}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

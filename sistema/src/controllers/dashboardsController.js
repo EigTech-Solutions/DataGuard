@@ -21,10 +21,11 @@ function buscarDadosKpis(req, res) {
 
 function buscarNotificacoes(req, res) {
     var idInstituicao = req.params.idInstituicao;
+    var idTecnico = req.params.idTecnico;
 
-    console.log(`Recuperando as notificações(alertas) da instituição com id ${Number(idInstituicao)}`);
+    console.log(`Recuperando as notificações(alertas) da instituição com id ${Number(idInstituicao)} e técnico com id ${idTecnico}`);
 
-    dashboardsModel.buscarNotificacoes(idInstituicao).then(function (resultado) {
+    dashboardsModel.buscarNotificacoes(idInstituicao, idTecnico).then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
@@ -60,20 +61,20 @@ function marcarLido(req, res) {
 
     console.log(`Marcando a notificações(alertas) da como lido: id ${Number(idNotificacao)}`);
     dashboardsModel.marcarLido(idNotificacao)
-    .then(
-        function (resultado) {
-            res.json(resultado);
-        }
-    ).catch(
-        function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao marcar como lido! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        }
-    );
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao marcar como lido! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
 }
 
 function buscarFluxoRede(req, res) {
