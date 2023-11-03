@@ -61,7 +61,6 @@ function buscarFluxoRedeTempoReal(idInstituicao) {
     return database.executar(instrucaoSql);
 }
 
-
 function buscarNotificacoes(idInstituicao) {
 
     instrucaoSql = ''
@@ -71,7 +70,7 @@ function buscarNotificacoes(idInstituicao) {
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select l.nomeSala, l.numeroSala, m.idMaquina, m.ipMaquina, a.tipo, a.dataHora, a.lido from laboratorio l 
+            select l.nomeSala, l.numeroSala, m.idMaquina, m.ipMaquina, a.tipo,  DATE_FORMAT (a.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', a.lido from laboratorio l 
             right join maquina m on m.fkLaboratorio = l.idLaboratorio 
             right join alertas a on a.fkMaquina = m.idMaquina 
             where m.fkInstitucional = ${idInstituicao} AND a.dataHora >= now() - INTERVAL 1 DAY
@@ -86,8 +85,7 @@ function buscarNotificacoes(idInstituicao) {
     return database.executar(instrucaoSql);
 }
 
-function buscarNotificacoes(idInstituicao) {
-
+function buscarNotificacoesTempoReal(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
@@ -95,11 +93,30 @@ function buscarNotificacoes(idInstituicao) {
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select l.nomeSala, l.numeroSala, m.idMaquina, m.ipMaquina, a.tipo, a.dataHora, a.lido from laboratorio l 
+            select l.nomeSala, l.numeroSala, m.idMaquina, m.ipMaquina, a.tipo,  DATE_FORMAT (a.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', a.lido from laboratorio l 
             right join maquina m on m.fkLaboratorio = l.idLaboratorio 
             right join alertas a on a.fkMaquina = m.idMaquina 
             where m.fkInstitucional = ${idInstituicao} AND a.dataHora >= now() - INTERVAL 1 DAY
-            order by a.dataHora desc;
+            order by a.dataHora desc limit 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function marcarLido(idNotificacao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+           update alertas set lido = 1 where idAlertas = ${idNotificacao}
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -160,5 +177,7 @@ module.exports = {
     buscarNotificacoes,
     buscarFluxoRedeTempoReal,
     buscarStatusMaquinas,
-    buscarRankingLabs
+    buscarRankingLabs,
+    buscarNotificacoesTempoReal,
+    marcarLido
 }

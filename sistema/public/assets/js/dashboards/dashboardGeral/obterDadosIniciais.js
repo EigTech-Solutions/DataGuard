@@ -316,6 +316,7 @@ function buscarRankingLabs() {
     }).then(function (resposta) {
         if (resposta.ok) {
             resposta.json().then(dados => {
+                console.log(dados);
                 atualizarTable(dados);
                 atualizarRankingLabs(dados);
             });

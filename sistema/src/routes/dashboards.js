@@ -11,6 +11,14 @@ router.get("/notificacoes/:idInstituicao", function (req, res) {
     dashboardsController.buscarNotificacoes(req, res);
 })
 
+router.get("/notificacoes/tempoReal/:idInstituicao", function (req, res) {
+    dashboardsController.buscarNotificacoesTempoReal(req, res);
+})
+
+router.put("/notificacoes/marcarLido/:idNotificacao", function (req, res) {
+    dashboardsController.marcarLido(req, res);
+})
+
 router.get("/dashboardGeral/fluxoRede/:idInstituicao", function (req, res) {
     dashboardsController.buscarFluxoRede(req, res);
 })
