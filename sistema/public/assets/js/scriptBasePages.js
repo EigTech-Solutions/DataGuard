@@ -29,7 +29,7 @@ menuLateral.innerHTML = `
             </a>
         </li>
         <li>
-            <a href="#" id="bntConfigMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
+            <a href="telaConfiguracoesParametros.html" id="bntConfigMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
                 <img src="../assets/images/carbon_settings-edit.png" alt=""> Configurações
             </a>
         </li>
@@ -94,6 +94,7 @@ function atualizarPerfilExibicao() {
     exibirMenuPerfil(perfUsuario);
 }
 
+
 function exibirMenuPerfil(perfUsuario) {
     if (perfUsuario == "admin") {
         bntUsersMenu.style.display = 'flex';
@@ -108,20 +109,20 @@ function exibirMenuPerfil(perfUsuario) {
         bntLabMenu.style.display = 'flex';
         bntPCsMenu.style.display = 'flex';
         bntDashMenu.href = "DashboardGeral.html";
-
+        
     }    
 }
 
 function atualizarPageAtualMenu(pageAtual) {
     var elementoPageAtual = document.querySelector('#' + pageAtual);
-
+    
     // Remove a classe pgAtual de todos os links do menu
     const menuLinks = document.querySelectorAll('.menu-link');
     menuLinks.forEach(link => link.classList.remove('pgAtual'));
 
     // Adiciona a classe pgAtual ao link clicado
     elementoPageAtual.classList.add('pgAtual');
-
+    
     // Atualiza a sessionStotage com o id da page atual
     sessionStorage.PAGE_ATUAL = elementoPageAtual.id;
 }

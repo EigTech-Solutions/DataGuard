@@ -192,6 +192,14 @@ function excluirLab(idLab) {
                         } else if (resposta.status == 404) {
                             window.alert("Deu 404!");
                         } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Erro ao deletar laboratório',
+                                text: 'Possivelmente há maquinas vinculadas a esse laboratório, é necessário desassocia-las para poder exclui-lo.', 
+                                showConfirmButton: false,
+                                timer: 1700
+                            })
                             throw ("Houve um erro ao tentar deletar o campo! Código da resposta: " + resposta.status);
                         }
                     }).catch(function (resposta) {

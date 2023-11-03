@@ -15,7 +15,7 @@ function listar(idInstituicao) {
         FROM
             laboratorio l
         LEFT JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio AND l.fkInstitucional = m.fkInstitucional
-        LEFT JOIN dados_monitoramento dm ON m.idMaquina = dm.fkMaquina
+        LEFT JOIN medicoes dm ON m.idMaquina = dm.fkMaquina
         LEFT JOIN Alertas a ON dm.idMonitoramento = a.fkMonitoramento AND dm.fkMaquina = a.fkMaquina
         WHERE
             l.fkInstitucional = ${idInstituicao}

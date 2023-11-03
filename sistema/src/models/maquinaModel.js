@@ -14,7 +14,7 @@ function listar(idInstituicao) {
             END AS situacao
         FROM maquina m
         LEFT JOIN laboratorio l ON m.fkLaboratorio = l.idLaboratorio AND m.fkInstitucional = l.fkInstitucional
-        LEFT JOIN dados_monitoramento dm ON m.idMaquina = dm.fkMaquina
+        LEFT JOIN medicoes dm ON m.idMaquina = dm.fkMaquina
         LEFT JOIN Alertas a ON dm.idMonitoramento = a.fkMonitoramento AND dm.fkMaquina = a.fkMaquina AND MONTH(a.dataHora) = MONTH(CURRENT_DATE())
         WHERE m.fkInstitucional = ${idInstituicao}
         GROUP BY m.idMaquina;

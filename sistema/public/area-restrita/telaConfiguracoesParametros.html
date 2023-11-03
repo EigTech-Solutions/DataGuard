@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parametros de Alertas</title>
+    <link rel="shortcut icon" href="../assets/images/icon_logo.png" type="image/x-icon">
+    <!-- Importando o css da página -->
+    <link rel="stylesheet" href="../assets/css/basePages.css">
+    <link rel="stylesheet" href="..//assets/css/telaCadastroMetrica.css">
+</head>
+<body onload="validarSessao()">
+    <div class="menu-lateral" id="menuLateral"></div>
+    <div class="container-geral">
+        <div class="menu-top" id="menuTop"></div>
+
+        <div class="container-page">
+            <div class="conteudo-page">
+                <!--  inicio do container titulo  -->
+                <div class="topo">
+                    <h1>Parâmetro de Monitoramento</h1>
+                    <p>Personalise os parâmetros para o monitoramento e emissão de alertas da suas máquinas</p>
+                </div>
+
+                <!--  inicio do container cpu  -->
+                <section class="container">
+                    <div>
+                        <img src="../assets/images/cpu.png" alt="imagem da cpu">
+                    </div>
+
+                    <div class="campoInput">
+                        <label for="">Grau de atenção no uso da CPU:</label>
+                        <input placeholder="ex: 75%" type="text" id="ipt_grau_atencao_cpu">
+                        <br>
+                        <label for="">Grau de risco no uso da CPU:</label>
+                        <input placeholder="ex: 90%" type="text">
+                    </div>
+                </section>
+
+                <!--  inicio do container disco  -->
+                <section class="container">
+                    <div>
+                        <img src="../assets/images/drive-de-disco-rigido.png" alt="imagem do disco">
+                    </div>
+
+                    <div class="campoInput">
+                        <label for="">Grau de atenção no uso do Disco:</label>
+                        <input placeholder="ex: 75%" type="text">
+                        <br>
+                        <label for="">Grau de risco no uso do Disco:</label>
+                        <input placeholder="ex: 90%" type="text">
+                    </div>
+                </section>
+
+                <!--  inicio do container memoria  -->
+                <section class="container">
+                    <div>
+                        <img src="../assets/images/ram.png" alt="imagem da memoria">
+                    </div>
+
+                    <div class="campoInput">
+                        <label for="">Grau de atenção no uso da memória:</label>
+                        <input placeholder="ex: 75%" type="text">
+                        <br>
+                        <label for="">Grau de risco no uso da memória:</label>
+                        <input placeholder="ex: 90%" type="text">
+                    </div>
+                </section>
+
+                <!--  inicio do container rede  -->
+                <section class="container">
+                    <div>
+                        <img src="../assets/images/www.png" alt="imagem de rede">
+                    </div>
+
+                    <div class="campoInput">
+                        <label for="">Grau de atenção no ping da rede:</label>
+                        <input placeholder="ex: 75%" type="text">
+                        <br>
+                        <label for="">Grau de risco no ping da rede:</label>
+                        <input placeholder="ex: 90%" type="text">
+                    </div>
+                </section>
+
+                <section class="container">
+                    <button class="btn-personaizar-parametros" onclick="personalizarParametros()">Personalizar Parâmetros</button>
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!-- Importando o JavaScript da página -->
+<script src="../assets/js/scriptBasePages.js"></script>
+<script src="../assets/js/sessao.js"></script>

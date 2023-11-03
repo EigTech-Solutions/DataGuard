@@ -1,8 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Poppins:ital@0;1&display=swap');
-
-
-h1{
+h1 {
     color: white;
     font-family: 'Poppins', sans-serif;
     font-size: xx-large;
@@ -10,55 +6,78 @@ h1{
 
 .conteudo-page {
     width: 97%;
-    height: 90%; 
+    height: 90%;
     margin: 20px 0 50px 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.topo{
-width: 100%;
-height: 15%;
-display: flex;
-justify-content: center;
-align-items: center;
-
+.topo {
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.container{
+.container {
     width: 100%;
-    height: 55%;
+    height: 20vh;
     display: flex;
     align-items: center;
     align-self: center;
-    justify-content: space-evenly;
-    border-bottom:white outset 2px ;
+    /* justify-content: space-evenly; */
+    border-bottom: white outset 2px;
 }
 
-.container img{
-    width: 55%;
-    margin-left:25%;
+.container img {
+    width: 30%;
+    margin-left: 25%;
 }
 
-.campoInput{
-    width: 65%;
+.campoInput {
+    width: 75%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.campoInput input{
+.campoInput input {
     height: 3.5vh;
-    border-radius: 9px;
     width: 40%;
+    border-radius: 5px;
+    border: solid 1px;
     align-items: center;
     align-self: center;
+    padding-left: 8px;
+    margin-right: 2%;
 }
 
-.campoInput label{
+.campoInput label {
     color: rgb(255, 255, 255);
     width: 60%;
-    padding-left: 5%;
     padding-right: 2%;
+}
+
+.btn-personaizar-parametros{
+    width: 35%;
+    height: 37px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+    border: none;
+    background-color: #124559;
+    color: #ffffff;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: ease-in-out 0.5s;
+}
+
+.btn-personaizar-parametros:hover{
+    transform: scale(1.02);
 }

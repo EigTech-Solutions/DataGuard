@@ -3,11 +3,7 @@ listarUsuarios();
 function listarUsuarios() {
     fetch(`/usuarios/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) {
-                // var feed = document.getElementById("feed_container");
-                // var mensagem = document.createElement("span");
-                // mensagem.innerHTML = "Nenhum resultado encontrado."
-                // feed.appendChild(mensagem);   
+            if (resposta.status == 204) {  
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -70,7 +66,6 @@ function listarUsuarios() {
                             </table>
                         </div>
                     `;
-
                 }
 
                 // finalizarAguardar();
@@ -226,6 +221,14 @@ function excluirUser(idUser) {
                 } else if (resposta.status == 404) {
                     window.alert("Deu 404!");
                 } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Erro ao deletar usuário',
+                        text: 'texto...', 
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                     throw ("Houve um erro ao tentar deletar o campo! Código da resposta: " + resposta.status);
                 }
             }).catch(function (resposta) {
