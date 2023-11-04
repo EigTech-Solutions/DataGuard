@@ -195,6 +195,40 @@ function atualizarStatus(req, res) {
     }
 }
 
+function atualizarLaboratorio(req, res) {
+    var idPC = req.params.idPC;
+    var idInstituicao = req.params.idInstituicao;
+
+    var idLab  = req.body.idLabServer;
+
+    // Faça as validações dos valores
+    if (idLab == undefined) {
+        res.status(400).send("Seu idLab está undefined!");
+    } else if (idPC == undefined) {
+        res.status(400).send("Seu idPC está undefined!");
+    } else if (idInstituicao == undefined) {
+        res.status(400).send("Sua idInstitucional está undefined!");
+    } else {
+
+        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+        maquinaModel.atualizarLaboratorio(idPC, idInstituicao, idLab)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar a atualização! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
 
 function deletar(req, res) {
     var idPC = req.params.idPC;
@@ -223,5 +257,6 @@ module.exports = {
     cadastrar,
     atualizar,
     atualizarStatus,
+    atualizarLaboratorio,
     deletar
 }

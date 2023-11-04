@@ -302,6 +302,10 @@ hr {
     width: 100%;
 }
 
+.divModal .containerModalPC .meioPopUp .inputMedio{
+    background-color: #dfdfdf;
+}
+
 .divModal .containerModalPC .containerModalPC3 {
     width: 95%;
     background-color: #A6CEE3;
@@ -309,6 +313,10 @@ hr {
     justify-content: space-between;
     margin: auto;
     margin-bottom: 15px;
+}
+
+.divModal .containerModalPC .containerModalPC3 .divLaboratorio, #ipt_lab{
+    width: 100%;
 }
 
 .divModal .containerModalUser {

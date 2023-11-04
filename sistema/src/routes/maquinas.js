@@ -27,6 +27,10 @@ router.put("/atualizarStatus/:idPC/:idInstituicao", function (req, res) {
     maquinaController.atualizarStatus(req, res);
 });
 
+router.put("/atualizarLaboratorio/:idPC/:idInstituicao", function (req, res) {
+    maquinaController.atualizarLaboratorio(req, res);
+});
+
 router.delete("/deletar/:idPC/:idInstituicao", function (req, res) {
     maquinaController.deletar(req, res);
 });

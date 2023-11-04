@@ -261,7 +261,44 @@ function atualizarStatusPC(idPC, statusAtual) {
             }
         });
     }
+}
 
+function atualizarLaboratorio(idPC) {
+    var laboratorioVAR = ipt_lab.value;
+
+    if (laboratorioVAR == 0) {
+        Swal.fire(
+            'Campo obrigatório não selecionado.',
+            'Preencha todos os campos corretamente para continuar!',
+            'error'
+        );
+    } else {
+        fetch(`/maquinas/atualizarLaboratorio/${idPC}/${sessionStorage.ID_INSTITUICAO}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idLabServer: laboratorioVAR
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Alteração realizada com sucesso!',
+                    showConfirmButton: true,
+                    // timer: 1500
+                });
+                listarPCs();
+                fecharModal();
+            } else {
+                throw ("houve um erro ao tentar atualizar");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    }
 }
 
 function excluirPC(idPC) {
@@ -292,6 +329,14 @@ function excluirPC(idPC) {
                 } else if (resposta.status == 404) {
                     window.alert("Deu 404!");
                 } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Erro ao deletar máquina',
+                        text: 'Possivelmente essa máquina está vinculado a outros objetos do sistema (como algum laboratório ou a algum dado de extrema importância) desassocie primeiro para poder exclui-lo', 
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                     throw ("Houve um erro ao tentar deletar o campo! Código da resposta: " + resposta.status);
                 }
             }).catch(function (resposta) {
@@ -534,54 +579,12 @@ function abrirModalEditarPC(idPC) {
                                 <label class="labelNumeroSerie" for="">Numero de série:</label>
                                 <input class="inputMedio" id="ipt_numeroSerie" placeholder="Ex: 12345678B" type="text" value="${maquina.numeroDeSerie}" maxlength="12" disabled>
                                 <label class="labelIp" for="">IP:</label>
-                                <input class="inputMedio" id="ipt_IP" placeholder="ex: 123.456.78.90" type="text" value="${maquina.ipMaquina}" maxlength="12">
-                            </div>
-                        </div>
-            
-                        <!--  containerModalPC2  
-                        <div class="containerModalPC2">
-                            <label for="">Sistema operacional:</label>
-                            <select class="inputMaior" name="" id="ipt_tipoSO">
-                                <option value="0" selected desabled>Selecione...</option>
-                                <option value="Windows">Windows</option>
-                                <option value="Linux">Linux</option>
-                            </select>
-                        </div>-->
-            
-                        <!--  containerModalPC3  -->
-                        <div class="containerModalPC3">
-                            <div class="">
-                                <label for="">Sistema operacional:</label>
-                                <select name="" id="ipt_tipoSO">
-                                    <option value="0" desabled>Selecione...</option>
-                                </select>
-                            </div>
-                            <div class="divTipoDisco">
-                                <label for="">Tipo de disco:</label> <br>
-                                <select name="" id="ipt_tipoDisco">
-                                    <option value="0" desabled>Selecione...</option>
-                                </select>
+                                <input class="inputMedio" id="ipt_IP" placeholder="ex: 123.456.78.90" type="text" value="${maquina.ipMaquina}" maxlength="12" disabled>
                             </div>
                         </div>
             
                         <!--  containerModalPC3  -->
                         <div class="containerModalPC3">
-                            <div class="divCapacidadeMemoria">
-                                <label for="">Capacidade de Disco(GB):</label> <br>
-                                <input placeholder="256" id="ipt_capMemoriaDisco" type="number" value="${maquina.capacidadeMemoriaDisco}">
-                            </div>
-                            <div class="divCapacidadeMemoria">
-                                <label for="">Capacidade de RAM (GB):</label> <br>
-                                <input placeholder="8" id="ipt_capMemoriaRam" type="number" value="${maquina.capacidadeMemoriaRam}">
-                            </div>
-                        </div>
-            
-                        <!--  containerModalPC3  -->
-                        <div class="containerModalPC3">
-                            <div class="divProcessador">
-                                <label for="">Processador:</label> <br>
-                                <input placeholder="" id="ipt_Processador" type="text"  value="${maquina.processador}" maxlength="45">
-                            </div>
                             <div class="divLaboratorio">
                                 <label for="">Laboratório:</label> <br>
                                 <select name="ipt_lab" id="ipt_lab">
@@ -592,34 +595,10 @@ function abrirModalEditarPC(idPC) {
             
                         <!--  fim do pop up  -->
                         <div class="containerFinal">
-                            <button class="btnCadastrar" onclick="atualizar(${maquina.idMaquina})">Atualizar</button>
+                            <button class="btnCadastrar" onclick="atualizarLaboratorio(${maquina.idMaquina})">Atualizar</button>
                         </div>
                     </div>
                 `;
-
-                if (maquina.sistemaOperacional == "Windows") {
-                    ipt_tipoSO.innerHTML += `
-                        <option value="Windows" selected>Windows</option>
-                        <option value="Linux">Linux</option>
-                    `;
-                } else {
-                    ipt_tipoSO.innerHTML += `
-                        <option value="Windows">Windows</option>
-                        <option value="Linux" selected>Linux</option>
-                    `;
-                }
-
-                if (maquina.tipoDisco == "SSD") {
-                    ipt_tipoDisco.innerHTML += `    
-                        <option value="SSD" selected>SSD</option>
-                        <option value="HD">HD</option>
-                    `;
-                } else {
-                    ipt_tipoDisco.innerHTML += `    
-                        <option value="SSD">SSD</option>
-                        <option value="HD" selected>HD</option>
-                    `;
-                }
 
                 fetch(`/laboratorios/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
                     if (resposta.ok) {

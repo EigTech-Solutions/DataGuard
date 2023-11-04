@@ -90,6 +90,16 @@ function atualizarStatus(idPC, idInstituicao, status) {
     return database.executar(instrucao);
 }
 
+function atualizarLaboratorio(idPC, idInstituicao, idLab) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function atualizar():", idPC, idInstituicao, idLab);
+    
+    var instrucao = `
+        UPDATE maquina SET fkLaboratorio = ${idLab} WHERE idMaquina = ${idPC} AND fkInstitucional = ${idInstituicao};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 function deletar(idPC, idInstituicao) {
     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function deletar():", idPC);
     var instrucao = `
@@ -107,5 +117,6 @@ module.exports = {
     cadastrar,
     atualizar,
     atualizarStatus,
+    atualizarLaboratorio,
     deletar
 };
