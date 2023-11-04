@@ -56,10 +56,10 @@ function listar(req, res) {
 }
 
 function buscarUser(req, res) {
-    var idPC = req.params.idPC;
+    var idUser = req.params.idUser;
     var idInstituicao = req.params.idInstituicao;
 
-    usuarioModel.buscarUser(idPC, idInstituicao)
+    usuarioModel.buscarUser(idUser, idInstituicao)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 res.status(200).json(resultado);
@@ -147,6 +147,44 @@ function cadastrarAcesso(req, res) {
     }
 }
 
+function atualizar(req, res) {
+    var idUser = req.params.idUser;
+    var idInstituicao = req.params.idInstituicao;;
+    
+    var nome = req.body.nomeServer;
+    var email = req.body.emailServer;
+    var telefone = req.body.telefoneServer
+    var senha = req.body.senhaServer;
+
+    // Faça as validações dos valores
+    if (nome == undefined) {
+        res.status(400).send("Seu nome está undefined!");
+    } else if (email == undefined) {
+        res.status(400).send("Seu email está undefined!");
+    } else if (senha == undefined) {
+        res.status(400).send("Sua senha está undefined!");
+    } else if (telefone == undefined) {
+        res.status(400).send("Seu telefone está undefined!");
+    } else {
+
+        usuarioModel.atualizar(idUser, idInstituicao, nome, email, telefone, senha)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
 function listarTecnicos(req, res) {
     var idInstituicao = req.params.idInstituicao;
 
@@ -185,6 +223,26 @@ function deletar(req, res) {
         );
 }
 
+function deletarAcesso(req, res) {
+    var idUser = req.params.idUser;
+    var idAcesso = req.params.idAcesso;
+    var idInstituicao = req.params.idInstituicao;
+
+    usuarioModel.deletarAcesso(idUser, idAcesso, idInstituicao)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao deletar a maquina: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     autenticar,
     listar,
@@ -192,5 +250,7 @@ module.exports = {
     listarTecnicos,
     cadastrar,
     cadastrarAcesso,
-    deletar
+    atualizar,
+    deletar,
+    deletarAcesso
 }

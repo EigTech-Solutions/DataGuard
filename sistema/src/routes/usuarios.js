@@ -36,4 +36,8 @@ router.delete("/deletar/:idUser/:idInstituicao", function (req, res) {
     usuarioController.deletar(req, res);
 });
 
+router.delete("/deletarAcesso/:idUser/:idAcesso/:idInstituicao", function (req, res) {
+    usuarioController.deletarAcesso(req, res);
+});
+
 module.exports = router;

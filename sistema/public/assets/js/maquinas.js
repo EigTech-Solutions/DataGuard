@@ -172,7 +172,7 @@ function atualizar(idPC) {
                 listarPCs();
                 fecharModal();
             } else {
-                throw ("houve um erro ao tentar se cadastrar");
+                throw ("houve um erro ao tentar atualizar");
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
