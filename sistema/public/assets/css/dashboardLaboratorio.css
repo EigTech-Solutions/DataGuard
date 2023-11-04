@@ -159,7 +159,7 @@
     padding-bottom: 4rem;
 }
 
-.ranking_labs {
+.ranking_maquinas {
     display: flex;
     flex-direction: column;
     height: 40vh;
@@ -194,7 +194,7 @@
     height: 30vh;
 }
 
-.ranking_labs_header {
+.ranking_maquinas_header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -203,18 +203,18 @@
     font-size: 0.9rem;
 }
 
-.ranking_labs_header .more_info_btn_img,
+.ranking_maquinas_header .more_info_btn_img,
 .chart_fluxo_header .more_info_btn_img {
     cursor: pointer;
 }
 
-.ranking_labs_header .more_info_btn_img:hover,
+.ranking_maquinas_header .more_info_btn_img:hover,
 .chart_fluxo_header .more_info_btn_img:hover {
     transform: scale(1.15);
     transition: 0.4s;
 }
 
-.ranking_labs table {
+.ranking_maquinas table {
     color: #fff;
     font-size: 0.75rem;
     line-height: 1rem;
@@ -226,17 +226,17 @@
     width: 100%;
 }
 
-.ranking_labs td{
+.ranking_maquinas td{
     border-bottom: 3px solid #124559;
 }
 
-.ranking_labs td:first-child{
+.ranking_maquinas td:first-child{
     border-right: 1px solid #124559;
     border-bottom: 3px solid #124559;
 }
 
 
-.table_rknLabs_qtdAlertas{
+.table_rknmaquinas_qtdAlertas{
     padding: 0 0.75rem;
     text-align: center;
     color: #F43B32;
@@ -247,26 +247,26 @@
     height: 100%;
 }
 
-.ranking_labs tr {
+.ranking_maquinas tr {
     background-color: #FFFFFF0D;
     line-height: 1.4rem;
     height: 2vh;
     font-family: Poppins;
 }
 
-.ranking_labs .table_rknLabs_pos {
+.ranking_maquinas .table_rknMaquinas_pos {
     width: 10%;
     padding: 0.1rem;
     text-align: center;
 }
 
-.ranking_labs .table_rknLabs_nomeLab {
+.ranking_maquinas .table_rknMaquinas_nomeLab {
     padding: 0 0.75rem;
     width: 50%;
     text-align: center;
 }
 
-.ranking_labs table tbody tr:first-child {
+.ranking_maquinas table tbody tr:first-child {
     background-color: rgba(255, 255, 255, 0.1);
     font-weight: bold;
 }

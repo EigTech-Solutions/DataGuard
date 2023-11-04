@@ -7,11 +7,11 @@ router.get("/dashboardGeral/kpis/:idInstituicao", function (req, res) {
     dashboardsController.buscarDadosKpis(req, res);
 });
 
-router.get("/notificacoes/:idInstituicao/:idTecnico", function (req, res) {
+router.get("/notificacoes/:idInstituicao/:idUsuario", function (req, res) {
     dashboardsController.buscarNotificacoes(req, res);
 })
 
-router.get("/notificacoes/tempoReal/:idInstituicao/:idTecnico", function (req, res) {
+router.get("/notificacoes/tempoReal/:idInstituicao/:idUsuario", function (req, res) {
     dashboardsController.buscarNotificacoesTempoReal(req, res);
 })
 
@@ -33,6 +33,26 @@ router.get("/dashboardGeral/statusMaquinas/:idInstituicao", function (req, res) 
 
 router.get("/dashboardGeral/rankingLabs/:idInstituicao", function (req, res) {
     dashboardsController.buscarRankingLabs(req, res);
+})
+
+router.get("/dashboardLaboratorio/kpis/:idLaboratorio", function(req, res){
+    dashboardsController.buscarDadosKpisLabs(req, res);
+})
+
+router.get("/dashboardLaboratorio/fluxoRede/:idLaboratorio", function(req, res){
+    dashboardsController.buscarFluxoRedeLab(req, res);
+})
+
+router.get("/dashboardLaboratorio/fluxoRede/tempoReal/:idLaboratorio", function(req, res){
+    dashboardsController.buscarFluxoRedeLabTempoReal(req, res);
+})
+
+router.get("/dashboardGeral/rankingMaquinas/:idLaboratorio", function (req, res) {
+    dashboardsController.buscarRankingMaquinas(req, res);
+})
+
+router.get("/dashboardGeral/statusMaquinasLab/:idLaboratorio", function (req, res) {
+    dashboardsController.buscarStatusMaquinasLaboratorio(req, res);
 })
 
 module.exports = router;

@@ -1,27 +1,27 @@
-const chart_memoria_utilizada = document.getElementById('chart_memoria_utilizada').getContext("2d");
+const chart_status_maquinas = document.getElementById('chart_status_maquinas').getContext("2d");
 
 // Configuração e dados de cada linha do chart
-var datasetsMemoria = [
+var datasetsStatus = [
     {
-        label: 'Memoria Disco',
-        data: [85, 15],
+        label: 'Quantidade de máquinas',
+        data: [],
         backgroundColor: [
-            'rgba(163, 163, 163, 1)',
             'rgba(18, 69, 89, 1)',
+            'rgba(163, 163, 163, 1)',
         ]
     },
 ]
 
 // Criando estrutura para plotar gráfico - legendas e dados
-let memoriaDados = {
-    labels: ["Livre", "Usada"],
-    datasets: datasetsMemoria,
+let statusDados = {
+    labels: ["Ativas", "Inativas"],
+    datasets: datasetsStatus,
 }
 
 // Criando estrutura para plotar gráfico - configurações
-const memoriaConfig = {
+const statusChartConfig = {
     type: 'doughnut',
-    data: memoriaDados,
+    data: statusDados,
     options: {
         maintainAspectRatio: false,
         hoverOffset: 7,
@@ -46,7 +46,7 @@ const memoriaConfig = {
 };
 
 // Adicionando gráfico criado em um canvas na tela
-let chartMemoriaUtilizada = new Chart(
-    chart_memoria_utilizada,
-    memoriaConfig,
+let chartStatusMaquinas = new Chart(
+    chart_status_maquinas,
+    statusChartConfig,
 );
