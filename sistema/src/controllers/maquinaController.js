@@ -39,6 +39,26 @@ function buscarPC(req, res) {
         );
 }
 
+function buscarPorIpOrNumSerie(req, res) {
+    var numBusca = req.params.numBusca;
+    var idInstituicao = req.params.idInstituicao;
+
+    maquinaModel.buscarPorIpOrNumSerie(numBusca, idInstituicao)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 // cadastro das Maquinas
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
@@ -141,6 +161,40 @@ function atualizar(req, res) {
     }
 }
 
+function atualizarStatus(req, res) {
+    var idPC = req.params.idPC;
+    var idInstituicao = req.params.idInstituicao;
+
+    var status  = req.body.statusServer;
+
+    // Faça as validações dos valores
+    if (status == undefined) {
+        res.status(400).send("Seu status está undefined!");
+    } else if (idPC == undefined) {
+        res.status(400).send("Seu idPC está undefined!");
+    } else if (idInstituicao == undefined) {
+        res.status(400).send("Sua idInstitucional está undefined!");
+    } else {
+
+        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+        maquinaModel.atualizarStatus(idPC, idInstituicao, status)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
 
 function deletar(req, res) {
     var idPC = req.params.idPC;
@@ -165,7 +219,9 @@ function deletar(req, res) {
 module.exports = {
     listar,
     buscarPC,
+    buscarPorIpOrNumSerie,
     cadastrar,
     atualizar,
+    atualizarStatus,
     deletar
 }

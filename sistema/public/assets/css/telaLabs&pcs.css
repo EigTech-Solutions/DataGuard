@@ -120,13 +120,13 @@ hr {
 }
 
 .card-exibicao table th {
-    width: 33.33%;
+    width: 25%;
     background-color: #0E2229;
 }
 
-.card-exibicao table .th_user, .card-exibicao table .th_maq {
+/* .card-exibicao table .th_user, .card-exibicao table .th_maq {
     width: 25%;
-}
+} */
 
 .card-exibicao button {
     width: 40%;
@@ -381,3 +381,21 @@ hr {
     align-items: flex-start;
     flex-direction: column;
 }
+
+.ipt-busca-maquina{
+    width: 250px;
+    border-radius: 6px;
+    border: none;
+    padding-left: 8px;
+    background-image:url(../images/search_icon.png); 
+    background-repeat: no-repeat; 
+    background-position: 95%;
+    background-size: 25px 25px;
+    /* font-family: ; */
+    font-size: 14px;
+}
+
+.ipt-busca-maquina:focus{
+    outline: none;
+}
+

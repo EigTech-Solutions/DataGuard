@@ -4,11 +4,7 @@ function listarLabs() {
 
     fetch(`/laboratorios/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) {
-                // var feed = document.getElementById("feed_container");
-                // var mensagem = document.createElement("span");
-                // mensagem.innerHTML = "Nenhum resultado encontrado."
-                // feed.appendChild(mensagem);   
+            if (resposta.status == 204) { 
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -22,9 +18,11 @@ function listarLabs() {
                     var laboratorio = resposta[i];
 
                     var numCardExibido = laboratorio.numeroSala;
+                    var numSala = laboratorio.numeroSala;
 
                     if (numCardExibido < 10) {
                         numCardExibido = '0' + numCardExibido;
+                        numSala = '0' + numSala
                     }
 
                     divCards.innerHTML += `
@@ -40,11 +38,13 @@ function listarLabs() {
                             <h3>${laboratorio.nomeSala}</h3>
                             <table>
                                 <tr>
+                                    <th>Sala</th>
                                     <th>Computadores</th>
                                     <th>Alertas</th>
                                     <th>Situação</th>
                                 </tr>
                                 <tr>
+                                    <td>${numSala}</td>
                                     <td>${laboratorio.quantidadeComputadores}</td>
                                     <td>${laboratorio.quantidadeAlertasUltimoMes}</td>
                                     <td>${laboratorio.situacao}</td>
@@ -255,11 +255,7 @@ function abrirModalCardastarLab() {
 
     fetch(`/usuarios/listarTecnicos/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) {
-                // var feed = document.getElementById("feed_container");
-                // var mensagem = document.createElement("span");
-                // mensagem.innerHTML = "Nenhum resultado encontrado."
-                // feed.appendChild(mensagem);   
+            if (resposta.status == 204) { 
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -292,10 +288,6 @@ function abrirModalEditarLab(idLab) {
     fetch(`/laboratorios/buscarLab/${idLab}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
             if (resposta.status == 204) {
-                // var feed = document.getElementById("feed_container");
-                // var mensagem = document.createElement("span");
-                // mensagem.innerHTML = "Nenhum resultado encontrado."
-                // feed.appendChild(mensagem);   
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -340,11 +332,7 @@ function abrirModalEditarLab(idLab) {
 
                 fetch(`/usuarios/listarTecnicos/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
                     if (resposta.ok) {
-                        if (resposta.status == 204) {
-                            // var feed = document.getElementById("feed_container");
-                            // var mensagem = document.createElement("span");
-                            // mensagem.innerHTML = "Nenhum resultado encontrado."
-                            // feed.appendChild(mensagem);   
+                        if (resposta.status == 204) { 
                             console.log("Nenhum resultado encontrado.");
                             throw "Nenhum resultado encontrado!!";
                         }

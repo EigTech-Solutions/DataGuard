@@ -17,8 +17,8 @@
             <div class="conteudo-page">
                 <div class="title-page">
                     <h2>Computadores</h2>
-                    <button class="btnAdd" onclick="abrirModalCardastarPC()">Nova Máquina</button>
-                    <!-- <input type="text" class="ipt-busca-maquina" > -->
+                    <!-- <button class="btnAdd" onclick="abrirModalCardastarPC()">Nova Máquina</button> -->
+                    <input type="text" class="ipt-busca-maquina" id="ipt_maq_buscada" placeholder="Busque por IP ou Nº de Série " maxlength="25" oninput="buscarIpOrNumSeriePc()">
                 </div>
                 <hr>
                 <div class="div-cards" id="divCards">

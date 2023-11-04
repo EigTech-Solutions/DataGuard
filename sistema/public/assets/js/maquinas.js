@@ -3,11 +3,7 @@ listarPCs();
 function listarPCs() {
     fetch(`/maquinas/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) {
-                // var feed = document.getElementById("feed_container");
-                // var mensagem = document.createElement("span");
-                // mensagem.innerHTML = "Nenhum resultado encontrado."
-                // feed.appendChild(mensagem);   
+            if (resposta.status == 204) { 
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -26,6 +22,9 @@ function listarPCs() {
                         numCardExibido = '0' + numCardExibido;
                     }
 
+                    var statusMaquinaId = `statusMaquina_${maquina.idMaquina}`;
+                    var iconAlterarStatusId = `iconAlterarStatus_${maquina.idMaquina}`;
+
                     divCards.innerHTML += `
                         <div class="card-exibicao">
                             <div class="top-card">  
@@ -34,6 +33,7 @@ function listarPCs() {
                                 <div class="btns-alteracoes">
                                     <button onclick="abrirModalEditarPC(${maquina.idMaquina})"><img src="../assets/images/bxs_edit.png" alt="icon editar"></button>
                                     <button onclick="excluirPC(${maquina.idMaquina})"><img src="../assets/images/ph_trash-duotone.png" alt="icon deletar"></button>
+                                    <button onclick="atualizarStatusPC(${maquina.idMaquina}, ${maquina.status})"><img id="${iconAlterarStatusId}" src="../assets/images/" alt="icon status"></button>
                                 </div>
                             </div>
                             <h3>Máquina ${maquina.numeroDeSerie}</h3>
@@ -45,7 +45,7 @@ function listarPCs() {
                                     <th th class="th_maq">Situação</th>
                                 </tr>
                                 <tr>
-                                    <td id="statusMaquina"></td>
+                                    <td id="${statusMaquinaId}"></td>
                                     <td>${maquina.local}</td>
                                     <td>${maquina.quantidadeAlertasUltimoMes}</td>
                                     <td>${maquina.situacao}</td>
@@ -55,24 +55,24 @@ function listarPCs() {
                         </div>
                     `;
 
-                    if (maquina.status == 0) {
-                        statusMaquina.innerHTML = "Desativada";
+                    // Atualiza o status da máquina
+                    if (maquina.status == 0) { 
+                        document.getElementById(statusMaquinaId).innerHTML = "Desativada";
+                        document.getElementById(iconAlterarStatusId).src = "../assets/images/mdi_eye-off-outline.png";
                     } else {
-                        statusMaquina.innerHTML = "Ativa";
+                        document.getElementById(statusMaquinaId).innerHTML = "Ativa";
+                        document.getElementById(iconAlterarStatusId).src = "../assets/images/ph_eye.png";
                     }
                 }
-
-                // finalizarAguardar();
             });
         } else {
             throw ('Houve um erro na API!');
         }
     }).catch(function (resposta) {
         console.error(resposta);
-        // finalizarAguardar();
     });
-
 }
+
 
 function cadastrar() {
     var numeroSerieVAR = ipt_numeroSerie.value;
@@ -181,6 +181,89 @@ function atualizar(idPC) {
     }
 }
 
+function atualizarStatusPC(idPC, statusAtual) {
+    if (statusAtual == 1) {
+        Swal.fire({
+            title: 'Tem certeza que deseja desativar o monitoramento dessa máquina?',
+            text: "Após desativado não será mais obtidos dados e alertas referentes a essa máquina! Essa ação poderá ser desfeita posteriormente caso deseje, mas não terão dados para análise referentes ao tempo estagnado.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, parar monitoramento!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/maquinas/atualizarStatus/${idPC}/${sessionStorage.ID_INSTITUICAO}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        statusServer: 0
+                    })
+                }).then(function (resposta) {
+                    if (resposta.ok) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Máquina desativada com sucesso!',
+                            showConfirmButton: true,
+                            // timer: 1500
+                        });
+                        listarPCs();
+                        fecharModal();
+                    } else {
+                        throw ("houve um erro ao tentar atualizar");
+                    }
+                }).catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+            }
+        });        
+    } else {
+        Swal.fire({
+            title: 'Tem certeza que deseja ativar o monitoramento dessa máquina?',
+            text: "Após ativado o monitoramento para a obtenção de dados e alertas referentes a essa máquina serão retornados! Obs: Não será possível a análise dos dados referentes ao tempo estagnado.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, ligar monitoramento!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/maquinas/atualizarStatus/${idPC}/${sessionStorage.ID_INSTITUICAO}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        statusServer: 1
+                    })
+                }).then(function (resposta) {
+                    if (resposta.ok) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Monitoramento ativado com sucesso!',
+                            showConfirmButton: true,
+                            // timer: 1500
+                        });
+                        listarPCs();
+                        fecharModal();
+                    } else {
+                        throw ("houve um erro ao tentar atualizar");
+                    }
+                }).catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+            }
+        });
+    }
+
+}
+
 function excluirPC(idPC) {
     Swal.fire({
         title: 'Tem certeza que deseja excluir essa máquina?',
@@ -216,6 +299,92 @@ function excluirPC(idPC) {
             });
         }
     });
+}
+
+function buscarIpOrNumSeriePc() {
+    var numBusca = ipt_maq_buscada.value;
+
+    if (numBusca == "") { 
+        listarPCs();       
+    } else {
+        fetch(`/maquinas/buscarPorIpOrNumSerie/${numBusca}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    divCards.innerHTML = `
+                        <div>
+                            Nenhum resultado encontrado. <br>
+                            <img src="../assets/images/notification.png" width="250" />
+                        </div>
+                    `;
+                    console.log("Nenhum resultado encontrado.");
+                    throw "Nenhum resultado encontrado!!";
+                }
+    
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                    divCards.innerHTML = "";
+    
+                    for (let i = 0; i < resposta.length; i++) {
+                        var maquina = resposta[i];
+    
+                        var numCardExibido = i + 1;
+    
+                        if (numCardExibido < 10) {
+                            numCardExibido = '0' + numCardExibido;
+                        }
+    
+                        var statusMaquinaId = `statusMaquina_${maquina.idMaquina}`;
+                        var iconAlterarStatusId = `iconAlterarStatus_${maquina.idMaquina}`;
+    
+                        divCards.innerHTML += `
+                            <div class="card-exibicao">
+                                <div class="top-card">  
+                                    <span>${numCardExibido}</span>
+                                    <img class="imgPC" src="../assets/images/imagemPC.png" alt="icon Máquina">
+                                    <div class="btns-alteracoes">
+                                        <button onclick="abrirModalEditarPC(${maquina.idMaquina})"><img src="../assets/images/bxs_edit.png" alt="icon editar"></button>
+                                        <button onclick="excluirPC(${maquina.idMaquina})"><img src="../assets/images/ph_trash-duotone.png" alt="icon deletar"></button>
+                                        <button onclick="atualizarStatusPC(${maquina.idMaquina}, ${maquina.status})"><img id="${iconAlterarStatusId}" src="../assets/images/" alt="icon status"></button>
+                                    </div>
+                                </div>
+                                <h3>Máquina ${maquina.numeroDeSerie}</h3>
+                                <table>
+                                    <tr>
+                                        <th class="th_maq">Status</th>
+                                        <th th class="th_maq">Local</th>
+                                        <th th class="th_maq">Alertas</th>
+                                        <th th class="th_maq">Situação</th>
+                                    </tr>
+                                    <tr>
+                                        <td id="${statusMaquinaId}"></td>
+                                        <td>${maquina.local}</td>
+                                        <td>${maquina.quantidadeAlertasUltimoMes}</td>
+                                        <td>${maquina.situacao}</td>
+                                    </tr>
+                                </table>
+                                <button onclick="redirecionarParaMaq(${maquina.idMaquina})">ver mais</button>
+                            </div>
+                        `;
+    
+                        // Atualiza o status da máquina
+                        if (maquina.status == 0) { 
+                            document.getElementById(statusMaquinaId).innerHTML = "Desativada";
+                            document.getElementById(iconAlterarStatusId).src = "../assets/images/mdi_eye-off-outline.png";
+                        } else {
+                            document.getElementById(statusMaquinaId).innerHTML = "Ativa";
+                            document.getElementById(iconAlterarStatusId).src = "../assets/images/ph_eye.png";
+                        }
+                    }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+
+    }
 }
 
 function abrirModalCardastarPC() {
@@ -307,11 +476,7 @@ function abrirModalCardastarPC() {
 
     fetch(`/laboratorios/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) {
-                // var feed = document.getElementById("feed_container");
-                // var mensagem = document.createElement("span");
-                // mensagem.innerHTML = "Nenhum resultado encontrado."
-                // feed.appendChild(mensagem);   
+            if (resposta.status == 204) {   
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -343,11 +508,7 @@ function abrirModalEditarPC(idPC) {
 
     fetch(`/maquinas/buscarPC/${idPC}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) {
-                // var feed = document.getElementById("feed_container");
-                // var mensagem = document.createElement("span");
-                // mensagem.innerHTML = "Nenhum resultado encontrado."
-                // feed.appendChild(mensagem);   
+            if (resposta.status == 204) {  
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -463,10 +624,6 @@ function abrirModalEditarPC(idPC) {
                 fetch(`/laboratorios/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
                     if (resposta.ok) {
                         if (resposta.status == 204) {
-                            // var feed = document.getElementById("feed_container");
-                            // var mensagem = document.createElement("span");
-                            // mensagem.innerHTML = "Nenhum resultado encontrado."
-                            // feed.appendChild(mensagem);   
                             console.log("Nenhum resultado encontrado.");
                             throw "Nenhum resultado encontrado!!";
                         }
