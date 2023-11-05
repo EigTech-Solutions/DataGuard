@@ -145,8 +145,6 @@ function cadastrar() {
                                     // timer: 1500
                                 });
 
-
-
                                 listarUsuarios();
                                 fecharModal();
                             } else {

@@ -13,6 +13,7 @@ var usuarioRouter = require("./src/routes/usuarios");
 var laboratorioRouter = require("./src/routes/laboratorios");
 var maquinaRouter = require("./src/routes/maquinas");
 var dashboardsRouter = require("./src/routes/dashboards");
+var parametrosMonitoramentoRouter = require("./src/routes/parametrosMonitoramento");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -25,6 +26,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/laboratorios", laboratorioRouter);
 app.use("/maquinas", maquinaRouter);
 app.use("/dashboards", dashboardsRouter);
+app.use("/parametrosMonitoramento", parametrosMonitoramentoRouter);
 
 app.listen(PORTA, function () {
     console.log(`Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar: http://localhost:${PORTA}/telaLogin.html \n

@@ -18,8 +18,13 @@
             <div class="conteudo-page">
                 <!--  inicio do container titulo  -->
                 <div class="topo">
-                    <h1>Parâmetro de Monitoramento</h1>
-                    <p>Personalise os parâmetros para o monitoramento e emissão de alertas da suas máquinas</p>
+                    <div class="title-page">
+                        <h2>Parâmetro de Monitoramento</h2>
+                        <button class="btnAdd" onclick="resetParametros()">Resetar parâmetros</button>
+                    </div>
+                    <hr>
+                    <!-- <h1>Parâmetro de Monitoramento</h1> -->
+                    <p>Personalise os parâmetros para o monitoramento e emissão de alertas da suas máquinas:</p>
                 </div>
 
                 <!--  inicio do container cpu  -->
@@ -29,11 +34,11 @@
                     </div>
 
                     <div class="campoInput">
-                        <label for="">Grau de atenção no uso da CPU:</label>
-                        <input placeholder="ex: 75%" type="text" id="ipt_grau_atencao_cpu">
+                        <label for="">Grau de atenção no uso da CPU: (%)</label>
+                        <input placeholder="Ex: 75%" type="number" id="ipt_grau_atencao_cpu">
                         <br>
-                        <label for="">Grau de risco no uso da CPU:</label>
-                        <input placeholder="ex: 90%" type="text">
+                        <label for="">Grau de risco no uso da CPU: (%)</label>
+                        <input placeholder="Ex: 90%" type="number" id="ipt_grau_risco_cpu">
                     </div>
                 </section>
 
@@ -44,11 +49,11 @@
                     </div>
 
                     <div class="campoInput">
-                        <label for="">Grau de atenção no uso do Disco:</label>
-                        <input placeholder="ex: 75%" type="text">
+                        <label for="">Grau de atenção no uso do Disco: (%)</label>
+                        <input placeholder="Ex: 75%" type="number" id="ipt_grau_atencao_disco">
                         <br>
-                        <label for="">Grau de risco no uso do Disco:</label>
-                        <input placeholder="ex: 90%" type="text">
+                        <label for="">Grau de risco no uso do Disco: (%)</label>
+                        <input placeholder="Ex: 90%" type="number" id="ipt_grau_risco_disco">
                     </div>
                 </section>
 
@@ -59,11 +64,11 @@
                     </div>
 
                     <div class="campoInput">
-                        <label for="">Grau de atenção no uso da memória:</label>
-                        <input placeholder="ex: 75%" type="text">
-                        <br>
-                        <label for="">Grau de risco no uso da memória:</label>
-                        <input placeholder="ex: 90%" type="text">
+                        <label for="">Grau de atenção no uso da memória: (%)</label>
+                        <input placeholder="Ex: 75%" type="number" id="ipt_grau_atencao_ram">
+                        <br> 
+                        <label for="">Grau de risco no uso da memória: (%)</label>
+                        <input placeholder="Ex: 90%" type="number" id="ipt_grau_risco_ram">
                     </div>
                 </section>
 
@@ -74,11 +79,11 @@
                     </div>
 
                     <div class="campoInput">
-                        <label for="">Grau de atenção no ping da rede:</label>
-                        <input placeholder="ex: 75%" type="text">
+                        <label for="">Grau de atenção da quantidade de periféricos usb conectados:</label>
+                        <input placeholder="Ex: 3" type="number" id="ipt_grau_atencao_disp_conectados">
                         <br>
-                        <label for="">Grau de risco no ping da rede:</label>
-                        <input placeholder="ex: 90%" type="text">
+                        <label for="">Grau de risco da quantidade de periféricos usb conectados:</label>
+                        <input placeholder="Ex: 5" type="number" id="ipt_grau_risco_disp_conectados">
                     </div>
                 </section>
 
@@ -93,3 +98,4 @@
 <!-- Importando o JavaScript da página -->
 <script src="../assets/js/scriptBasePages.js"></script>
 <script src="../assets/js/sessao.js"></script>
+<script src="../assets/js/parametrosMonitoramento.js"></script>
