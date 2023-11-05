@@ -35,24 +35,49 @@ router.get("/dashboardGeral/rankingLabs/:idInstituicao", function (req, res) {
     dashboardsController.buscarRankingLabs(req, res);
 })
 
-router.get("/dashboardLaboratorio/kpis/:idLaboratorio", function(req, res){
+router.get("/dashboardLaboratorio/kpis/:idLaboratorio", function (req, res) {
     dashboardsController.buscarDadosKpisLabs(req, res);
 })
 
-router.get("/dashboardLaboratorio/fluxoRede/:idLaboratorio", function(req, res){
+router.get("/dashboardLaboratorio/fluxoRede/:idLaboratorio", function (req, res) {
     dashboardsController.buscarFluxoRedeLab(req, res);
 })
 
-router.get("/dashboardLaboratorio/fluxoRede/tempoReal/:idLaboratorio", function(req, res){
+router.get("/dashboardLaboratorio/fluxoRede/tempoReal/:idLaboratorio", function (req, res) {
     dashboardsController.buscarFluxoRedeLabTempoReal(req, res);
 })
 
-router.get("/dashboardGeral/rankingMaquinas/:idLaboratorio", function (req, res) {
+router.get("/dashboardLaboratorio/rankingMaquinas/:idLaboratorio", function (req, res) {
     dashboardsController.buscarRankingMaquinas(req, res);
 })
 
-router.get("/dashboardGeral/statusMaquinasLab/:idLaboratorio", function (req, res) {
+router.get("/dashboardLaboratorio/statusMaquinasLab/:idLaboratorio", function (req, res) {
     dashboardsController.buscarStatusMaquinasLaboratorio(req, res);
 })
+
+router.get("/dashboardMaquina/informacoesBasicas/:idMaquina", function (req, res) {
+    dashboardsController.buscarInfosBasicasMaquina(req, res);
+})
+
+router.get("/dashboardMaquina/buscarCpu/:idMaquina", function (req, res) {
+    dashboardsController.buscarPorcentagemUsoCpu(req, res);
+})
+
+router.get("/dashboardMaquina/buscarCpu/tempoReal/:idMaquina", function (req, res) {
+    dashboardsController.buscarPorcentagemUsoCpuTempoReal(req, res);
+})
+
+router.get("/dashboardMaquina/fluxoRede/:idMaquina", function (req, res) {
+    dashboardsController.buscarFluxoRedeMaquina(req, res);
+})
+
+router.get("/dashboardMaquina/fluxoRede/tempoReal/:idMaquina", function (req, res) {
+    dashboardsController.buscarFluxoRedeMaquinaTempoReal(req, res);
+})
+
+router.get("/dashboardMaquina/memorias/:idMaquina", function (req, res) {
+    dashboardsController.buscarDadosMemorias(req, res);
+})
+
 
 module.exports = router;

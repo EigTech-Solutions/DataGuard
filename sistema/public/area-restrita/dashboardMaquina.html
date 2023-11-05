@@ -30,37 +30,37 @@
                                 alt="imagem de uma Máquina">
                             <div class="dados_maquina">
                                 <p class="dado"><span class="dado_title">Local: </span> <span class="dado_content"
-                                        id="local_maquina">Laboratório 1</span></p>
+                                        id="local_maquina">Buscando...</span></p>
                                 <p class="dado"><span class="dado_title">N° de Serie: </span> <span class="dado_content"
-                                        id="num_serie_maquina">123.456.789-10</span></p>
+                                        id="num_serie_maquina">Buscando...</span></p>
                                 <p class="dado"><span class="dado_title">IP: </span> <span class="dado_content"
-                                        id="ip_maquina">123.456.78</span></p>
+                                        id="ip_maquina">Buscando...</span></p>
                                 <p class="dado"><span class="dado_title">SO: </span> <span class="dado_content"
-                                        id="so_maquina">Windows 11</span></p>
+                                        id="so_maquina">Buscando...</span></p>
                                 <p class="dado"><span class="dado_title">Processador: </span> <span class="dado_content"
-                                        id="processador_maquina">Intel Core i5</span></p>
+                                        id="processador_maquina">Buscando...</span></p>
                                 <p class="dado"><span class="dado_title">Disco: </span> <span class="dado_content"
-                                        id="disco_maquina">SSD 255GB</span></p>
+                                        id="disco_maquina">Buscando...</span></p>
                                 <p class="dado"><span class="dado_title">Memoria RAM: </span> <span class="dado_content"
-                                        id="memoria_maquina">16 GB</span></p>
+                                        id="memoria_maquina">Buscando...</span></p>
                             </div>
                         </div>
                         <div class="status_maquina_container">
                             <div class="kpi_status">
                                 <span class="kpi_title">Status</span>
-                                <span class="kpi_data ativo">Ativo</span>
+                                <span class="kpi_data" id="kpi_status">Buscando...</span>
                             </div>
                             <div class="kpi_situacao">
                                 <span class="kpi_title">Situação</span>
-                                <span class="kpi_data atencao">Atenção</span>
+                                <span class="kpi_data" id="kpi_situacao">Buscando...</span>
                             </div>
                             <div class="kpi_fonte_energia">
                                 <span class="kpi_title">Fonte de energia</span>
-                                <span class="kpi_data">Ativada</span>
+                                <span class="kpi_data" id="kpi_fonte_energia">Buscando...</span>
                             </div>
                             <div class="kpi_qtdPerifericos">
                                 <span class="kpi_title">Qtd. de periféricos conectados</span>
-                                <span class="kpi_data">3</span>
+                                <span class="kpi_data" id="kpi_qtdPerifericos">Buscando...</span>
                             </div>
                         </div>
                     </section>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
                         <div class="memorias_chart_container">
-                            <span class="memorias_title">Dados das Memórias</span>
+                            <span class="memorias_title">Memória de Disco</span>
                             <div class="memoria_disco_container">
                                 <canvas id="chart_memoria_disco"></canvas>
                             </div>
@@ -112,7 +112,7 @@
                                     <div class="memoria_ram_bar_container">
                                         <div class="memoria_ram_bar_filled" id="memoria_ram_bar_filled"></div>
                                     </div>
-                                    <span class="memoria_ram_porcentagem" id="memoria_ram_porcentagem">85%</span>
+                                    <span class="memoria_ram_porcentagem" id="memoria_ram_porcentagem"></span>
                                 </div>
                             </div>
                         </div>
@@ -130,5 +130,5 @@
 <script src="../assets/js/dashboards/dashboardMaquina/cpu.js"></script>
 <script src="../assets/js/dashboards/dashboardMaquina/fluxoRede.js"></script>
 <script src="../assets/js/dashboards/dashboardMaquina/memoriaDisco.js"></script>
-<script src="../assets/js/dashboards/dashboardMaquina/memoriaRam.js"></script>
+<script src="../assets/js/dashboards/dashboardMaquina/obterDados.js"></script>
 <script src="../assets/js/sessao.js"></script>

@@ -67,7 +67,10 @@ const config = {
             },
             x: {
                 ticks: {
-                    color: "#c2c2c2"
+                    color: "#c2c2c2",
+                    font:{
+                        size: 10
+                    },
                 },
                 grid: {
                     lineWidth: 1,

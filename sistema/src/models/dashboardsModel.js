@@ -355,6 +355,191 @@ function buscarStatusMaquinasLab(idLaboratorio) {
     return database.executar(instrucaoSql);
 }
 
+function buscarInfosBasicasMaquina(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select m.idMaquina, m.numeroDeSerie, m.ipMaquina, m.sistemaOperacional, m.status, 
+            (CASE WHEN cm.componente = "CPU" THEN cm.modelo ELSE NULL END) 'processador',
+            (CASE WHEN cm.componente = "Disco" THEN cm.tipo ELSE NULL END) 'discoTipo',
+            (CASE WHEN cm.componente = "Disco" THEN cm.capacidadeTotal ELSE NULL END) 'capacidadeDisco',
+            (CASE WHEN cm.componente = "Disco" THEN cm.unidadeMedida ELSE NULL END) 'unidadeMedidaDisco',
+            (CASE WHEN cm.tipo = "RAM" THEN cm.capacidadeTotal ELSE NULL END) 'capacidadeRam',
+             l.nomeSala from maquina m 
+                 LEFT join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+                 LEFT join componenteMonitorado cm on cm.fkMaquina = m.idMaquina
+                 where idMaquina = ${idMaquina} limit 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarPorcentagemUsoCpu(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select me.valorConsumido 'mediaCPU', DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora' 
+            from medicoes me 
+            JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente
+            WHERE cm.componente = "CPU" AND me.fkMaquina = ${idMaquina}
+            GROUP BY 
+                me.dataHora, me.valorConsumido
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 10;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarPorcentagemUsoCpuTempoReal(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select me.valorConsumido 'mediaCPU', DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora' 
+            from medicoes me 
+            JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente
+            WHERE cm.componente = "CPU" AND me.fkMaquina = ${idMaquina}
+            GROUP BY 
+                me.dataHora, me.valorConsumido
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarFluxoRedeMaquina(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            SELECT 
+            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = "Ping" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = "Download" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = "Upload" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            FROM 
+                medicoes me
+            JOIN 
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+                maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+                (cm.tipo = "Ping" OR cm.tipo = "Download" OR cm.tipo = "Upload") AND m.idMaquina = ${idMaquina}
+            GROUP BY 
+                me.dataHora
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 10;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarFluxoRedeMaquinaTempoReal(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            SELECT 
+            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = "Ping" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = "Download" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = "Upload" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            FROM 
+                medicoes me
+            JOIN 
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+                maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+                (cm.tipo = "Ping" OR cm.tipo = "Download" OR cm.tipo = "Upload") AND m.idMaquina = ${idMaquina}
+            GROUP BY 
+                me.dataHora
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarDadosMemorias(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select 
+            (CASE WHEN cm.componente = "Disco" AND cm.fkMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) "usoDisco", 
+            (CASE WHEN cm.componente = "RAM" AND cm.fkMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) "usoRam",
+            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora' 
+            from medicoes me 
+            JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente
+            WHERE cm.componente = "Disco" OR cm.componente = "RAM" AND me.fkMaquina = ${idMaquina}
+            GROUP BY 
+                usoDisco, usoRam, me.dataHora
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
 module.exports = {
     buscarUltimosKPIs,
     buscarFluxoRede,
@@ -368,5 +553,11 @@ module.exports = {
     buscarFluxoRedeLab,
     buscarFluxoRedeLabTempoReal,
     buscarRankingMaquinas,
-    buscarStatusMaquinasLab
+    buscarStatusMaquinasLab,
+    buscarInfosBasicasMaquina,
+    buscarPorcentagemUsoCpu,
+    buscarPorcentagemUsoCpuTempoReal,
+    buscarFluxoRedeMaquina,
+    buscarFluxoRedeMaquinaTempoReal,
+    buscarDadosMemorias
 }

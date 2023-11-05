@@ -222,7 +222,7 @@ function buscarRankingMaquinas(req, res) {
     });
 }
 
-function buscarStatusMaquinasLaboratorio(req, res){
+function buscarStatusMaquinasLaboratorio(req, res) {
     var idLaboratorio = req.params.idLaboratorio;
 
     console.log(`Recuperando dados de status maquinas`);
@@ -240,6 +240,115 @@ function buscarStatusMaquinasLaboratorio(req, res){
     });
 }
 
+function buscarInfosBasicasMaquina(req, res) {
+    var idMaquina = req.params.idMaquina;
+
+    console.log(`Recuperando os kpis básicos da maquina ${idMaquina}`);
+
+    dashboardsModel.buscarInfosBasicasMaquina(idMaquina).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarPorcentagemUsoCpu(req, res) {
+    var idMaquina = req.params.idMaquina;
+
+    console.log(`Recuperando os dados pro gráfico de CPU da máquina`);
+
+    dashboardsModel.buscarPorcentagemUsoCpu(idMaquina).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarPorcentagemUsoCpuTempoReal(req, res) {
+    var idMaquina = req.params.idMaquina;
+
+    console.log(`Recuperando os dados pro gráfico de CPU da máquina`);
+
+    dashboardsModel.buscarPorcentagemUsoCpuTempoReal(idMaquina).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarFluxoRedeMaquina(req, res) {
+    var idMaquina = req.params.idMaquina;
+
+    console.log(`Recuperando os dados pro gráfico de fluxo de rede da máquina`);
+
+    dashboardsModel.buscarFluxoRedeMaquina(idMaquina).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarFluxoRedeMaquinaTempoReal(req, res) {
+    var idMaquina = req.params.idMaquina;
+
+    console.log(`Recuperando os dados pro gráfico de fluxo de rede da máquina`);
+
+    dashboardsModel.buscarFluxoRedeMaquinaTempoReal(idMaquina).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarDadosMemorias(req, res) {
+    var idMaquina = req.params.idMaquina;
+
+    console.log(`Recuperando os dados pro gráfico de fluxo de rede da máquina`);
+
+    dashboardsModel.buscarDadosMemorias(idMaquina).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+
 module.exports = {
     buscarDadosKpis,
     buscarNotificacoes,
@@ -253,5 +362,11 @@ module.exports = {
     buscarFluxoRedeLab,
     buscarFluxoRedeLabTempoReal,
     buscarRankingMaquinas,
-    buscarStatusMaquinasLaboratorio
+    buscarStatusMaquinasLaboratorio,
+    buscarInfosBasicasMaquina,
+    buscarPorcentagemUsoCpu,
+    buscarPorcentagemUsoCpuTempoReal,
+    buscarFluxoRedeMaquina,
+    buscarFluxoRedeMaquinaTempoReal,
+    buscarDadosMemorias
 }

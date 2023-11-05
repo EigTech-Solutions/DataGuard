@@ -4,7 +4,7 @@ const memoriaDisco = document.getElementById('chart_memoria_disco').getContext("
 var datasetsMemoria = [
     {
         label: 'Memoria Disco',
-        data: [15, 85],
+        data: [],
         backgroundColor: [
             'rgba(163, 163, 163, 1)',
             'rgba(18, 69, 89, 1)',
@@ -40,10 +40,18 @@ const memoriaConfig = {
                     maxHeight: 50,
                     fontSize: 20
                 },
-            }
-        },
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        let label = context.dataset.label;
+                        return label + ": " + context.formattedValue + "%";
+                    }
+                }
+            },
+        }
     }
-};
+}
 
 // Adicionando gráfico criado em um canvas na tela
 let chartMemoriaDisco = new Chart(

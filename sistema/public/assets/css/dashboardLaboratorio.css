@@ -170,6 +170,11 @@
     border-radius: 10px;
 }
 
+.table_rknMaquinas_qtdAlertas{
+    text-align: center;
+    color: #F43B32;
+}
+
 .chart_memoria_utilizada_container {
     display: flex;
     flex-direction: column;

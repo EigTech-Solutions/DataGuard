@@ -251,7 +251,7 @@ function atualizarTable(tableData) {
 
 //Funcão para buscar os dados do ranking de Maquinas
 function buscarRankingMaquinas() {
-    fetch(`/dashboards/dashboardGeral/rankingMaquinas/${idLaboratorio}`, {
+    fetch(`/dashboards/dashboardLaboratorio/rankingMaquinas/${idLaboratorio}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -277,7 +277,7 @@ function buscarRankingMaquinas() {
 //Função para atualizar o ranking de Maquinas a cada 5s
 function atualizarRankingMaquinas(tabelaAnterior) {
     setInterval(() => {
-        fetch(`/dashboards/dashboardGeral/rankingMaquinas/${idLaboratorio}`, {
+        fetch(`/dashboards/dashboardLaboratorio/rankingMaquinas/${idLaboratorio}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -311,7 +311,7 @@ function atualizarRankingMaquinas(tabelaAnterior) {
 
 // função para buscar os dados do gráfico "Status Maquinas"
 function buscarDadosStatusMaquinas() {
-    fetch(`/dashboards/dashboardGeral/statusMaquinasLab/${idLaboratorio}`, {
+    fetch(`/dashboards/dashboardLaboratorio/statusMaquinasLab/${idLaboratorio}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -348,7 +348,7 @@ function plotarGraficoStatusMaquinas(dadosParam) {
 //Função recursiva para atualizar os dados do gráfico Status Maquina a cada 5s
 function atualizarGraficoStatusMaquinas() {
     setInterval(() => {
-        fetch(`/dashboards/dashboardGeral/statusMaquinasLab/${idLaboratorio}`, {
+        fetch(`/dashboards/dashboardLaboratorio/statusMaquinasLab/${idLaboratorio}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

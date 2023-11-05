@@ -13,12 +13,8 @@ var usuarioRouter = require("./src/routes/usuarios");
 var laboratorioRouter = require("./src/routes/laboratorios");
 var maquinaRouter = require("./src/routes/maquinas");
 var dashboardsRouter = require("./src/routes/dashboards");
-<<<<<<< HEAD
 var parametrosMonitoramentoRouter = require("./src/routes/parametrosMonitoramento");
-=======
 var instituicaoRouter = require("./src/routes/instituicao");
-
->>>>>>> 8148bf4b1f8f6f4dd1f87c099b5372f830d735d6
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -31,12 +27,8 @@ app.use("/usuarios", usuarioRouter);
 app.use("/laboratorios", laboratorioRouter);
 app.use("/maquinas", maquinaRouter);
 app.use("/dashboards", dashboardsRouter);
-<<<<<<< HEAD
 app.use("/parametrosMonitoramento", parametrosMonitoramentoRouter);
-=======
 app.use("/instituicao", instituicaoRouter);
-
->>>>>>> 8148bf4b1f8f6f4dd1f87c099b5372f830d735d6
 
 app.listen(PORTA, function () {
     console.log(`Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar: http://localhost:${PORTA}/telaLogin.html \n
