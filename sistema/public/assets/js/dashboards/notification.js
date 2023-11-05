@@ -3,7 +3,7 @@ var notificacoes = [];
 idInstituicao = sessionStorage.ID_INSTITUICAO
 
 function obterNotificacoes() {
-    fetch(`/dashboards/notificacoes/${idInstituicao}`, {
+    fetch(`/dashboards/notificacoes/${idInstituicao}/${sessionStorage.ID_USUARIO}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -63,7 +63,7 @@ function obterNotificacoes() {
 
 function atualizarNotificacoes() {
     setInterval(() => {
-        fetch(`/dashboards/notificacoes/tempoReal/${idInstituicao}`, {
+        fetch(`/dashboards/notificacoes/${idInstituicao}/${sessionStorage.ID_USUARIO}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -71,14 +71,17 @@ function atualizarNotificacoes() {
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(resposta => {
-                    console.log(resposta);
-                    console.log(notificacoes);
                     let alerta = resposta[0];
-                    if (alerta.dataHora == notificacoes[notificacoes.length - 1].dataHora) {
+                    let existe = false;
+                    console.log(resposta);
+
+                    console.log(existe);
+
+                    if (existe) {
                         console.log("Sem notificações novas!");
                     } else {
-                        notificacoes.push(alerta)
                         console.log("Nova notificação!!");
+                        notificacoes.push(alerta)
                         let nomeSala = alerta.nomeSala;
                         let numeroSala = alerta.numeroSala >= 10 ? alerta.numeroSala : `0${alerta.numeroSala}`;
                         let idMaquina = alerta.idMaquina;

@@ -14,7 +14,7 @@ var datasetsStatus = [
 
 // Criando estrutura para plotar gráfico - legendas e dados
 let statusDados = {
-    labels: ["Ativas", "Desativadas"],
+    labels: ["Ativas", "Inativas"],
     datasets: datasetsStatus,
 }
 

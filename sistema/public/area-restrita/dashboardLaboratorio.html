@@ -20,8 +20,7 @@
                 <div class="container">
                     <div class="container_select_dashboards">
                         <select class="select_dashboard" name="select_dashboard" id="select_dashboard">
-                            <option value="dashboardLab01">Laboratorio 1</option>
-                            <option value="dashboardLab02">Laboratorio 2</option>
+                            <option value="dashboardGeral">Dashboard Geral</option>
                         </select>
                     </div>
                     <div class="informations_container">
@@ -29,15 +28,15 @@
                             <div class="kpis_boxes_container">
                                 <div class="kpi_box">
                                     <span class="kpi_title">Qtd. Máquinas Ativas</span>
-                                    <span class="kpi_data">40</span>
+                                    <span class="kpi_data" id="kpi_qtdMaquinasAtivas">0</span>
                                 </div>
                                 <div class="kpi_box">
                                     <span class="kpi_title">Qtd. Alertas - 24h</span>
-                                    <span class="kpi_data">10</span>
+                                    <span class="kpi_data" id="kpi_qtdAlertas">0</span>
                                 </div>
                                 <div class="kpi_box">
                                     <span class="kpi_title">Situação</span>
-                                    <span class="kpi_data atencao">Atenção</span>
+                                    <span class="kpi_data atencao" id="kpi_situacao">Buscando...</span>
                                 </div>
                             </div>
                             <div class="chart_fluxo_rede_container">
@@ -60,8 +59,8 @@
                                 </div>
                             </div>
                             <div class="rankings_container">
-                                <aside class="ranking_labs">
-                                    <div class="ranking_labs_header">
+                                <aside class="ranking_maquinas">
+                                    <div class="ranking_maquinas_header">
                                         <span>Ranking Máquinas Decrescente</span>
                                         <div class="more_info_btn_img">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
@@ -74,103 +73,16 @@
                                     </div>
                                     <div class="tabela_overflow">
                                         <table>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">1°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.33</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">2°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.34</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">3°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.35</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">4°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.36</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">5°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.37</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">6°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.38</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">7°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.39</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">8°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.40</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">9°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.40</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">10°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.40</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">7°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.39</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">8°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.40</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">9°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.40</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">10°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.40</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">7°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.39</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">8°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.40</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">9°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.40</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table_rknLabs_pos">10°</td>
-                                                <td class="table_rknLabs_nomeLab">Máquina 198.982.40</td>
-                                                <td class="table_rknLabs_qtdAlertas">5 Alertas</td>
-                                            </tr>
+                                            <tbody id="table_ranking_maquinas">
+
+                                            </tbody>
                                         </table>
                                     </div>
                                 </aside>
                                 <aside class="chart_memoria_utilizada_container">
-                                    <span>Média da Memória Utilizada no Laboratório </span>
+                                    <span>Status das Máquinas do Laboratório</span>
                                     <div class="chart_memoria_utilizada">
-                                        <canvas id="chart_memoria_utilizada"></canvas>
+                                        <canvas id="chart_status_maquinas"></canvas>
                                     </div>
                                 </aside>
                             </div>
@@ -210,6 +122,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/scriptBasePages.js"></script>
 <script src="../assets/js/dashboards/dashboardLabs/fluxoRede.js"></script>
-<script src="../assets/js/dashboards/dashboardLabs/mediaMemoriaDiscoUtilizada.js"></script>
+<script src="../assets/js/dashboards/dashboardLabs/statusMaquina.js"></script>
+<script src="../assets/js/dashboards/dashboardLabs/obterDados.js"></script>
 <script src="../assets/js/dashboards/notification.js"></script>
 <script src="../assets/js/sessao.js"></script>
