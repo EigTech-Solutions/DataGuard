@@ -348,6 +348,95 @@ function buscarDadosMemorias(req, res) {
     });
 }
 
+function buscarDadosKpisAdmin(req, res) {
+    var idInstituicao = req.params.idInstituicao;
+
+    console.log(`Recuperando os kpis pro dashboard geral admin`);
+
+    dashboardsModel.buscarDadosKpisAdmin(idInstituicao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarVariacaoStatusLabs(req, res) {
+    var idInstituicao = req.params.idInstituicao;
+
+    console.log(`Recuperando os dados pro gráfico de variacao de status das máquinas por lab`);
+
+    dashboardsModel.buscarVariacaoStatusLabs(idInstituicao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarQtdAlertas(req, res) {
+    var idInstituicao = req.params.idInstituicao;
+
+    console.log(`Recuperando os dados pro gráfico de variacao de status das máquinas por lab`);
+
+    dashboardsModel.buscarQtdAlertas(idInstituicao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarRankingMaquinasAdmin(req, res) {
+    var idInstituicao = req.params.idInstituicao;
+
+    console.log(`Recuperando os dados pro gráfico de variacao de status das máquinas por lab`);
+
+    dashboardsModel.buscarRankingMaquinasAdmin(idInstituicao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarColaboradores(req, res) {
+    var idInstituicao = req.params.idInstituicao;
+
+    console.log(`Recuperando os dados pro gráfico de variacao de status das máquinas por lab`);
+
+    dashboardsModel.buscarColaboradores(idInstituicao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os ultimos dados de status das máquinas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
 
 module.exports = {
     buscarDadosKpis,
@@ -368,5 +457,10 @@ module.exports = {
     buscarPorcentagemUsoCpuTempoReal,
     buscarFluxoRedeMaquina,
     buscarFluxoRedeMaquinaTempoReal,
-    buscarDadosMemorias
+    buscarDadosMemorias,
+    buscarDadosKpisAdmin,
+    buscarVariacaoStatusLabs,
+    buscarQtdAlertas,
+    buscarRankingMaquinasAdmin,
+    buscarColaboradores
 }

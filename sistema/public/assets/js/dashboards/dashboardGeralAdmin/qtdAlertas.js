@@ -4,7 +4,7 @@ const chart_alertas = document.getElementById('chart_alerta').getContext("2d");
 var datasetsAlertas = [
     {
         label: 'Alertas',
-        data: [15, 35],
+        data: [0, 0],
         backgroundColor: [
             '#E31A1C',
             '#FF8039',

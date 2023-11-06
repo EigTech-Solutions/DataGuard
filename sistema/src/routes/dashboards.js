@@ -79,5 +79,24 @@ router.get("/dashboardMaquina/memorias/:idMaquina", function (req, res) {
     dashboardsController.buscarDadosMemorias(req, res);
 })
 
+router.get("/dashboardGeralAdmin/kpis/:idInstituicao", function (req, res) {
+    dashboardsController.buscarDadosKpisAdmin(req, res);
+})
+
+router.get("/dashboardGeralAdmin/variacaoEstadoLab/:idInstituicao", function (req, res) {
+    dashboardsController.buscarVariacaoStatusLabs(req, res);
+})
+
+router.get("/dashboardGeralAdmin/alertas/:idInstituicao", function (req, res) {
+    dashboardsController.buscarQtdAlertas(req, res);
+})
+
+router.get("/dashboardGeralAdmin/rankingMaquinas/:idInstituicao", function (req, res) {
+    dashboardsController.buscarRankingMaquinasAdmin(req, res);
+})
+
+router.get("/dashboardGeralAdmin/colaboradoresCadastros/:idInstituicao", function(req, res) {
+    dashboardsController.buscarColaboradores(req, res);
+})
 
 module.exports = router;

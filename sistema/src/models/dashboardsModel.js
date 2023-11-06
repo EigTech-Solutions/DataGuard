@@ -540,6 +540,123 @@ function buscarDadosMemorias(idMaquina) {
 
 }
 
+function buscarDadosKpisAdmin(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select 
+                (select count(idMaquina) from maquina where status = "Ativa" AND fkInstitucional = ${idInstituicao}) 'qtdMaquinasAtivas',
+                (select count(idMaquina) from maquina where status = "Inativa" AND fkInstitucional = ${idInstituicao}) 'qtdMaquinasInativas',
+                (select count(idMaquina) from maquina where dataCadastro >= now() - INTERVAL 1 MONTH) 'qtdMaquinasCadastradasMes',
+                (select count(idLaboratorio) from laboratorio where fkInstitucional = ${idInstituicao}) 'qtdLabs';
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarVariacaoStatusLabs(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select l.idLaboratorio, l.nomeSala, 
+            COUNT((CASE WHEN m.fkInstitucional = ${idInstituicao} THEN m.idMaquina ELSE NULL END)) "qtdMaquinas",
+            COUNT((CASE WHEN m.status = "Ativa" AND m.fkInstitucional = ${idInstituicao} THEN m.status ELSE NULL END)) "qtdMaquinasAtivas",
+             COUNT((CASE WHEN m.status = "Inativa" AND m.fkInstitucional = ${idInstituicao} THEN m.status ELSE NULL END)) "qtdMaquinasInativas"
+            from laboratorio l 
+            join maquina m ON m.fkLaboratorio = l.idLaboratorio
+            where m.fkInstitucional = ${idInstituicao}
+            group by l.idLaboratorio, l.nomeSala
+            order by idLaboratorio;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarQtdAlertas(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select count(tipo) 'qtdAlertas', tipo from alertas a
+               join maquina m on a.fkMaquina = m.idMaquina
+               where m.fkInstitucional = ${idInstituicao}
+               group by tipo;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarRankingMaquinasAdmin(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select m.idMaquina, m.ipMaquina, count(a.idAlertas) qtdAlertas from maquina m
+			left join componenteMonitorado cm on cm.fkMaquina = m.idMaquina
+            left join medicoes me on me.fkComponente = cm.idComponente
+            left join alertas a on a.fkMonitoramento = me.idMonitoramento
+            where m.fkInstitucional = ${idInstituicao}  group by m.idMaquina order by qtdAlertas desc;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarColaboradores(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select au.fkUsuario, DATE_FORMAT(au.dataAcessoUsuario, '%d/%m/%Y, %H:%i') AS 'dataHora', u.nome 
+            from acessoUsuario au
+            join usuario u on au.fkUsuario = u.idUsuario
+            WHERE u.fkInstitucional = ${idInstituicao};
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarUltimosKPIs,
     buscarFluxoRede,
@@ -559,5 +676,10 @@ module.exports = {
     buscarPorcentagemUsoCpuTempoReal,
     buscarFluxoRedeMaquina,
     buscarFluxoRedeMaquinaTempoReal,
-    buscarDadosMemorias
+    buscarDadosMemorias,
+    buscarDadosKpisAdmin,
+    buscarVariacaoStatusLabs,
+    buscarQtdAlertas,
+    buscarRankingMaquinasAdmin,
+    buscarColaboradores
 }

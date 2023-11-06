@@ -4,24 +4,24 @@ const chart_variacao = document.getElementById('chart_variacao_estado').getConte
 var datasets = [
     {
         label: 'N° Ativas',
-        data: [Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51),],
+        data: [],
         backgroundColor: 'rgba(251, 154, 153, 1)',
     },
     {
         label: 'N° Desativadas',
-        data: [Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51),],
+        data: [],
         backgroundColor: 'rgba(158, 171, 240, 1)',
     },
     {
         label: 'Qtd. Máquinas',
-        data: [Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51),],
+        data: [],
         backgroundColor: 'rgba(163, 199, 207, 1)',
     }
 ]
 
 // Criando estrutura para plotar gráfico - legendas e dados
 let dados = {
-    labels: ['Lab 1', 'Lab 2', 'Lab 3', 'Lab 4', 'Lab 5', 'Lab 6'],
+    labels: [],
     datasets: datasets,
 }
 
@@ -77,7 +77,7 @@ const config = {
 };
 
 // Adicionando gráfico criado em um canvas na tela
-let charVariacao = new Chart(
+let chartVariacao = new Chart(
     chart_variacao,
     config,
 );
