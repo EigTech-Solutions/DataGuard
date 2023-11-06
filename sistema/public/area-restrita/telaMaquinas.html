@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máquinas</title>
+    <link rel="shortcut icon" href="../assets/images/icon_logo.png" type="image/x-icon">
+    <!-- Importando o css da página -->
+    <link rel="stylesheet" href="../assets/css/basePages.css">
+    <link rel="stylesheet" href="../assets/css/telaLabs&pcs.css">
+</head>
+<body onload="validarSessao()">
+    <div class="menu-lateral" id="menuLateral"></div>
+    <div class="container-geral">
+        <div class="menu-top" id="menuTop"></div>
+        <div class="container-page">
+            <div class="conteudo-page">
+                <div class="title-page">
+                    <h2>Computadores</h2>
+                    <!-- <button class="btnAdd" onclick="abrirModalCardastarPC()">Nova Máquina</button> -->
+                    <input type="text" class="ipt-busca-maquina" id="ipt_maq_buscada" placeholder="Busque por IP ou Nº de Série " maxlength="25" oninput="buscarIpOrNumSeriePc()">
+                </div>
+                <hr>
+                <div class="div-cards" id="divCards">
+                    <!-- aqui fica a exibição dos card das máquinas  -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- divs modais/ pop-ups -->
+    <div class="divModal" id="divModal"></div>
+    <div class="divModalExcluir" id="divModalExcluir"></div>
+</body>
+</html>
+<!-- Importando o JavaScript da página -->
+<script src="../assets/js/scriptBasePages.js"></script>
+<script src="../assets/js/sessao.js"></script>
+<script src="../assets/js/maquinas.js"></script>
+<!-- importando a biblioteca da API sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

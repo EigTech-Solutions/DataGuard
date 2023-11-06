@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tela relatorio</title>
+    <link rel="stylesheet" href="../assets/css/telaRelatorio.css">
+</head>
+<body>
+    
+
+        <!--  inicio do container  -->
+
+        <section class="containerPrincipal">
+
+            <!--  topo do pop up  -->
+            <div class="topo">
+                <div class="titulo"> relatórios </div>
+                <button class="butFechar"> i </button>
+            </div>
+    
+    
+    
+            <!--  meio do pop up  -->
+    
+    
+            <div class="meioPopUp">
+    
+    
+                <div class="container1">
+                    <div class="texto">
+                        <span>
+                            Gere os relatórios necessários para analise da sua instituição!
+                        </span>
+                    </div>
+                    <div class="imagemLab">
+                        <img width="95%" height="95%" src="../assets/images/imagemTelaRelatorio.png" alt="">
+                    </div>
+                </div>
+    
+    
+                <div class="container2">
+                    <div class="campoInput1">
+                        <label for="">Laboratório:</label>
+                        <select class="iptLab" name="" id="">
+                            <option value="">Selecione...</option>
+                        </select>
+                    </div>
+                    <div class="campoInput2">
+                       <div class="campoMes">
+                        <label for="">Mês</label>
+                        <select class="iptMes" name="" id="">
+                            <option value="">Selecione...</option>
+                            <option value="">Janeiro</option>
+                            <option value="">Fevereiro</option>
+                            <option value="">Março</option>
+                            <option value="">Abril</option>
+                            <option value="">Maio</option>
+                            <option value="">Junho</option>
+                            <option value="">Julho</option>
+                            <option value="">Agosto</option>
+                            <option value="">Setembro</option>
+                            <option value="">Outubro</option>
+                            <option value="">Novembro</option>
+                            <option value="">Dezembro</option>
+                        </select>
+                       </div>
+                        <div class="campoAno">
+                        <label for="">Ano:</label>
+                        <input class="iptAno" type="number">
+                        </div>
+                    </div>
+                    <div class="campoInput3">
+                        <label for="">Relatório Mensal ou Anual?</label>
+                        <div class="campoInput3but">
+                            <label for="">Mensal</label>
+                       <button class="botBolinha"></button>
+                       <label for="">Anual</label>
+                       <button class="botBolinha"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+    
+    
+    
+            <!--  fim do pop up  -->
+    
+            <div class="containerFinal">
+                <button class="cadastrar" onclick="cadastrar()">GERAR RELATÓRIO</button>
+            </div>
+    
+        </section>
+    
+      
+</body>
+</html>
