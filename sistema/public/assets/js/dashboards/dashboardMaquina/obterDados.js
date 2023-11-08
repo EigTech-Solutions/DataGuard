@@ -14,23 +14,28 @@ function obterDadosIniciais() {
         if (resposta.ok) {
             resposta.json().then(resposta => {
                 var infosMaquina = resposta[0];
+                console.log(infosMaquina);
                 for (const dado in infosMaquina) {
                     if (infosMaquina[dado] == null) {
                         infosMaquina[dado] = "Não encontrado";
                     }
                 }
-                let disco = infosMaquina.discoTipo === "Não encontrado" ? infosMaquina.discoTipo : infosMaquina.discoTipo + " " + infosMaquina.capacidadeDisco + "GB";
-                let memoriaRam = infosMaquina.capacidadeRam === "Não encontrado" ? infosMaquina.capacidadeRam : infosMaquina.capacidadeRam + "GB";
+
+                let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco + "GB" : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
+                let memoriaRam = infosMaquina.CapacidadeRam === "Não encontrado" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
+                let fonteEnergia = infosMaquina.FonteEnergia == 1 ? "Conectado" : "Desconectado";
                 document.getElementById('local_maquina').innerHTML = infosMaquina.nomeSala;
                 document.getElementById('num_serie_maquina').innerHTML = infosMaquina.numeroDeSerie;
                 document.getElementById('ip_maquina').innerHTML = infosMaquina.ipMaquina;
                 document.getElementById('so_maquina').innerHTML = infosMaquina.sistemaOperacional;
-                document.getElementById('processador_maquina').innerHTML = infosMaquina.processador;
+                document.getElementById('processador_maquina').innerHTML = infosMaquina.Processador;
                 document.getElementById('disco_maquina').innerHTML = disco;
                 document.getElementById('memoria_maquina').innerHTML = memoriaRam;
                 let span_status = document.getElementById('kpi_status');
-                infosMaquina.status == "Ativa" ? span_status.classList.add('ativo') : span_status.classList.add('desativo');
-                span_status.innerHTML = infosMaquina.status;
+                infosMaquina.status == 1 ? span_status.classList.add('ativo') : span_status.classList.add('desativo');
+                span_status.innerHTML = infosMaquina.status == 1 ? "Ativa" : "Inativa";
+                document.getElementById('kpi_fonte_energia').innerHTML = fonteEnergia;
+                document.getElementById('kpi_qtdPerifericos').innerHTML = infosMaquina.qtdPerifericos;
 
                 atualizarKpis();
             });
@@ -63,9 +68,12 @@ function atualizarKpis() {
                             infosMaquina[dado] = "Não encontrado";
                         }
                     }
-                    let disco = infosMaquina.discoTipo === "Não encontrado" ? infosMaquina.discoTipo : infosMaquina.discoTipo + " " + infosMaquina.capacidadeDisco + "GB";
-                    let memoriaRam = infosMaquina.capacidadeRam === "Não encontrado" ? infosMaquina.capacidadeRam : infosMaquina.capacidadeRam + "GB";
+                    let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
+                    let memoriaRam = infosMaquina.CapacidadeRam === "Não encontrado" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
                     let span_status = document.getElementById('kpi_status');
+                    let fonteEnergia = infosMaquina.FonteEnergia == 1 ? "Conectado" : "Desconectado";
+
+                    let statusMaquina = infosMaquina.status == 1 ? "Ativa" : "Inativa";
 
                     if (infosMaquina.nomeSala != document.getElementById('local_maquina').innerText) {
                         document.getElementById('local_maquina').innerHTML = infosMaquina.nomeSala;
@@ -79,8 +87,8 @@ function atualizarKpis() {
                     if (infosMaquina.sistemaOperacional != document.getElementById('so_maquina').innerText) {
                         document.getElementById('so_maquina').innerHTML = infosMaquina.sistemaOperacional;
                     }
-                    if (infosMaquina.processador != document.getElementById('processador_maquina').innerText) {
-                        document.getElementById('processador_maquina').innerHTML = infosMaquina.processador;
+                    if (infosMaquina.Processador != document.getElementById('processador_maquina').innerText) {
+                        document.getElementById('processador_maquina').innerHTML = infosMaquina.Processador;
                     }
                     if (disco != document.getElementById('disco_maquina').innerText) {
                         document.getElementById('disco_maquina').innerHTML = disco;
@@ -91,9 +99,15 @@ function atualizarKpis() {
                     if (infosMaquina.memoriaRam != document.getElementById('memoria_maquina').innerText) {
                         document.getElementById('memoria_maquina').innerHTML = memoriaRam;
                     }
-                    if (infosMaquina.status != span_status.innerText) {
-                        infosMaquina.status == "Ativa" ? span_status.classList.add('ativo') : span_status.classList.add('desativo');
-                        span_status.innerHTML = infosMaquina.status;
+                    if (statusMaquina != span_status.innerText) {
+                        infosMaquina.status == 1 ? span_status.classList.add('ativo') : span_status.classList.add('desativo');
+                        span_status.innerHTML = statusMaquina;
+                    }
+                    if (fonteEnergia != document.getElementById('kpi_fonte_energia').innerText) {
+                        document.getElementById('kpi_fonte_energia').innerHTML = fonteEnergia
+                    }
+                    if (infosMaquina.qtdPerifericos != Number(document.getElementById('kpi_qtdPerifericos').innerText)) {
+                        
                     }
 
                 });

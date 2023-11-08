@@ -134,7 +134,7 @@ function atualizarKpis() {
 
 // função para buscar os dados do gráfico "Fluxo de rede de laboratórios"
 function buscarDadosFluxoDeRede() {
-    fetch(`/dashboards/dashboardGeral/fluxoRede/${sessionStorage.ID_INSTITUICAO}`, {
+    fetch(`/dashboards/dashboardLaboratorio/fluxoRede/${idLaboratorio}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -184,7 +184,7 @@ function plotarGraficoFluxoDeRede(dadosParam) {
 //Função recursiva para atualizar os dados do gráfico fluxo de rede a cada 5s
 function atualizarGraficoFluxoRede() {
     setInterval(() => {
-        fetch(`/dashboards/dashboardGeral/fluxoRede/tempoReal/${sessionStorage.ID_INSTITUICAO}`, {
+        fetch(`/dashboards/dashboardLaboratorio/fluxoRede/tempoReal/${sessionStorage.ID_INSTITUICAO}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

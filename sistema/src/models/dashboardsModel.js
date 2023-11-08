@@ -10,11 +10,11 @@ function buscarUltimosKPIs(idInstituicao) {
         instrucaoSql =
             `
             select count(idMaquina) 'qtdMaquinas', 
-            (select count(idLaboratorio) from laboratorio where laboratorio.fkInstitucional = 2) 'qtdLabs', 
+            (select count(idLaboratorio) from laboratorio where laboratorio.fkInstitucional = ${idInstituicao}) 'qtdLabs', 
             (select count(idAlertas) as 'qtdAlertas' from alertas a
                 join medicoes me on a.fkMonitoramento = me.idMonitoramento 
                 join maquina m on m.idMaquina = me.fkMaquina where m.fkInstitucional = ${idInstituicao} AND me.dataHora >= now() - INTERVAL 1 DAY) 'qtdAlertas' 
-                from maquina where fkInstitucional = ${idInstituicao} AND status = 'Ativa';
+                from maquina m where m.fkInstitucional = ${idInstituicao} AND m.status = 1;
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -178,8 +178,8 @@ function buscarStatusMaquinas(idInstituicao) {
         instrucaoSql =
             `
             select count(idMaquina) 'qtdMaquinas',
-	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = "Ativa") 'qtdAtivas',
-	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = "Inativa") 'qtdDesativadas' from maquina where fkInstitucional = ${idInstituicao};
+	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = 1) 'qtdAtivas',
+	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = 0) 'qtdDesativadas' from maquina where fkInstitucional = ${idInstituicao};
 
             `;
     } else {
@@ -222,7 +222,7 @@ function buscarKpisLabs(idLaboratorio) {
         instrucaoSql =
             `
             select 
-            (select count(idMaquina) from maquina m where m.fkLaboratorio = ${idLaboratorio} AND m.status = "Ativa") 'qtdMaquinas',
+            (select count(idMaquina) from maquina m where m.fkLaboratorio = ${idLaboratorio} AND m.status = 1) 'qtdMaquinas',
             ( select count(a.idAlertas) 'qtdAlertas' from alertas a 
            join medicoes me on a.fkMonitoramento = me.idMonitoramento
            join componenteMonitorado cm on me.fkComponente = cm.idComponente
@@ -343,8 +343,8 @@ function buscarStatusMaquinasLab(idLaboratorio) {
         instrucaoSql =
             `
             select count(idMaquina) 'qtdMaquinas',
-	            (select count(idMaquina) from maquina where fkLaboratorio = ${idLaboratorio} AND status = "Ativa") 'qtdAtivas',
-	            (select count(idMaquina) from maquina where fkLaboratorio = ${idLaboratorio} AND status = "Inativa") 'qtdDesativadas' from maquina where fkLaboratorio = ${idLaboratorio};
+	            (select count(idMaquina) from maquina where fkLaboratorio = ${idLaboratorio} AND status = 1) 'qtdAtivas',
+	            (select count(idMaquina) from maquina where fkLaboratorio = ${idLaboratorio} AND status = 0) 'qtdDesativadas' from maquina where fkLaboratorio = ${idLaboratorio};
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -363,16 +363,19 @@ function buscarInfosBasicasMaquina(idMaquina) {
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select m.idMaquina, m.numeroDeSerie, m.ipMaquina, m.sistemaOperacional, m.status, 
-            (CASE WHEN cm.componente = "CPU" THEN cm.modelo ELSE NULL END) 'processador',
-            (CASE WHEN cm.componente = "Disco" THEN cm.tipo ELSE NULL END) 'discoTipo',
-            (CASE WHEN cm.componente = "Disco" THEN cm.capacidadeTotal ELSE NULL END) 'capacidadeDisco',
-            (CASE WHEN cm.componente = "Disco" THEN cm.unidadeMedida ELSE NULL END) 'unidadeMedidaDisco',
-            (CASE WHEN cm.tipo = "RAM" THEN cm.capacidadeTotal ELSE NULL END) 'capacidadeRam',
-             l.nomeSala from maquina m 
-                 LEFT join laboratorio l on m.fkLaboratorio = l.idLaboratorio
-                 LEFT join componenteMonitorado cm on cm.fkMaquina = m.idMaquina
-                 where idMaquina = ${idMaquina} limit 1;
+            select m.numeroDeSerie, m.ipMaquina, m.status, m.sistemaOperacional, l.nomeSala, me.dataHora,
+            (select cm.modelo from componenteMonitorado cm WHERE cm.componente = "CPU" AND cm.fkMaquina = ${idMaquina} group by cm.modelo) 'Processador',
+            (select cm.tipo from componenteMonitorado cm WHERE cm.componente = "Disco Rigido" AND cm.fkMaquina = ${idMaquina} group by cm.tipo) 'TipoDisco',
+            (select cm.capacidadeTotal from componenteMonitorado cm WHERE cm.componente = "Disco Rigido" AND cm.fkMaquina = ${idMaquina} group by cm.capacidadeTotal) 'CapacidadeDisco',
+            (select cm.capacidadeTotal from componenteMonitorado cm WHERE cm.componente = "Memória" AND cm.fkMaquina = ${idMaquina} group by cm.capacidadeTotal) 'CapacidadeRam',
+			(select me.valorConsumido from medicoes me join componenteMonitorado cm on me.fkComponente = cm.idComponente where cm.componente = "Fonte Energia" and cm.fkMaquina = ${idMaquina} group by me.valorConsumido) 'FonteEnergia',
+            (select me.valorConsumido from medicoes me join componenteMonitorado cm on me.fkComponente = cm.idComponente where cm.componente = "Entradas" and cm.fkMaquina = ${idMaquina} group by me.valorConsumido) 'qtdPerifericos'
+           from maquina m 
+              left join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+              left join medicoes me on me.fkMaquina = m.idMaquina
+              where m.idMaquina = ${idMaquina}
+              GROUP BY me.dataHora, l.nomeSala
+              order by dataHora desc limit ${idMaquina};
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -549,8 +552,8 @@ function buscarDadosKpisAdmin(idInstituicao) {
         instrucaoSql =
             `
             select 
-                (select count(idMaquina) from maquina where status = "Ativa" AND fkInstitucional = ${idInstituicao}) 'qtdMaquinasAtivas',
-                (select count(idMaquina) from maquina where status = "Inativa" AND fkInstitucional = ${idInstituicao}) 'qtdMaquinasInativas',
+                (select count(idMaquina) from maquina where status = 1 AND fkInstitucional = ${idInstituicao}) 'qtdMaquinasAtivas',
+                (select count(idMaquina) from maquina where status = 0 AND fkInstitucional = ${idInstituicao}) 'qtdMaquinasInativas',
                 (select count(idMaquina) from maquina where dataCadastro >= now() - INTERVAL 1 MONTH) 'qtdMaquinasCadastradasMes',
                 (select count(idLaboratorio) from laboratorio where fkInstitucional = ${idInstituicao}) 'qtdLabs';
             `;
@@ -573,8 +576,8 @@ function buscarVariacaoStatusLabs(idInstituicao) {
             `
             select l.idLaboratorio, l.nomeSala, 
             COUNT((CASE WHEN m.fkInstitucional = ${idInstituicao} THEN m.idMaquina ELSE NULL END)) "qtdMaquinas",
-            COUNT((CASE WHEN m.status = "Ativa" AND m.fkInstitucional = ${idInstituicao} THEN m.status ELSE NULL END)) "qtdMaquinasAtivas",
-             COUNT((CASE WHEN m.status = "Inativa" AND m.fkInstitucional = ${idInstituicao} THEN m.status ELSE NULL END)) "qtdMaquinasInativas"
+            COUNT((CASE WHEN m.status = 1 AND m.fkInstitucional = ${idInstituicao} THEN m.status ELSE NULL END)) "qtdMaquinasAtivas",
+             COUNT((CASE WHEN m.status = 0 AND m.fkInstitucional = ${idInstituicao} THEN m.status ELSE NULL END)) "qtdMaquinasInativas"
             from laboratorio l 
             join maquina m ON m.fkLaboratorio = l.idLaboratorio
             where m.fkInstitucional = ${idInstituicao}
