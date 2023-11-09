@@ -14,7 +14,6 @@ function obterDadosIniciais() {
         if (resposta.ok) {
             resposta.json().then(resposta => {
                 var infosMaquina = resposta[0];
-                console.log(infosMaquina);
                 for (const dado in infosMaquina) {
                     if (infosMaquina[dado] == null) {
                         infosMaquina[dado] = "Não encontrado";
@@ -22,7 +21,7 @@ function obterDadosIniciais() {
                 }
 
                 let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco + "GB" : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
-                let memoriaRam = infosMaquina.CapacidadeRam === "Não encontrado" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
+                let memoriaRam = infosMaquina.CapacidadeRam === "Desconhecido" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
                 let fonteEnergia = infosMaquina.FonteEnergia == 1 ? "Conectado" : "Desconectado";
                 document.getElementById('local_maquina').innerHTML = infosMaquina.nomeSala;
                 document.getElementById('num_serie_maquina').innerHTML = infosMaquina.numeroDeSerie;
@@ -68,8 +67,8 @@ function atualizarKpis() {
                             infosMaquina[dado] = "Não encontrado";
                         }
                     }
-                    let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
-                    let memoriaRam = infosMaquina.CapacidadeRam === "Não encontrado" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
+                    let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco + "GB" : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
+                    let memoriaRam = infosMaquina.CapacidadeRam === "Desconhecido" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
                     let span_status = document.getElementById('kpi_status');
                     let fonteEnergia = infosMaquina.FonteEnergia == 1 ? "Conectado" : "Desconectado";
 
@@ -107,7 +106,7 @@ function atualizarKpis() {
                         document.getElementById('kpi_fonte_energia').innerHTML = fonteEnergia
                     }
                     if (infosMaquina.qtdPerifericos != Number(document.getElementById('kpi_qtdPerifericos').innerText)) {
-                        
+
                     }
 
                 });
@@ -353,7 +352,7 @@ function plotarGraficoMemoriaRam(dadosParam) {
     const span_memoria_ram_porcentagem_valor = document.getElementById("memoria_ram_porcentagem");
 
     div_parteUtilizada.style.width = memoriaRamUsada + "%";
-    span_memoria_ram_porcentagem_valor.innerHTML = Math.ceil(memoriaRamUsada) + "%"
+    span_memoria_ram_porcentagem_valor.innerHTML = memoriaRamUsada + "%"
 
     atualizarMemorias();
 
@@ -371,11 +370,13 @@ function atualizarMemorias() {
             if (resposta.ok) {
                 resposta.json().then(response => {
                     let memoriaDiscoUsada = response[0].usoDisco;
+                    let memoriaRamUsada = response[0].usoRam == null ? 0 : response[0].usoRam;
                     let memoriaDiscoLivre = 100 - memoriaDiscoUsada;
 
+                    console.log(memoriaRamUsada);
+                    console.log(response);
                     let div_parteUtilizada = document.getElementById("memoria_ram_bar_filled");
                     let span_memoria_ram_porcentagem_valor = document.getElementById("memoria_ram_porcentagem");
-                    let memoriaRamUsada = response[0].usoRam == null ? 0 : dadosMemorias[0].usoRam;
 
                     if (memoriaDados.datasets[0].data[0] != memoriaDiscoUsada) {
                         memoriaDados.datasets[0].data[0] = memoriaDiscoLivre;
@@ -385,7 +386,7 @@ function atualizarMemorias() {
                     let memoria_ram_atual = span_memoria_parsed.slice(0, 1);
                     if (memoriaRamUsada != Number(memoria_ram_atual)) {
                         div_parteUtilizada.style.width = memoriaRamUsada + "%";
-                        span_memoria_ram_porcentagem_valor.innerHTML = Math.ceil(memoriaRamUsada) + "%"
+                        span_memoria_ram_porcentagem_valor.innerHTML = memoriaRamUsada + "%"
                     }
 
                 });

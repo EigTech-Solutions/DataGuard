@@ -4,22 +4,22 @@ function listar(idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
     var instrucao = `
         SELECT
-            l.*,
-            COUNT(m.idMaquina) AS quantidadeComputadores,
-            COUNT(a.idAlertas) AS quantidadeAlertasUltimoMes,
-            CASE
-            WHEN COUNT(a.idAlertas) <= 5 THEN 'Ok'
-            WHEN COUNT(a.idAlertas) <= 15 THEN 'Atenção'
-            ELSE 'Urgente'
-            END AS situacao
-        FROM
-            laboratorio l
-        LEFT JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio AND l.fkInstitucional = m.fkInstitucional
-        LEFT JOIN medicoes dm ON m.idMaquina = dm.fkMaquina
-        LEFT JOIN Alertas a ON dm.idMonitoramento = a.fkMonitoramento AND dm.fkMaquina = a.fkMaquina
-        WHERE
-            l.fkInstitucional = ${idInstituicao}
-        GROUP BY l.idLaboratorio;
+        l.*,
+        COUNT(DISTINCT m.idMaquina) AS quantidadeComputadores,
+        COUNT(DISTINCT a.idAlertas) AS quantidadeAlertasUltimoMes,
+        CASE
+        WHEN COUNT(DISTINCT a.idAlertas) <= 5 THEN 'Ok'
+        WHEN COUNT(DISTINCT a.idAlertas) <= 15 THEN 'Atenção'
+        ELSE 'Urgente'
+        END AS situacao
+    FROM
+        laboratorio l
+    LEFT JOIN maquina m ON m.fkLaboratorio = l.idLaboratorio AND l.fkInstitucional = m.fkInstitucional
+    LEFT JOIN medicoes dm ON m.idMaquina = dm.fkMaquina
+    LEFT JOIN Alertas a ON dm.idMonitoramento = a.fkMonitoramento AND dm.fkMaquina = a.fkMaquina
+    WHERE
+        l.fkInstitucional = ${idInstituicao}
+    GROUP BY l.idLaboratorio;
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);

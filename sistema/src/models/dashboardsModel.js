@@ -520,18 +520,19 @@ function buscarDadosMemorias(idMaquina) {
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select 
-            (CASE WHEN cm.componente = "Disco" AND cm.fkMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) "usoDisco", 
-            (CASE WHEN cm.componente = "RAM" AND cm.fkMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) "usoRam",
-            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora' 
-            from medicoes me 
-            JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente
-            WHERE cm.componente = "Disco" OR cm.componente = "RAM" AND me.fkMaquina = ${idMaquina}
-            GROUP BY 
-                usoDisco, usoRam, me.dataHora
-            ORDER BY 
+            SELECT
+                me.valorConsumido "usoDisco",
+                (CASE WHEN cm.componente = "Memoria" AND cm.fKMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS "usoRam",
+                DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora'
+            FROM
+                medicoes me
+            JOIN
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente AND me.fkMaquina = cm.fkMaquina
+            WHERE
+                (cm.componente = "Disco Rigido" OR cm.componente = "Memoria") AND me.fkMaquina = ${idMaquina}
+            ORDER BY
                 me.dataHora DESC
-                LIMIT 1;
+            LIMIT 1;
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
