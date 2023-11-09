@@ -53,11 +53,16 @@ function entrar() {
                     timer: 1000
                 });
 
-                if (sessionStorage.ACESSO_ADMIN != 0) {
+                if(emailVar == "eigtechsolutions@gmail.com" && senhaVar == "2023"){
+                    setTimeout(function () {
+                        window.location = "./area-restrita/telaInstituicao.html";
+                        sessionStorage.PERFIL_ATUAL = "admin";
+                    }, 1000); // apenas para exibir o loading
+                } else if (sessionStorage.ACESSO_ADMIN != 0) {
                     setTimeout(function () {
                         window.location = "./area-restrita/DashboardGeralAdmin.html";
                         sessionStorage.PERFIL_ATUAL = "admin";
-                    }, 1000); // apenas para exibir o loading    
+                    }, 1000); // apenas para exibir o loading 
                 } else {
                     setTimeout(function () {
                         window.location = "./area-restrita/DashboardGeral.html";
@@ -75,7 +80,7 @@ function entrar() {
                 showConfirmButton: false,
                 timer: 1500
             });
-            
+
             console.log("Houve um erro ao tentar realizar o login!");
 
             resposta.text().then(texto => {

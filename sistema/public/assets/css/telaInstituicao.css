@@ -1,5 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap');
+
 .conteudo-page {
     gap: 15px;
+}
+.div_center{
+    display: flex;
+    align-items: center;
+}
+
+.chart_variacao_estado, .chart_variacao_estado{
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .title-page {
@@ -202,7 +215,6 @@ hr {
     background-color: #A6CEE3;
     display: flex;
     justify-content: space-around;
-
 }
 
 .divModal .campoInput {
@@ -384,4 +396,47 @@ hr {
 
 .divModal .imagemLab{
     align-self: center;
+}
+
+
+
+.container_chart_variacao_maquinas {
+    border-radius: 10px;
+    background: rgba(18, 69, 89, 0.50);
+    box-shadow: 0px 4px 4px 0px rgba(18, 69, 89, 0.25);
+    width: 63%;
+    height: 36vh;
+    padding: 0.5rem 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.chart_variacao_header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.chart_variacao_header .more_info_btn_img {
+    cursor: pointer;
+}
+
+.chart_variacao_header .more_info_btn_img:hover {
+    transform: scale(1.15);
+    transition: 0.4s;
+}
+
+.container_charts{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.9rem;
+}
+
+.chart_variacao_estado{
+    height: 35px;
+}
+
+.chart_variacao_title{
+    font-family: 'Poppins';
+    font-size: 24px;
 }

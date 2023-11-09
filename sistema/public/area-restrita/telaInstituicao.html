@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../assets/css/basePages.css">
     <link rel="stylesheet" href="../assets/css/telaInstituicao.css">
 </head>
-<body onload="validarSessao()">
+<body onload="dadosDashboard(),validarSessao()">
     <div class="menu-lateral" id="menuLateral"></div>
     <div class="container-geral">
         <div class="menu-top" id="menuTop"></div>
@@ -22,6 +22,32 @@
                 <hr>
                 <div class="div-cards" id="divCards">
                     <!-- aqui fica a exibição dos card dos laboratórios  -->
+                </div>
+                <div class="div_center">
+                    <div class="div_dashboard">
+                        <div class="container_charts">
+                            <div class="container_chart_variacao_maquinas">
+                                <div class="chart_variacao_header">
+                                    <span class="chart_variacao_title">Lista de Instituições Cadastradas no Sistema</span>
+                                </div>
+                                <div class="chart_variacao_estado">
+                                    <div id="chart_variacao_estado"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div_dashboard2">
+                        <div class="container_charts">
+                            <div class="container_chart_variacao_maquinas">
+                                <div class="chart_variacao_header">
+                                    <span class="chart_variacao_title">Número de Instituições Cadastradas no Sistema</span>
+                                </div>
+                                <div class="chart_variacao_estado">
+                                    <div id="quantidade_instituicao"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
