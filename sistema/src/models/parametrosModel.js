@@ -15,18 +15,48 @@ function cadastrar(minCpu, maxCpu, minDisco, maxDisco, minRam, maxRam, minQtdDis
 
     var instrucao = `
         INSERT INTO parametrosMonitoramento (minCpu, maxCpu, minDisco, maxDisco, minRam, maxRam, minQtdDispositivosConectados, maxQtdDispositivosConectados, minLatenciaRede, maxLatenciaRede) 
-            VALUES ('${minCpu}', '${maxCpu}', ${minDisco}, ${maxDisco}, ${minRam}, ${maxRam}, ${minQtdDispositivosConectados}, ${maxQtdDispositivosConectados}, 100, 400);
+            VALUES (${minCpu}, ${maxCpu}, ${minDisco}, ${maxDisco}, ${minRam}, ${maxRam}, ${minQtdDispositivosConectados}, ${maxQtdDispositivosConectados}, 100, 400);
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
-    return database.executar(instrucao);
+    return database.executar(instrucao)
+        .then(resultado => {
+            // Aqui, você deve retornar o ID inserido no corpo da resposta
+            return { insertId: resultado.insertId };
+        })
+        .catch(erro => {
+            console.log(erro);
+            console.log("\nHouve um erro ao realizar o cadastro! Erro: ", erro.sqlMessage);
+            throw erro; // Certifique-se de repassar o erro para que seja tratado no bloco catch superior
+        });
 }
 
 function atualizarParametros(idInstituicao, idParametrosMonitoramento) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", idInstituicao, idParametrosMonitoramento);
 
     var instrucao = `
-        UPDATE instituição SET fkParametrosMonitoramento = ${idParametrosMonitoramento}
-            WHERE idInstitucional = ${idInstituicao};
+        UPDATE instituicao SET fkParametrosMonitoramento = ${idParametrosMonitoramento}
+        WHERE idInstitucional = ${idInstituicao};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function resetarParametros(idInstituicao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", idInstituicao);
+
+    var instrucao = `
+        UPDATE instituicao SET fkParametrosMonitoramento = 1
+        WHERE idInstitucional = ${idInstituicao};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function deletar(idParametros) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function deletar():", idParametros);
+
+    var instrucao = `
+        DELETE FROM parametrosMonitoramento WHERE idParametrosMonitoramento = ${idParametros};
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
@@ -35,5 +65,7 @@ function atualizarParametros(idInstituicao, idParametrosMonitoramento) {
 module.exports = {
     buscarParametrosMonitoramento,
     cadastrar,
-    atualizarParametros
+    atualizarParametros,
+    resetarParametros,
+    deletar
 };

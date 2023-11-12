@@ -15,4 +15,12 @@ router.put("/atualizarParametros/:idInstituicao", function (req, res) {
     parametrosController.atualizarParametros(req, res);
 });
 
+router.put("/resetarParametros/:idInstituicao", function (req, res) {
+    parametrosController.resetarParametros(req, res);
+});
+
+router.delete("/deletar/:idParametros", function (req, res) {
+    parametrosController.deletar(req, res);
+});
+
 module.exports = router;

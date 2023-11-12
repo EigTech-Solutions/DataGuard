@@ -98,8 +98,53 @@ function atualizarParametros(req, res) {
     }
 }
 
+function resetarParametros(req, res) {
+    var idInstituicao = req.params.idInstituicao;;
+
+    if (idInstituicao == undefined) {
+        res.status(400).send("Seu idInstituicao está undefined!");
+    } else {
+
+        parametrosModel.resetarParametros(idInstituicao)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar a atualização! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
+function deletar(req, res) {
+    var idParametros = req.params.idParametros;
+
+    parametrosModel.deletar(idParametros)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao deletar os parâetros antigos: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     buscarParametrosMonitoramento,
     cadastrar,
-    atualizarParametros
+    atualizarParametros,
+    resetarParametros,
+    deletar
 }

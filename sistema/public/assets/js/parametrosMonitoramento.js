@@ -56,7 +56,7 @@ function personalizarParametros() {
             body: JSON.stringify({
                 minCpuServer: minCpuVar,
                 maxCpuServer: maxCpuVar,
-                minDiscoServer: minDiscoVar,
+                minDiscoServer: minDiscoVar,  
                 maxDiscoServer: maxDiscoVar,
                 minQtdDispositivosConectadosServer: minQtdDispositivosConectadosVar,
                 maxQtdDispositivosConectadosServer:maxQtdDispositivosConectadosVar ,
@@ -65,31 +65,50 @@ function personalizarParametros() {
                 idInstituicaoServer: idInstituicaoVAR
             })
         }).then(function (resposta) {
-            if (resposta.ok) {
-                fetch(`/parametrosMonitoramento/atualizarParametros/${idInstituicaoVAR}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        idParametrosServer: resposta.insertId
-                    })
-                }).then(function (resposta) {
-                    if (resposta.ok) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: 'Parâmetros personalizados com sucesso!',
-                            showConfirmButton: true,
-                            // timer: 1500
+            if (resposta.ok) { 
+                resposta.json().then(function (resposta) {
+                    // verificando se a resposta contém o campo insertId
+                    if (resposta.insertId !== undefined) {
+                        var idParametros = resposta.insertId;
+                        console.log("Id do parametro inserido: " + idParametros);
+        
+                        fetch(`/parametrosMonitoramento/atualizarParametros/${idInstituicaoVAR}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                idParametrosServer: idParametros
+                            })
+                        }).then(function (resposta) {
+                            if (resposta.ok) {
+                                // Atualização bem-sucedida
+                                console.log("Parâmetros atualizados com sucesso!");
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Parâmetros personalizados com sucesso!',
+                                    showConfirmButton: true,
+                                    // timer: 1500
+                                });
+                                exibirParametros();
+                            } else {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: 'Houve um erro ao personalizar Parâmetros!',
+                                    // showConfirmButton: true,
+                                    timer: 1500
+                                });
+                                throw ("Houve um erro ao tentar atualizar os parâmetros");
+                            }
+                        }).catch(function (resposta) {
+                            console.log(`#ERRO: ${resposta}`);
                         });
-                        exibirParametros();
                     } else {
-                        throw ("houve um erro ao tentar atualizar os parametros");
+                        console.log("Resposta não contém o campo insertId.");
                     }
-                }).catch(function (resposta) {
-                    console.log(`#ERRO: ${resposta}`);
-                }); 
+                });
                 
             } else {
                 throw ("houve um erro ao tentar se cadastrar");
@@ -98,4 +117,96 @@ function personalizarParametros() {
             console.log(`#ERRO: ${resposta}`);
         });
     }
+}
+
+function resetParametros() {
+    fetch(`/parametrosMonitoramento/buscarParametrosMonitoramento/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+        if (resposta.ok) {
+            if (resposta.status == 204) { 
+                console.log("Nenhum resultado encontrado.");
+                throw "Nenhum resultado encontrado!!";
+            }
+
+            resposta.json().then(function (resposta) {
+                console.log("Dados recebidos: ", JSON.stringify(resposta));
+                var parametros = resposta[0];
+
+                var idParametrosAntigos = parametros.idParametrosMonitoramento;
+                if (idParametrosAntigos != 1) {
+                    Swal.fire({
+                        title: 'Tem certeza que deseja resetar seus parâmetros de monitoramento?',
+                        text: "Os parâmetros de monitoramento voltarão a configuração padrão do sistema e a sua personalização atual será perdida.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sim, resetar!',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch(`/parametrosMonitoramento/resetarParametros/${sessionStorage.ID_INSTITUICAO}`, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({})
+                            }).then(function (resposta) {
+                                if (resposta.ok) {
+                                    console.log("Parâmetros resetados com sucesso!");
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'success',
+                                        title: 'Parâmetros resetados com sucesso!',
+                                        text: "Os parâmetros de monitoramento voltaram a configuração padrão do sistema.",
+                                        showConfirmButton: true,
+                                        // timer: 1500
+                                    });
+                                    exibirParametros();
+                                    fetch(`/parametrosMonitoramento/deletar/${idParametrosAntigos}`, {
+                                        method: "DELETE",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        }
+                                    }).then(function (resposta) {
+                                        if (resposta.ok) {
+                                            console.log("parametros antigos deletados com sucesso!");
+                                        } else if (resposta.status == 404) {
+                                            window.alert("Deu 404!");
+                                        } else {
+                                            throw ("Houve um erro ao tentar deletar o campo! Código da resposta: " + resposta.status);
+                                        }
+                                    }).catch(function (resposta) {
+                                        console.log(`#ERRO: ${resposta}`);
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'Houve um erro ao resetar os Parâmetros!',
+                                        // showConfirmButton: true,
+                                        timer: 1500
+                                    });
+                                    throw ("Houve um erro ao tentar atualizar os parâmetros");
+                                }
+                            }).catch(function (resposta) {
+                                console.log(`#ERRO: ${resposta}`);
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: 'Os parâmetros de moniramento padrão do sistema já estão configurados!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        } else {
+            throw ('Houve um erro na API!');
+        }
+    }).catch(function (resposta) {
+        console.error(resposta);
+    });
 }
