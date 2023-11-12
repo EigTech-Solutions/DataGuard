@@ -79,13 +79,11 @@ function abrirModalCardastarInstituicao() {
 
     divModal.innerHTML = `
         <div class="containerModalInst">
-
             <!--  topo do pop up  -->
             <div class="topo">
                 <div class="titulo"> Cadastro de Instituição </div>
                 <img class="botaoFechar" src="../assets/images/close-circle-twotone.png" alt="icon fechar" onclick="fecharModal()">
             </div>
-
             <!--  meio do pop up  -->
             <div class="meioPopUp">
                 <div class="imagemLab">
@@ -108,12 +106,10 @@ function abrirModalCardastarInstituicao() {
                     <input id="ipt_complementoInst" type="text">
                 </div>
             </div>
-
             <!--  fim do pop up  -->
             <div class="containerFinal">
                 <button class="btnCadastrar" onclick="cadastrar()">cadastrar</button>
             </div>
-
         </div>
     `;
 }
@@ -121,3 +117,53 @@ function abrirModalCardastarInstituicao() {
 function fecharModal() {
     divModal.style.display = "none";
 }
+
+function dadosDashboard() {
+    fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+          response.json().then(function (dados) {
+
+            mostrarDados(dados)
+
+          });
+        } else {
+          console.error('Nenhuma tarefa encontrada ou erro na API');
+        }
+      })
+        .catch(function (error) {
+          console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
+    }
+    dadosDashboard()
+
+    function mostrarDados(dados){
+        for(i = 0; i < dados.length; i++){
+            var totalInstituicoes = dados[i].quantidade_total_instituicoes;
+            quantidade_instituicao.innerHTML = `${totalInstituicoes}`
+        }
+    }
+    function dadosInstituicao() {
+        fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+              response.json().then(function (informacao) {
+
+                mostrarInformacao(informacao)
+
+              });
+            } else {
+              console.error('Nenhuma informaçao encontrada ou erro na API');
+            }
+          })
+            .catch(function (error) {
+              console.error(`Erro na obtenção dos dados: ${error.message}`);
+            });
+        }
+        dadosInstituicao()
+
+
+        function mostrarInformacao(informacao){
+            for(i = 0; i < informacao.length; i++){
+                var nomeInstituicao = informacao[i].nomeInstitucional;
+                chart_variacao_estado.innerHTML += `${nomeInstituicao}  <br>`
+            }
+        }

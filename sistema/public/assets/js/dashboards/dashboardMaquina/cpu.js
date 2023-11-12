@@ -4,13 +4,13 @@ const cpu_chart = document.getElementById('cpu_chart').getContext("2d");
 var datasetLinhas = [
     {
         label: 'Porcentagem de Uso',
-        data: [Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101), Math.floor(Math.random() * 101),],
+        data: [],
     },
 ]
 
 // Criando estrutura para plotar gráfico - legendas e dados
 let dadosCpu = {
-    labels: ['00:05', '00:10', '00:15', '00:20', '00:25', '00:30', '00:35', '00:40', '00:45', '00:50', '00:55', '01:00'],
+    labels: [],
     datasets: datasetLinhas,
 }
 
@@ -61,6 +61,9 @@ const configCpu = {
                     color: "#124559"
                 },
                 ticks: {
+                    font:{
+                        size: 10
+                    },
                     color: "#c2c2c2"
                 }
             }

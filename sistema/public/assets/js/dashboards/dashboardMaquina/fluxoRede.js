@@ -4,19 +4,19 @@ const fluxo_rede = document.getElementById('fluxo_rede_chart').getContext("2d");
 var datasetLinhas = [
     {
         label: 'Media - Download',
-        data: [Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51),],
+        data: [],
         borderColor: 'rgba(251, 154, 153, 1)',
         backgroundColor: 'rgba(251, 154, 153, 1)',
     },
     {
         label: 'Media - Upload',
-        data: [Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51),],
+        data: [],
         borderColor: 'rgba(158, 171, 240, 1)',
         backgroundColor: 'rgba(158, 171, 240, 1)',
     },
     {
         label: 'Media - Ping',
-        data: [Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51), Math.floor(Math.random() * 51),],
+        data: [],
         borderColor: '#A6CEE3',
         backgroundColor: '#A6CEE3'
     },
@@ -24,7 +24,7 @@ var datasetLinhas = [
 
 // Criando estrutura para plotar gráfico - legendas e dados
 let dados = {
-    labels: ['00:05', '00:10', '00:15', '00:20', '00:25', '00:30', '00:35', '00:40', '00:45', '00:50', '00:55', '01:00'],
+    labels: [],
     datasets: datasetLinhas,
 }
 
@@ -75,6 +75,9 @@ const config = {
                     color: "#124559"
                 },
                 ticks: {
+                    font:{
+                        size: 10
+                    },
                     color: "#c2c2c2"
                 }
             }

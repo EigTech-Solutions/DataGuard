@@ -10,11 +10,11 @@ function buscarUltimosKPIs(idInstituicao) {
         instrucaoSql =
             `
             select count(idMaquina) 'qtdMaquinas', 
-            (select count(idLaboratorio) from laboratorio where laboratorio.fkInstitucional = 2) 'qtdLabs', 
+            (select count(idLaboratorio) from laboratorio where laboratorio.fkInstitucional = ${idInstituicao}) 'qtdLabs', 
             (select count(idAlertas) as 'qtdAlertas' from alertas a
                 join medicoes me on a.fkMonitoramento = me.idMonitoramento 
                 join maquina m on m.idMaquina = me.fkMaquina where m.fkInstitucional = ${idInstituicao} AND me.dataHora >= now() - INTERVAL 1 DAY) 'qtdAlertas' 
-                from maquina where fkInstitucional = ${idInstituicao} AND status = 'Ativa';
+                from maquina m where m.fkInstitucional = ${idInstituicao} AND m.status = 1;
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -178,8 +178,8 @@ function buscarStatusMaquinas(idInstituicao) {
         instrucaoSql =
             `
             select count(idMaquina) 'qtdMaquinas',
-	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = "Ativa") 'qtdAtivas',
-	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = "Inativa") 'qtdDesativadas' from maquina where fkInstitucional = ${idInstituicao};
+	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = 1) 'qtdAtivas',
+	            (select count(idMaquina) from maquina where fkInstitucional = ${idInstituicao} AND status = 0) 'qtdDesativadas' from maquina where fkInstitucional = ${idInstituicao};
 
             `;
     } else {
@@ -222,7 +222,7 @@ function buscarKpisLabs(idLaboratorio) {
         instrucaoSql =
             `
             select 
-            (select count(idMaquina) from maquina m where m.fkLaboratorio = ${idLaboratorio} AND m.status = "Ativa") 'qtdMaquinas',
+            (select count(idMaquina) from maquina m where m.fkLaboratorio = ${idLaboratorio} AND m.status = 1) 'qtdMaquinas',
             ( select count(a.idAlertas) 'qtdAlertas' from alertas a 
            join medicoes me on a.fkMonitoramento = me.idMonitoramento
            join componenteMonitorado cm on me.fkComponente = cm.idComponente
@@ -343,8 +343,314 @@ function buscarStatusMaquinasLab(idLaboratorio) {
         instrucaoSql =
             `
             select count(idMaquina) 'qtdMaquinas',
-	            (select count(idMaquina) from maquina where fkLaboratorio = ${idLaboratorio} AND status = "Ativa") 'qtdAtivas',
-	            (select count(idMaquina) from maquina where fkLaboratorio = ${idLaboratorio} AND status = "Inativa") 'qtdDesativadas' from maquina where fkLaboratorio = ${idLaboratorio};
+	            (select count(idMaquina) from maquina where fkLaboratorio = ${idLaboratorio} AND status = 1) 'qtdAtivas',
+	            (select count(idMaquina) from maquina where fkLaboratorio = ${idLaboratorio} AND status = 0) 'qtdDesativadas' from maquina where fkLaboratorio = ${idLaboratorio};
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarInfosBasicasMaquina(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select m.numeroDeSerie, m.ipMaquina, m.status, m.sistemaOperacional, l.nomeSala, me.dataHora,
+            (select cm.modelo from componenteMonitorado cm WHERE cm.componente = "CPU" AND cm.fkMaquina = ${idMaquina} group by cm.modelo) 'Processador',
+            (select cm.tipo from componenteMonitorado cm WHERE cm.componente = "Disco Rigido" AND cm.fkMaquina = ${idMaquina} group by cm.tipo) 'TipoDisco',
+            (select cm.capacidadeTotal from componenteMonitorado cm WHERE cm.componente = "Disco Rigido" AND cm.fkMaquina = ${idMaquina} group by cm.capacidadeTotal) 'CapacidadeDisco',
+            (select cm.capacidadeTotal from componenteMonitorado cm WHERE cm.componente = "Memória" AND cm.fkMaquina = ${idMaquina} group by cm.capacidadeTotal) 'CapacidadeRam',
+			(select me.valorConsumido from medicoes me join componenteMonitorado cm on me.fkComponente = cm.idComponente where cm.componente = "Fonte Energia" and cm.fkMaquina = ${idMaquina} group by me.valorConsumido) 'FonteEnergia',
+            (select me.valorConsumido from medicoes me join componenteMonitorado cm on me.fkComponente = cm.idComponente where cm.componente = "Entradas" and cm.fkMaquina = ${idMaquina} group by me.valorConsumido) 'qtdPerifericos'
+           from maquina m 
+              left join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+              left join medicoes me on me.fkMaquina = m.idMaquina
+              where m.idMaquina = ${idMaquina}
+              GROUP BY me.dataHora, l.nomeSala
+              order by dataHora desc limit ${idMaquina};
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarPorcentagemUsoCpu(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select me.valorConsumido 'mediaCPU', DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora' 
+            from medicoes me 
+            JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente
+            WHERE cm.componente = "CPU" AND me.fkMaquina = ${idMaquina}
+            GROUP BY 
+                me.dataHora, me.valorConsumido
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 10;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarPorcentagemUsoCpuTempoReal(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select me.valorConsumido 'mediaCPU', DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora' 
+            from medicoes me 
+            JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente
+            WHERE cm.componente = "CPU" AND me.fkMaquina = ${idMaquina}
+            GROUP BY 
+                me.dataHora, me.valorConsumido
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarFluxoRedeMaquina(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            SELECT 
+            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = "Ping" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = "Download" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = "Upload" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            FROM 
+                medicoes me
+            JOIN 
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+                maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+                (cm.tipo = "Ping" OR cm.tipo = "Download" OR cm.tipo = "Upload") AND m.idMaquina = ${idMaquina}
+            GROUP BY 
+                me.dataHora
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 10;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarFluxoRedeMaquinaTempoReal(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            SELECT 
+            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = "Ping" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = "Download" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = "Upload" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            FROM 
+                medicoes me
+            JOIN 
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+                maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+                (cm.tipo = "Ping" OR cm.tipo = "Download" OR cm.tipo = "Upload") AND m.idMaquina = ${idMaquina}
+            GROUP BY 
+                me.dataHora
+            ORDER BY 
+                me.dataHora DESC
+                LIMIT 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarDadosMemorias(idMaquina) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            SELECT
+                me.valorConsumido "usoDisco",
+                (CASE WHEN cm.componente = "Memoria" AND cm.fKMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS "usoRam",
+                DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora'
+            FROM
+                medicoes me
+            JOIN
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente AND me.fkMaquina = cm.fkMaquina
+            WHERE
+                (cm.componente = "Disco Rigido" OR cm.componente = "Memoria") AND me.fkMaquina = ${idMaquina}
+            ORDER BY
+                me.dataHora DESC
+            LIMIT 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
+function buscarDadosKpisAdmin(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select 
+                (select count(idMaquina) from maquina where status = 1 AND fkInstitucional = ${idInstituicao}) 'qtdMaquinasAtivas',
+                (select count(idMaquina) from maquina where status = 0 AND fkInstitucional = ${idInstituicao}) 'qtdMaquinasInativas',
+                (select count(idMaquina) from maquina where dataCadastro >= now() - INTERVAL 1 MONTH) 'qtdMaquinasCadastradasMes',
+                (select count(idLaboratorio) from laboratorio where fkInstitucional = ${idInstituicao}) 'qtdLabs';
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarVariacaoStatusLabs(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select l.idLaboratorio, l.nomeSala, 
+            COUNT((CASE WHEN m.fkInstitucional = ${idInstituicao} THEN m.idMaquina ELSE NULL END)) "qtdMaquinas",
+            COUNT((CASE WHEN m.status = 1 AND m.fkInstitucional = ${idInstituicao} THEN m.status ELSE NULL END)) "qtdMaquinasAtivas",
+             COUNT((CASE WHEN m.status = 0 AND m.fkInstitucional = ${idInstituicao} THEN m.status ELSE NULL END)) "qtdMaquinasInativas"
+            from laboratorio l 
+            join maquina m ON m.fkLaboratorio = l.idLaboratorio
+            where m.fkInstitucional = ${idInstituicao}
+            group by l.idLaboratorio, l.nomeSala
+            order by idLaboratorio;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarQtdAlertas(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select count(tipo) 'qtdAlertas', tipo from alertas a
+               join maquina m on a.fkMaquina = m.idMaquina
+               where m.fkInstitucional = ${idInstituicao}
+               group by tipo;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarRankingMaquinasAdmin(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select m.idMaquina, m.ipMaquina, count(a.idAlertas) qtdAlertas from maquina m
+			left join componenteMonitorado cm on cm.fkMaquina = m.idMaquina
+            left join medicoes me on me.fkComponente = cm.idComponente
+            left join alertas a on a.fkMonitoramento = me.idMonitoramento
+            where m.fkInstitucional = ${idInstituicao}  group by m.idMaquina order by qtdAlertas desc;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarColaboradores(idInstituicao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select au.fkUsuario, DATE_FORMAT(au.dataAcessoUsuario, '%d/%m/%Y, %H:%i') AS 'dataHora', u.nome 
+            from acessoUsuario au
+            join usuario u on au.fkUsuario = u.idUsuario
+            WHERE u.fkInstitucional = ${idInstituicao};
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -368,5 +674,16 @@ module.exports = {
     buscarFluxoRedeLab,
     buscarFluxoRedeLabTempoReal,
     buscarRankingMaquinas,
-    buscarStatusMaquinasLab
+    buscarStatusMaquinasLab,
+    buscarInfosBasicasMaquina,
+    buscarPorcentagemUsoCpu,
+    buscarPorcentagemUsoCpuTempoReal,
+    buscarFluxoRedeMaquina,
+    buscarFluxoRedeMaquinaTempoReal,
+    buscarDadosMemorias,
+    buscarDadosKpisAdmin,
+    buscarVariacaoStatusLabs,
+    buscarQtdAlertas,
+    buscarRankingMaquinasAdmin,
+    buscarColaboradores
 }

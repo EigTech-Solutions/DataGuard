@@ -47,7 +47,34 @@ function cadastrar(req, res) {
     }
 }
 
+function puxarDados(req, res) {
+    instituicaoModel.puxarDados(req, res).then(function (dados) {
+        if (dados.length > 0) {
+            res.status(200).json(dados);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function dadosInstituicao(req, res) {
+    instituicaoModel.dadosInstituicao(req, res).then(function (dados) {
+        if (dados.length > 0) {
+            res.status(200).json(dados);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
 
 module.exports = {
-    cadastrar
+    cadastrar,
+    puxarDados,
+    dadosInstituicao,
 }

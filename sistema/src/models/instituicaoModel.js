@@ -16,6 +16,30 @@ function cadastrar(nomeInst, cnpjInst, emailInst, telefoneInst, cepInst,
     return database.executar(instrucao);
 }
 
+function puxarDados(){
+    var instrucao = `
+    SELECT SUM(total_instituicoes) AS quantidade_total_instituicoes, GROUP_CONCAT(nomeInstitucional) AS nomes_instituicoes
+FROM (
+  SELECT COUNT(*) AS total_instituicoes, nomeInstitucional
+  FROM instituicao
+  GROUP BY nomeInstitucional
+) AS subquery;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function dadosInstituicao(){
+
+    var instrucao = `
+    SELECT nomeInstitucional FROM instituicao;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
-    cadastrar
+    cadastrar,
+    puxarDados,
+    dadosInstituicao,
 };
