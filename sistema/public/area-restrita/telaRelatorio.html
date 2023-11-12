@@ -1,98 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tela relatorio</title>
     <link rel="stylesheet" href="../assets/css/telaRelatorio.css">
 </head>
+
 <body>
-    
 
-        <!--  inicio do container  -->
 
-        <section class="containerPrincipal">
-
-            <!--  topo do pop up  -->
-            <div class="topo">
-                <div class="titulo"> relatórios </div>
-                <button class="butFechar"> i </button>
+    <!--  inicio do container  -->
+    <div class="containerPrincipal">
+        <!--  topo do pop up  -->
+        <div class="topo">
+            <div class="titulo"> Relatórios </div>
+            <div class="btns">
+                <!-- <img src="../assets/images/ph_info.png" class="btnInfo" alt="icon de informação"> -->
+                <img src="../assets/images/close-circle-twotone.png" width="30px" class="btnInfo" alt="">
             </div>
-    
-    
-    
-            <!--  meio do pop up  -->
-    
-    
-            <div class="meioPopUp">
-    
-    
-                <div class="container1">
-                    <div class="texto">
-                        <span>
-                            Gere os relatórios necessários para analise da sua instituição!
-                        </span>
-                    </div>
-                    <div class="imagemLab">
-                        <img width="95%" height="95%" src="../assets/images/imagemTelaRelatorio.png" alt="">
-                    </div>
+        </div>
+        <!--  meio do pop up  -->
+        <div class="meioPopUp">
+            <div class="container1">
+                <div class="texto">
+                    <span>
+                        Gere os relatórios necessários para analise da sua instituição!
+                    </span>
                 </div>
-    
-    
-                <div class="container2">
-                    <div class="campoInput1">
-                        <label for="">Laboratório:</label>
-                        <select class="iptLab" name="" id="">
-                            <option value="">Selecione...</option>
-                        </select>
-                    </div>
-                    <div class="campoInput2">
-                       <div class="campoMes">
+                <div class="imagemLab">
+                    <img src="../assets/images/imagemTelaRelatorio.png" alt="">
+                </div>
+            </div>
+
+            <div class="container2">
+                <div class="campoInput1">
+                    <label for="">Laboratório:</label>
+                    <select class="iptLab" id="iptLab">
+                        <option value="0" selected disabled>Selecione...</option>
+                    </select>
+                </div>
+
+                <div class="campoInput2">
+                    <div class="campoMes">
                         <label for="">Mês</label>
-                        <select class="iptMes" name="" id="">
-                            <option value="">Selecione...</option>
-                            <option value="">Janeiro</option>
-                            <option value="">Fevereiro</option>
-                            <option value="">Março</option>
-                            <option value="">Abril</option>
-                            <option value="">Maio</option>
-                            <option value="">Junho</option>
-                            <option value="">Julho</option>
-                            <option value="">Agosto</option>
-                            <option value="">Setembro</option>
-                            <option value="">Outubro</option>
-                            <option value="">Novembro</option>
-                            <option value="">Dezembro</option>
+                        <select class="iptMes" id="iptMes">
+                            <option value="0" selected disabled>Selecione...</option>
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
                         </select>
-                       </div>
-                        <div class="campoAno">
-                        <label for="">Ano:</label>
-                        <input class="iptAno" type="number">
-                        </div>
                     </div>
-                    <div class="campoInput3">
-                        <label for="">Relatório Mensal ou Anual?</label>
-                        <div class="campoInput3but">
-                            <label for="">Mensal</label>
-                       <button class="botBolinha"></button>
-                       <label for="">Anual</label>
-                       <button class="botBolinha"></button>
-                        </div>
+                    <div class="campoAno">
+                        <label for="">Ano:</label>
+                        <input class="iptAno" id="iptAno" type="number" min="2023" maxlength="4" placeholder="Ex: 2023" >
+                    </div>
+                </div>
+                <div class="campoInput3">
+                    <label for="">Relatório Mensal ou Anual?</label>
+                    <div class="campoInput3but">
+                        <input type="radio" name="radBtnRelatorio" class="radBtnRelatorio" value="mes" checked>
+                        <label for="">Mensal</label>
+                        <input type="radio" name="radBtnRelatorio" class="radBtnRelatorio" value="ano">
+                        <label for="">Anual</label>
                     </div>
                 </div>
             </div>
-    
-    
-    
-    
-            <!--  fim do pop up  -->
-    
-            <div class="containerFinal">
-                <button class="cadastrar" onclick="cadastrar()">GERAR RELATÓRIO</button>
-            </div>
-    
-        </section>
-    
-      
+        </div>
+        <!--  fim do pop up  -->
+        <div class="containerFinal">
+            <button class="bntRelatorio" onclick="cadastrar()">
+                <img src="../assets/images/i_pdf.png" width="40" onclick="gerarRelatorio()" alt="icon pdf">
+                GERAR RELATÓRIO
+            </button>
+        </div>
+    </div>
 </body>
+
 </html>
+<script src="../assets/js/relatorio.js"></script>

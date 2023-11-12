@@ -33,6 +33,12 @@ menuLateral.innerHTML = `
                 <img src="../assets/images/carbon_settings-edit.png" alt=""> Configurações
             </a>
         </li>
+        </li>
+        <li>
+            <a href="telaRelatorio.html" id="bntRelatorioMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id), abrirModalRelatorio()">
+                <img src="../assets/images/fa_file-pdf-o.png" alt=""> Relatórios
+            </a>
+        </li>
     </ul>
 
     <div class="footer">
@@ -101,6 +107,7 @@ function exibirMenuPerfil(perfUsuario) {
         bntConfigMenu.style.display = 'none';
         bntLabMenu.style.display = 'none';
         bntPCsMenu.style.display = 'none';
+        bntRelatorioMenu.style.display = 'flex';
         bntDashMenu.href = "dashboardGeralAdmin.html";
         
     } else {
@@ -108,6 +115,7 @@ function exibirMenuPerfil(perfUsuario) {
         bntConfigMenu.style.display = 'flex';
         bntLabMenu.style.display = 'flex';
         bntPCsMenu.style.display = 'flex';
+        bntRelatorioMenu.style.display = 'none';
         bntDashMenu.href = "DashboardGeral.html";
         
     }    
