@@ -1,18 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Poppins:ital@0;1&display=swap');
-
-body {
+/* css modal  */
+.divModalRelatorio {
     width: 100%;
     height: 100vh;
-    padding: 0;
-    margin: 0;
-    display: flex;
+    display: none;
+    flex-direction: column;
+    position: absolute;
     justify-content: center;
     align-items: center;
-    background-color: rgb(5, 14, 26);
-    font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    z-index: 5;
 }
 
-.containerPrincipal {
+.divModalRelatorio .containerPrincipal {
     background-color: #2D4C58;
     width: 25%;
     height: fit-content;
@@ -23,18 +23,16 @@ body {
     gap: 10px;
 }
 
-.topo {
+.divModalRelatorio .topo {
     width: 100%;
     height: 10%;
-    /* background-color: #2D4C58; */
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     padding-top: 10px;
-    /* border-radius: 15px 15px 0 0; */
 }
 
-.titulo {
+.divModalRelatorio .titulo {
     color: #FFFFFF;
     font-size: x-large;
     font-weight: bold;
@@ -42,26 +40,26 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-.topo .btns{
+.divModalRelatorio .topo .btns{
     display: flex;
     align-items: center;
 }
 
-.btnInfo{
+.divModalRelatorio .btnInfo{
     cursor: pointer;
 }
 
-.btnInfo:hover{
+.divModalRelatorio .btnInfo:hover{
     transform: scale(1.02);
 }
 
-.meioPopUp {
+.divModalRelatorio .meioPopUp {
     width: 100%;
     height: 70%;
     background-color: #2D4C58;
 }
 
-.container1 {
+.divModalRelatorio .container1 {
     width: 90%;
     display: flex;
     align-items: center;
@@ -71,7 +69,7 @@ body {
     margin-bottom: 5px;
 }
 
-.container2 {
+.divModalRelatorio .container2 {
     width: 90%;
     height: fit-content;
     display: flex;
@@ -87,7 +85,7 @@ label {
     font-family: 'Poppins', sans-serif;
 }
 
-.texto {
+.divModalRelatorio .texto {
     color: #FFFFFF;
     width: 50%;
     font-size: 17px;
@@ -95,15 +93,15 @@ label {
     font-family: 'Poppins', sans-serif;
 }
 
-.imagemLab {
+.divModalRelatorio .imagemLab {
     width: 50%;
 }
 
-.imagemLab img {
+.divModalRelatorio .imagemLab img {
     width: 100%;
 }
 
-.campoInput1 {
+.divModalRelatorio .campoInput1 {
     width: 100%;
     height: 35%;
     display: flex;
@@ -112,14 +110,14 @@ label {
     /* align-items: center; */
 }
 
-.iptLab {
+.divModalRelatorio .iptLab {
     width: 100%;
     height: 27px;
     border-radius: 7px;
     border: none
 }
 
-.campoInput2 {
+.divModalRelatorio .campoInput2 {
     width: 100%;
     height: 30%;
     display: flex;
@@ -127,33 +125,33 @@ label {
     margin-top: 5px;
 }
 
-.campoMes {
+.divModalRelatorio .campoMes {
     width: 65%;
     display: flex;
     flex-direction: column;
 }
 
-.iptMes {
+.divModalRelatorio .iptMes {
     width: 100%;
     height: 27px;
     border-radius: 7px;
     border: none
 }
 
-.campoAno {
+.divModalRelatorio .campoAno {
     width: 35%;
     display: flex;
     flex-direction: column;
 }
 
-.iptAno {
+.divModalRelatorio .iptAno {
     width: 100%;
     height: 27px;
     border-radius: 7px;
     border: none
 }
 
-.campoInput3 {
+.divModalRelatorio .campoInput3 {
     width: 100%;
     height: 35%;
     display: flex;
@@ -163,7 +161,7 @@ label {
     margin-top: 10px;
 }
 
-.campoInput3but {
+.divModalRelatorio .campoInput3but {
     width: 65%;
     display: flex;
     flex-direction: row;
@@ -171,11 +169,11 @@ label {
     align-items: center;
 }
 
-.radBtnRelatorio{
+.divModalRelatorio .radBtnRelatorio{
     width: 2rem;
 }
 
-.containerFinal {
+.divModalRelatorio .containerFinal {
     width: 100%;
     height: 17%;
     /* background-color: #2D4C58; */
@@ -185,7 +183,7 @@ label {
     /* border-radius: 0px 0px 15px 15px; */
 }
 
-.bntRelatorio {
+.divModalRelatorio .bntRelatorio {
     width: 100%;
     height: 70%;
     background-color: #598392;
@@ -202,6 +200,6 @@ label {
     padding:  5px 0;
 }
 
-.bntRelatorio:hover{
+.divModalRelatorio .bntRelatorio:hover{
     transform: scaleY(1.08);
 }
