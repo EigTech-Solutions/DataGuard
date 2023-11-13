@@ -1,0 +1,76 @@
+.divPreRelatorio{
+    width: 100%;
+    height: 100vh;
+    background-color: #01161E;
+    display: none;
+}
+
+.divRelatorio{
+    width: 180mm;
+    height: fit-content;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 30px;
+    padding-bottom: 50px;
+    overflow: auto;
+    display: none;
+    flex-direction: column;
+    /* position: relative; */
+    /* top: -20000px; */
+    /* z-index: -5; */
+}
+
+.divRelatorio section{
+    margin: 25px 0;
+}
+
+.divRelatorio .tituloRelatorio{
+    text-align: center;
+}
+
+.divRelatorio .tituloRelatorio h1{
+    font-size: 20px;
+}
+
+.divRelatorio .tbResponsavel {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.divRelatorio .tbResponsavel th, .divRelatorio .tbResponsavel td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: left;
+}
+
+.divRelatorio .tbResponsavel th {
+    background-color: #f2f2f2;
+}
+
+.divRelatorio .tbThLateral2 {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.divRelatorio .tbThLateral2 th, .divRelatorio .tbThLateral2 td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: left;
+    width: 50%;
+}
+
+.divRelatorio .tbThLateral3 {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.divRelatorio .tbThLateral3 th, .divRelatorio .tbThLateral3 td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: left;
+    width: 33.33%;
+}
+
+.divRelatorio th {  
+    background-color: #f2f2f2; 
+}

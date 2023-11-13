@@ -9,7 +9,8 @@
     <!-- Importando o css da página -->
     <link rel="stylesheet" href="../assets/css/basePages.css">
     <link rel="stylesheet" href="../assets/css/dashboardGeralAdmin.css">
-    <!-- <link rel="stylesheet" href="../assets/css/telaRelatorio.css"> -->
+    <link rel="stylesheet" href="../assets/css/telaRelatorio.css">
+    <link rel="stylesheet" href="../assets/css/relatorio.css">
     </link>
 </head>
 
@@ -136,9 +137,11 @@
                 </div>
             </div>
         </div>
+        <div class="divPreRelatorio" id="divPreRelatorio"></div>
+        <div class="divRelatorio" id="divRelatorio"></div>
     </div>
     <!-- divs modais/ pop-ups -->
-    <div class="divModal" id="divModal"></div>
+    <div class="divModalRelatorio" id="divModalRelatorio"></div>
 </body>
 </html>
 <!-- Importando o JavaScript da página -->
@@ -149,3 +152,7 @@
 <script src="../assets/js/dashboards/dashboardGeralAdmin/obterDados.js"></script>
 <script src="../assets/js/sessao.js"></script>
 <script src="../assets/js/relatorio.js"></script>
+<!-- importando a biblioteca da API sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- importando a biblioteca da API de PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

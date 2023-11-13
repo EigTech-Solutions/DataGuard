@@ -35,7 +35,7 @@ menuLateral.innerHTML = `
         </li>
         </li>
         <li>
-            <a href="telaRelatorio.html" id="bntRelatorioMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id), abrirModalRelatorio()">
+            <a href="#" id="bntRelatorioMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id), abrirModalRelatorio()">
                 <img src="../assets/images/fa_file-pdf-o.png" alt=""> Relatórios
             </a>
         </li>
