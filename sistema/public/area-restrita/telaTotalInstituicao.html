@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,12 @@
     <!-- Importando o css da página -->
     <link rel="stylesheet" href="../assets/css/basePages.css">
     <link rel="stylesheet" href="../assets/css/telaLabs&pcs.css">
+    <link rel="stylesheet" href="../assets/css/telaInstituicao.css">
+
     <!-- <link rel="stylesheet" href="../assets/css/telaRelatorio.css"> -->
 </head>
-<body onload="validarSessao(">
+
+<body onload="validarSessao()">
     <div class="menu-lateral" id="menuLateral"></div>
     <div class="container-geral">
         <div class="menu-top" id="menuTop"></div>
@@ -18,11 +22,31 @@
             <div class="conteudo-page">
                 <div class="title-page">
                     <h2>Instituição</h2>
-                    <button class="btnAdd" onclick="abrirModalCardastarUser()">Nova Instituição</button>
+                    <button class="btnAdd" onclick= "abrirModalCardastarInstituicao()">Nova Instituição</button>
                 </div>
                 <hr>
-                <div class="div-cards" id="divCards">
-                    <!-- aqui fica a exibição dos card dos usuarios  -->
+                <div class="div-instituicoes">
+                    <div class="div-instituicao">
+                        <div class="instituicoesTitulo">
+                            <p><b>Lista de Instituições</b></p>
+                        </div>
+                        <div class="dadosInstituicoes">
+                            <div class="blocoDeDado" onload="dadosGeraisInst()">
+                            
+                            </div>
+                        </div>
+                        <div class="campoDeBusca">
+
+                        </div>
+                    </div>
+                    <div class="div-totalDeInstituicao">
+                        <div class="totalTitulo">
+                            <p><b>Número de Instituições Cadastradas no Sistema</b></p>
+                        </div>
+                        <div class="totalNumero">
+                            <p><b></b></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,11 +55,13 @@
     <div class="divModal" id="divModal"></div>
     <div class="divModalExcluir" id="divModalExcluir"></div>
 </body>
+
 </html>
 <!-- Importando o JavaScript da página -->
 <script src="../assets/js/scriptBasePages.js"></script>
 <script src="../assets/js/sessao.js"></script>
-<script src="../assets/js/usuarios.js"></script>
+<script src="../assets/js/instituicao.js"></script>
 <script src="../assets/js/relatorio.js"></script>
+<script src="../assets/js/instituicao.js"></script>
 <!-- importando a biblioteca da API sweetalert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

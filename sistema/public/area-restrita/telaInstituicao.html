@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,13 @@
     <link rel="shortcut icon" href="../assets/images/icon_logo.png" type="image/x-icon">
     <!-- Importando o css da página -->
     <link rel="stylesheet" href="../assets/css/basePages.css">
+    <link rel="stylesheet" href="../assets/css/telaLabs&pcs.css">
     <link rel="stylesheet" href="../assets/css/telaInstituicao.css">
+
+    <!-- <link rel="stylesheet" href="../assets/css/telaRelatorio.css"> -->
 </head>
-<body onload="dadosDashboard(),validarSessao()">
+
+<body onload="validarSessao()">
     <div class="menu-lateral" id="menuLateral"></div>
     <div class="container-geral">
         <div class="menu-top" id="menuTop"></div>
@@ -17,36 +22,28 @@
             <div class="conteudo-page">
                 <div class="title-page">
                     <h2>Instituição</h2>
-                    <button class="btnAdd" onclick="abrirModalCardastarInstituicao()">Nova Instituição</button>
+                    <button class="btnAdd" onclick= "abrirModalCardastarInstituicao()">Nova Instituição</button>
                 </div>
                 <hr>
-                <div class="div-cards" id="divCards">
-                    <!-- aqui fica a exibição dos card dos laboratórios  -->
-                </div>
-                <div class="div_center">
-                    <div class="div_dashboard">
-                        <div class="container_charts">
-                            <div class="container_chart_variacao_maquinas">
-                                <div class="chart_variacao_header">
-                                    <span class="chart_variacao_title">Lista de Instituições Cadastradas no Sistema</span>
-                                </div>
-                                <div class="chart_variacao_estado">
-                                    <div id="chart_variacao_estado"></div>
-                                </div>
+                <div class="div-instituicoes">
+                    <div class="div-instituicao">
+                        <div class="instituicoesTitulo">
+                            <p><b>Lista de Instituições</b></p>
+                        </div>
+                        <div class="dadosInstituicoes">
+                            <div id="blocoDeDado" onload="mostrarInf()">
+                                
                             </div>
+                        </div>
+                        <div class="campoDeBusca">
+
                         </div>
                     </div>
-                    <div class="div_dashboard2">
-                        <div class="container_charts">
-                            <div class="container_chart_variacao_maquinas">
-                                <div class="chart_variacao_header">
-                                    <span class="chart_variacao_title">Número de Instituições Cadastradas no Sistema</span>
-                                </div>
-                                <div class="chart_variacao_estado">
-                                    <div id="quantidade_instituicao"></div>
-                                </div>
-                            </div>
+                    <div class="div-totalDeInstituicao">
+                        <div class="totalTitulo">
+                            <p><b>Número de Instituições Cadastradas no Sistema</b></p>
                         </div>
+                        <div class="totalNumero" onload="mostrarDados()" id="totalClasse"></div>
                     </div>
                 </div>
             </div>
@@ -56,10 +53,13 @@
     <div class="divModal" id="divModal"></div>
     <div class="divModalExcluir" id="divModalExcluir"></div>
 </body>
+
 </html>
 <!-- Importando o JavaScript da página -->
 <script src="../assets/js/scriptBasePages.js"></script>
 <script src="../assets/js/sessao.js"></script>
+<script src="../assets/js/instituicao.js"></script>
+<script src="../assets/js/relatorio.js"></script>
 <script src="../assets/js/instituicao.js"></script>
 <!-- importando a biblioteca da API sweetalert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
