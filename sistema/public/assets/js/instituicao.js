@@ -167,3 +167,47 @@ function dadosDashboard() {
                 chart_variacao_estado.innerHTML += `${nomeInstituicao}  <br>`
             }
         }
+
+        function dadosGeraisInst() {
+            fetch(`/instituicao/dadosGeraisInst`, { cache: 'no-store' }).then(function (response) {
+                if (response.ok) {
+                  response.json().then(function (dadosPuxados) {
+                    console.log("Response -> " + response[0].cnpj)
+                    console.log("DadosPuxados -> "+dadosPuxados[0].cnpj)
+                    mostrarInf(dadosPuxados)
+    
+                  });
+                } else {
+                  console.error('Nenhuma informaçao encontrada ou erro na API');
+                }
+              })
+                .catch(function (error) {
+                  console.error(`Erro na obtenção dos dados: ${error.message}`);
+                });
+            }
+            dadosGeraisInst()
+
+            function mostrarInf(dadosPuxados){
+                for(i = 0; i < dadosPuxados.length; i++){
+                    var nomeInstituicao = dadosPuxados[i].nomeInstitucional;
+                    var cnpj = dadosPuxados[i].cnpj;
+                    var email = dadosPuxados[i].email;
+                    var telefone = dadosPuxados[i].telefone;
+                    var cep = dadosPuxados[i].cep;
+                    var numeroEndereco = dadosPuxados[i].numeroEndereco;
+                    var complemento = dadosPuxados[i].complemento;
+            
+                    so_testando_aqui.innerHTML += `
+                        <div>
+                            <p>Nome: ${nomeInstituicao}</p>
+                            <p>CNPJ: ${cnpj}</p>
+                            <p>Email: ${email}</p>
+                            <p>Telefone: ${telefone}</p>
+                            <p>CEP: ${cep}</p>
+                            <p>Número do Endereço: ${numeroEndereco}</p>
+                            <p>Complemento: ${complemento}</p>
+                        </div>
+                    `;
+                }
+            }
+            
