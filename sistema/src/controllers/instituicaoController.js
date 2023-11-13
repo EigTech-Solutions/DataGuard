@@ -73,8 +73,23 @@ function dadosInstituicao(req, res) {
     });
 }
 
+function dadosGeraisInst(req, res) {
+    console.log("cheguei no controler");
+    instituicaoModel.dadosGeraisInst(req, res).then(function (dadosPuxados) {
+        if (dadosPuxados.length > 0) {
+            res.status(200).json(dadosPuxados);
+        } else {
+            res.status(204).send("Nenhum dado encontrado");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
     dadosInstituicao,
+    dadosGeraisInst
 }

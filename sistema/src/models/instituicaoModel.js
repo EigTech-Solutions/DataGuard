@@ -38,8 +38,26 @@ function dadosInstituicao(){
     return database.executar(instrucao);
 }
 
+function dadosGeraisInst() {
+    var instrucao = `
+    SELECT 
+        nomeInstitucional,
+        cnpj,
+        email,
+        telefone,
+        cep,
+        numeroEndereco,
+        complemento
+    FROM 
+        instituicao;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
     dadosInstituicao,
+    dadosGeraisInst
 };
