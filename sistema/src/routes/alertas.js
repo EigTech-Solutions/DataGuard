@@ -1,0 +1,14 @@
+var express = require("express");
+var router = express.Router();
+
+var alertasController = require("../controllers/alertasController");
+
+router.get("/buscarQtdAlertasUrgentesAtencaoMes/:idLab/:idInstituicao/:mes/:ano", function (req, res) {
+    alertasController.buscarQtdAlertasUrgentesAtencaoMes(req, res);
+});
+
+router.get("/buscarQtdAlertasUrgentesAtencaoAno/:idLab/:idInstituicao/:ano", function (req, res) {
+    alertasController.buscarQtdAlertasUrgentesAtencaoAno(req, res);
+});
+
+module.exports = router;

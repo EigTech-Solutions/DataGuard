@@ -35,5 +35,24 @@ router.delete("/deletar/:idPC/:idInstituicao", function (req, res) {
     maquinaController.deletar(req, res);
 });
 
+router.get("/buscarTotalPcsInstituicao/:idInstituicao", function (req, res) {
+    maquinaController.buscarTotalPcsInstituicao(req, res);
+});
+
+router.get("/buscarTotalPcsLab/:idLab/:idInstituicao", function (req, res) {
+    maquinaController.buscarTotalPcsLab(req, res);
+});
+
+router.get("/buscarTotalPcsAtivosInativos/:idLab/:idInstituicao", function (req, res) {
+    maquinaController.buscarTotalPcsAtivosInativos(req, res);
+});
+
+router.get("/buscarTotalPcsCadastradosDesativadosMes/:idLab/:idInstituicao/:mes/:ano", function (req, res) {
+    maquinaController.buscarTotalPcsCadastradosDesativadosMes(req, res);
+});
+
+router.get("/buscarTotalPcsCadastradosDesativadosAno/:idLab/:idInstituicao/:ano", function (req, res) {
+    maquinaController.buscarTotalPcsCadastradosDesativadosAno(req, res);
+});
 
 module.exports = router;

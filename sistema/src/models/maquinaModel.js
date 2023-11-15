@@ -1,4 +1,4 @@
-var database = require("../database/config")
+var database = require("../database/config");
 
 function listar(idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
@@ -109,6 +109,80 @@ function deletar(idPC, idInstituicao) {
     return database.executar(instrucao);
 }
 
+function buscarTotalPcsInstituicao(idInstituicao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsInstituicao()");
+    var instrucao = `
+        SELECT COUNT(*) as TotalMaquinas FROM maquina WHERE fkInstitucional = ${idInstituicao};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function buscarTotalPcsLab(idLab,idInstituicao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsLab()");
+    var instrucao = `
+        SELECT 
+            l.nomeSala as NomeLaboratorio,
+            COUNT(m.idMaquina) as TotalMaquinasLaboratorio,
+            ROUND((COUNT(m.idMaquina) / (SELECT COUNT(*) FROM maquina)) * 100, 2) as PercentualDoTotal
+        FROM laboratorio l
+        JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
+        GROUP BY l.idLaboratorio;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function buscarTotalPcsAtivosInativos(idLab,idInstituicao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsLab()");
+    var instrucao = `
+        SELECT 
+            l.nomeSala as NomeLaboratorio,
+            SUM(CASE WHEN m.status = 1 THEN 1 ELSE 0 END) as TotalMaquinasAtivas,
+            SUM(CASE WHEN m.status = 0 THEN 1 ELSE 0 END) as TotalMaquinasInativas,
+            ROUND((SUM(CASE WHEN m.status = 0 THEN 1 ELSE 0 END) / COUNT(m.idMaquina)) * 100, 2) as PercentualMaquinasInativas
+        FROM laboratorio l
+        JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
+        GROUP BY l.idLaboratorio;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function buscarTotalPcsCadastradosDesativadosMes(idLab,idInstituicao, mes, ano) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsCadastradosDesativadosMes()");
+    var instrucao = `
+        SELECT 
+            SUM(CASE WHEN m.status = 1 THEN 1 ELSE 0 END) as QtdMaquinasAdicionadas,
+            SUM(CASE WHEN m.status = 0 THEN 1 ELSE 0 END) as QtdMaquinasDesativadas
+        FROM laboratorio l
+        JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
+            AND MONTH(m.dataCadastro) = ${mes}
+            AND YEAR(m.dataCadastro) = ${ano}
+        GROUP BY l.idLaboratorio, MONTH(m.dataCadastro), YEAR(m.dataCadastro);
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function buscarTotalPcsCadastradosDesativadosAno(idLab,idInstituicao, ano) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsCadastradosDesativadosMes()");
+    var instrucao = `
+        SELECT 
+            SUM(CASE WHEN m.status = 1 THEN 1 ELSE 0 END) as QtdMaquinasAdicionadas,
+            SUM(CASE WHEN m.status = 0 THEN 1 ELSE 0 END) as QtdMaquinasDesativadas
+        FROM laboratorio l
+        JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
+            AND YEAR(m.dataCadastro) = ${ano}
+        GROUP BY l.idLaboratorio, YEAR(m.dataCadastro);
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
 
 module.exports = {
     listar,
@@ -118,5 +192,10 @@ module.exports = {
     atualizar,
     atualizarStatus,
     atualizarLaboratorio,
-    deletar
+    deletar,
+    buscarTotalPcsInstituicao, 
+    buscarTotalPcsLab,
+    buscarTotalPcsAtivosInativos,
+    buscarTotalPcsCadastradosDesativadosMes,
+    buscarTotalPcsCadastradosDesativadosAno
 };
