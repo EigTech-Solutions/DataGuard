@@ -139,7 +139,7 @@ function dadosDashboard() {
     function mostrarDados(dados){
         for(i = 0; i < dados.length; i++){
             var totalInstituicoes = dados[i].quantidade_total_instituicoes;
-            quantidade_instituicao.innerHTML = `${totalInstituicoes}`
+            totalClasse.innerHTML = `${totalInstituicoes}`
         }
     }
     function dadosInstituicao() {
@@ -197,7 +197,7 @@ function dadosDashboard() {
                     var numeroEndereco = dadosPuxados[i].numeroEndereco;
                     var complemento = dadosPuxados[i].complemento;
             
-                    so_testando_aqui.innerHTML += `
+                    blocoDeDado.innerHTML += `
                         <div>
                             <p>Nome: ${nomeInstituicao}</p>
                             <p>CNPJ: ${cnpj}</p>
