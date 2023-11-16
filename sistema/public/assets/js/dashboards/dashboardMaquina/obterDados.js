@@ -20,8 +20,10 @@ function obterDadosIniciais() {
                     }
                 }
 
-                let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco + "GB" : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
-                let memoriaRam = infosMaquina.CapacidadeRam === "Desconhecido" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
+                console.log(infosMaquina);
+
+                let disco = infosMaquina.TipoDisco === "Não encontrado" ? infosMaquina.CapacidadeDisco : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
+                let memoriaRam = infosMaquina.CapacidadeRam === "Não encontrado" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
                 let fonteEnergia = infosMaquina.FonteEnergia == 1 ? "Conectado" : "Desconectado";
                 document.getElementById('local_maquina').innerHTML = infosMaquina.nomeSala;
                 document.getElementById('num_serie_maquina').innerHTML = infosMaquina.numeroDeSerie;
@@ -67,8 +69,8 @@ function atualizarKpis() {
                             infosMaquina[dado] = "Não encontrado";
                         }
                     }
-                    let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco + "GB" : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
-                    let memoriaRam = infosMaquina.CapacidadeRam === "Desconhecido" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
+                    let disco = infosMaquina.TipoDisco === "Não encontrado" ? infosMaquina.CapacidadeDisco : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
+                    let memoriaRam = infosMaquina.CapacidadeRam === "Não encontrado" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
                     let span_status = document.getElementById('kpi_status');
                     let fonteEnergia = infosMaquina.FonteEnergia == 1 ? "Conectado" : "Desconectado";
 

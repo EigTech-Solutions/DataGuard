@@ -37,7 +37,81 @@ function buscarQtdAlertasUrgentesAtencaoAno(idLab, idInstituicao, ano) {
     return database.executar(instrucao);
 }
 
+
+function buscarNotificacoes(idInstituicao, idUsuario) {
+
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select  a.idAlertas, a.lido, l.nomeSala, l.numeroSala, DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', m.ipMaquina, m.idMaquina, cm.componente, a.tipo from alertas a 
+            join medicoes me on a.fkMonitoramento = me.idMonitoramento 
+            join componenteMonitorado cm on me.fkComponente = cm.idComponente 
+            join maquina m on cm.fkMaquina = m.idMaquina
+            join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+            where l.fkInstitucional = ${idInstituicao} AND l.fkResponsavel = ${idUsuario} AND a.lido = 0
+            order by me.dataHora desc;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarNotificacoesTempoReal(idInstituicao, idUsuario) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select  a.idAlertas, a.lido, l.nomeSala, l.numeroSala, DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', m.ipMaquina, m.idMaquina, cm.componente, cm.tipo from alertas a 
+            join medicoes me on a.fkMonitoramento = me.idMonitoramento 
+            join componenteMonitorado cm on me.fkComponente = cm.idComponente 
+            join maquina m on cm.fkMaquina = m.idMaquina
+            join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+            where l.fkInstitucional = ${idInstituicao} AND l.fkResponsavel = ${idUsuario}
+            order by me.dataHora desc limit 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function marcarLido(idNotificacao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+           update alertas set lido = 1 where idAlertas = ${idNotificacao}
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarQtdAlertasUrgentesAtencaoMes,
-    buscarQtdAlertasUrgentesAtencaoAno
+    buscarQtdAlertasUrgentesAtencaoAno,
+    buscarNotificacoes,
+    buscarNotificacoesTempoReal,
+    marcarLido
 };

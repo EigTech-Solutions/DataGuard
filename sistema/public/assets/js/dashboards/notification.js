@@ -3,7 +3,7 @@ var notificacoes = [];
 idInstituicao = sessionStorage.ID_INSTITUICAO
 
 function obterNotificacoes() {
-    fetch(`/dashboards/notificacoes/${idInstituicao}/${sessionStorage.ID_USUARIO}`, {
+    fetch(`/alertas/notificacoes/buscarNotificacoes/${idInstituicao}/${sessionStorage.ID_USUARIO}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -12,40 +12,33 @@ function obterNotificacoes() {
         if (resposta.ok) {
             resposta.json().then(json => {
                 notificacoes.push(...json)
-                json.forEach(alerta => {
-                    let nomeSala = alerta.nomeSala;
-                    let numeroSala = alerta.numeroSala >= 10 ? alerta.numeroSala : `0${alerta.numeroSala}`;
-                    let idMaquina = alerta.idMaquina;
-                    let ipMaquina = alerta.ipMaquina;
-                    let tipoAlerta = alerta.tipo;
-                    let dataHora = alerta.dataHora;
+                document.getElementById('qtdNotificacoes').innerHTML = notificacoes.length;
+                notificacoes.forEach(alerta => {
+                    let tipoAlertaCor = alerta.tipo == 'atenção' ? 'tipo_notificacao_alerta_color' : 'tipo_notificacao_urgente_color';
+                    let alertaTitle = alerta.tipo == 'atenção' ? "ATENÇÃO " + alerta.nomeSala : "URGENTE " + alerta.nomeSala;
+                    let tipoAlertaText = alerta.tipo == 'atenção' ? 'tipo_notificacao_alerta_txt' : 'tipo_notificacao_urgente_txt';
+                    document.getElementById('caixa_de_alertas').innerHTML += `
+                                    <div class="alertas" name="alerta_id_${alerta.idAlertas}">
+                                        <div class="tipo_notificacao ${tipoAlertaCor}">
 
-                    let lido = alerta.lido != 1 ? 'alertas' : 'alertas_lido';
-
-                    var imgAlerta = tipoAlerta.toLowerCase() == "urgente" ? "../assets/images/alertaPerigo.png" : "../assets/images/alertaAviso.png";
-                    document.getElementById('caixa_de_alertas').innerHTML +=
-                        `      
-                        <div class="${lido}" name="alerta">
-                            <img src=${imgAlerta} alt="img_Tipo_alerta">
-                            <div class="mensagens">
-                                <div class="mensagem_erro">
-                                    <p>Problema ocorrido no ${nomeSala}</p>
-                                </div>
-                                <div class="mensagem_lab">
-                                    <p><b>(LABORATORIO ${numeroSala})</b></p>
-                                </div>
-                                <div class="mensagem_comp">
-                                    <p>Computador <span><b>${ipMaquina}</b></span> apresentou problemas no componente X</p>
-                                </div>
-                                <div class="conf_coputador">
-                                    <p><b><a href="dashboardMaquina.html?id=${idMaquina}">Conferir Computador</a></b></p>
-                                </div>
-                                <div class="data_mensagem">
-                                    <p>${dataHora}</p>
-                                </div>
-                            </div>
-                        </div>
+                                        </div>
+                                        <div class="notificacao_infos">
+                                            <div class="check_notificacao">
+                                                <img src="../assets/images/check_notchecked.png"
+                                                    class="check_notificacao_img" id="check_notificacao_img" onclick="marcarComoLido(${alerta.idAlertas})">
+                                            </div>
+                                            <span class="span_notificacao_tipo ${tipoAlertaText}">
+                                                ${alertaTitle}
+                                            </span>
+                                            <span class="pc_infos">
+                                                ${alerta.componente} da Maquina ${alerta.ipMaquina} está em x% (5% acima dos limites)
+                                            </span>
+                                            <a href="dashboardMaquina.html?id=${alerta.idMaquina}" class="redirecionar_maquina" >Ir para máquina</a>
+                                            <span class="data_hora_notificacao">${alerta.dataHora}</span>
+                                        </div>
+                                    </div>
                     `
+
                 });
                 atualizarNotificacoes();
             })
@@ -63,7 +56,7 @@ function obterNotificacoes() {
 
 function atualizarNotificacoes() {
     setInterval(() => {
-        fetch(`/dashboards/notificacoes/${idInstituicao}/${sessionStorage.ID_USUARIO}`, {
+        fetch(`/alertas/notificacoes/buscarNotificacoes/${idInstituicao}/${sessionStorage.ID_USUARIO}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -71,53 +64,23 @@ function atualizarNotificacoes() {
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(resposta => {
-                    let alerta = resposta[0];
-                    let existe = false;
                     console.log(resposta);
-
-                    console.log(existe);
-
-                    if (existe) {
-                        console.log("Sem notificações novas!");
-                    } else {
-                        console.log("Nova notificação!!");
-                        notificacoes.push(alerta)
-                        let nomeSala = alerta.nomeSala;
-                        let numeroSala = alerta.numeroSala >= 10 ? alerta.numeroSala : `0${alerta.numeroSala}`;
-                        let idMaquina = alerta.idMaquina;
-                        let ipMaquina = alerta.ipMaquina;
-                        let tipoAlerta = alerta.tipo;
-                        let dataHora = alerta.dataHora;
-
-                        let lido = alerta.lido != 1 ? 'alertas' : 'alertas_lido';
-
-                        var imgAlerta = tipoAlerta.toLowerCase() == "urgente" ? "../assets/images/alertaPerigo.png" : "../assets/images/alertaAviso.png";
-                        let caixaAlertas = document.getElementById('caixa_de_alertas');
-                        let novoAlerta = document.createElement('div')
-                        novoAlerta.classList.add(`${lido}`)
-                        novoAlerta.setAttribute('name', 'alerta')
-                        novoAlerta.innerHTML = `      
-                            <img src=${imgAlerta} alt="img_Tipo_alerta">
-                            <div class="mensagens">
-                                <div class="mensagem_erro">
-                                    <p>Problema ocorrido no ${nomeSala}</p>
-                                </div>
-                                <div class="mensagem_lab">
-                                    <p><b>(LABORATORIO ${numeroSala})</b></p>
-                                </div>
-                                <div class="mensagem_comp">
-                                    <p>Computador <span><b>${ipMaquina}</b></span> apresentou problemas no componente X</p>
-                                </div>
-                                <div class="conf_coputador">
-                                    <p><b><a href="dashboardMaquina.html?id=${idMaquina}">Conferir Computador</a></b></p>
-                                </div>
-                                <div class="data_mensagem">
-                                    <p>${dataHora}</p>
-                                </div>
-                            </div>
-                    `
-                        caixaAlertas.insertBefore(novoAlerta, caixaAlertas.firstChild)
+                    for (let i = 0; i < resposta.length; i++) {
+                        let novaNotificacao = true;
+                        const notificacao = resposta[i];
+                        for (let j = 0; j < notificacoes.length; j++) {
+                            const notificacaoAntiga = notificacoes[j];
+                            if (notificacao.idAlertas == notificacaoAntiga.idAlertas) {
+                                novaNotificacao = false;
+                            }
+                        }
+                        if (novaNotificacao) {
+                            notificacoes.push(notificacao)
+                            // caixaAlertas.insertBefore(novoAlerta, caixaAlertas.firstChild)
+                        }
                     }
+
+
 
                 })
             } else {
@@ -133,8 +96,35 @@ function atualizarNotificacoes() {
     }, 5000);
 }
 
+function marcarComoLido(idNotificacao) {
+    console.log(idNotificacao);
+
+    fetch(`/alertas/notificacoes/marcarLido/${idNotificacao}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            console.log("Marcado como lido!!!!!!!");
+            let notificacaoRemover = document.getElementsByName("alerta_id_" + idNotificacao)[0];
+
+            notificacoes = notificacoes.filter(objeto => objeto.idAlertas !== idNotificacao);
+
+            console.log(notificacoes);
+            notificacaoRemover.classList.add("animacao_alerta_sumir");
+            setTimeout(() => {
+                notificacaoRemover.remove();
+            }, 1200);
+        } else {
+            throw ("houve um erro ao tentar marcar como lido");
+        }
+    }).catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+    });
+}
+
 function marcarTodosLido() {
-    var alertasNaoLido = document.getElementsByName('alertas_nao_lido')
     for (let i = 0; i < alertasNaoLido.length; i++) {
         alertasNaoLido[i].style.background = "rgba(89, 131, 146, 0.50)";
     }

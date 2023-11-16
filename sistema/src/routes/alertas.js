@@ -11,4 +11,16 @@ router.get("/buscarQtdAlertasUrgentesAtencaoAno/:idLab/:idInstituicao/:ano", fun
     alertasController.buscarQtdAlertasUrgentesAtencaoAno(req, res);
 });
 
+router.get("/notificacoes/buscarNotificacoes/:idInstituicao/:idUsuario", function (req, res) {
+    alertasController.buscarNotificacoes(req, res);
+})
+
+router.get("/notificacoes/buscarNotificacoes/tempoReal/:idInstituicao/:idUsuario", function (req, res) {
+    alertasController.buscarNotificacoesTempoReal(req, res);
+})
+
+router.put("/notificacoes/marcarLido/:idNotificacao", function (req, res) {
+    alertasController.marcarLido(req, res);
+})
+
 module.exports = router;
