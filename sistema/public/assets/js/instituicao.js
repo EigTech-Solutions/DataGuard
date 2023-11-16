@@ -9,32 +9,32 @@ function cadastrar() {
 
     var idInstituicaoVAR = sessionStorage.ID_INSTITUICAO;
 
-    if (nomeInstVAR == "" || cnpjInstbVAR == ""|| emailInstbVAR == ""
-    || telefoneInstbVAR == ""|| cepInstbVAR == "" || numeroInstbVAR == "") {
+    if (nomeInstVAR == "" || cnpjInstbVAR == "" || emailInstbVAR == ""
+        || telefoneInstbVAR == "" || cepInstbVAR == "" || numeroInstbVAR == "") {
         Swal.fire(
             'Campo obrigatório vazio.',
             'Preencha todos os campos para continuar!',
             'error'
         );
-    } else if(telefoneInstbVAR.length > 14){
+    } else if (telefoneInstbVAR.length > 14) {
         Swal.fire(
             'Número de telefone inválido.',
             'Preencha corretamente para continuar!',
             'error'
         );
-     } else if(cnpjInstbVAR.length != 14){
+    } else if (cnpjInstbVAR.length != 14) {
         Swal.fire(
             'Número de CNPJ inválido.',
             'Preencha corretamente para continuar!',
             'error'
         );
-    } else if(cepInstbVAR.length != 8){
+    } else if (cepInstbVAR.length != 8) {
         Swal.fire(
             'Número de CEP inválido.',
             'Preencha corretamente para continuar!',
             'error'
         );
-    }else {
+    } else {
         fetch("/instituicao/cadastrar", {
             method: "POST",
             headers: {
@@ -121,83 +121,88 @@ function fecharModal() {
 function dadosDashboard() {
     fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
-          response.json().then(function (dados) {
+            response.json().then(function (dados) {
 
-            mostrarDados(dados)
+                mostrarDados(dados)
 
-          });
+            });
         } else {
-          console.error('Nenhuma tarefa encontrada ou erro na API');
+            console.error('Nenhuma tarefa encontrada ou erro na API');
         }
-      })
+    })
         .catch(function (error) {
-          console.error(`Erro na obtenção dos dados: ${error.message}`);
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
         });
-    }
-    dadosDashboard()
+}
+dadosDashboard()
 
-    function mostrarDados(dados){
-        for(i = 0; i < dados.length; i++){
-            var totalInstituicoes = dados[i].quantidade_total_instituicoes;
-            totalClasse.innerHTML = `${totalInstituicoes}`
-        }
+function mostrarDados(dados) {
+    for (i = 0; i < dados.length; i++) {
+        var totalInstituicoes = dados[i].quantidade_total_instituicoes;
+        totalClasse.innerHTML = `${totalInstituicoes}`
     }
-    function dadosInstituicao() {
-        fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
-            if (response.ok) {
-              response.json().then(function (informacao) {
+}
+function dadosInstituicao() {
+    fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (informacao) {
 
                 mostrarInformacao(informacao)
 
-              });
-            } else {
-              console.error('Nenhuma informaçao encontrada ou erro na API');
-            }
-          })
-            .catch(function (error) {
-              console.error(`Erro na obtenção dos dados: ${error.message}`);
+
             });
+        } else {
+            console.error('Nenhuma informaçao encontrada ou erro na API');
         }
-        dadosInstituicao()
+    })
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
+}
+dadosInstituicao()
 
 
-        function mostrarInformacao(informacao){
-            for(i = 0; i < informacao.length; i++){
-                var nomeInstituicao = informacao[i].nomeInstitucional;
-                chart_variacao_estado.innerHTML += `${nomeInstituicao}  <br>`
-            }
+function mostrarInformacao(informacao) {
+    for (i = 0; i < informacao.length; i++) {
+        var nomeInstituicao = informacao[i].nomeInstitucional;
+        blocoDeDado.innerHTML += 
+        `<div class="Instituicoes">
+            ${nomeInstituicao}
+         </div>`
+        console.log("for")
+    }
+}
+
+function dadosGeraisInst() {
+    fetch(`/instituicao/dadosGeraisInst`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (dadosPuxados) {
+                console.log("Response -> " + response[0].cnpj)
+                console.log("DadosPuxados -> " + dadosPuxados[0].cnpj)
+                mostrarInf(dadosPuxados)
+
+            });
+        } else {
+            console.error('Nenhuma informaçao encontrada ou erro na API');
         }
+    })
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
+}
+dadosGeraisInst()
 
-        function dadosGeraisInst() {
-            fetch(`/instituicao/dadosGeraisInst`, { cache: 'no-store' }).then(function (response) {
-                if (response.ok) {
-                  response.json().then(function (dadosPuxados) {
-                    console.log("Response -> " + response[0].cnpj)
-                    console.log("DadosPuxados -> "+dadosPuxados[0].cnpj)
-                    mostrarInf(dadosPuxados)
-    
-                  });
-                } else {
-                  console.error('Nenhuma informaçao encontrada ou erro na API');
-                }
-              })
-                .catch(function (error) {
-                  console.error(`Erro na obtenção dos dados: ${error.message}`);
-                });
-            }
-            dadosGeraisInst()
+function mostrarInf(dadosPuxados) {
+    for (i = 0; i < dadosPuxados.length; i++) {
+        var nomeInstituicao = dadosPuxados[i].nomeInstitucional;
+        var cnpj = dadosPuxados[i].cnpj;
+        var email = dadosPuxados[i].email;
+        var telefone = dadosPuxados[i].telefone;
+        var cep = dadosPuxados[i].cep;
+        var numeroEndereco = dadosPuxados[i].numeroEndereco;
+        var complemento = dadosPuxados[i].complemento;
 
-            function mostrarInf(dadosPuxados){
-                for(i = 0; i < dadosPuxados.length; i++){
-                    var nomeInstituicao = dadosPuxados[i].nomeInstitucional;
-                    var cnpj = dadosPuxados[i].cnpj;
-                    var email = dadosPuxados[i].email;
-                    var telefone = dadosPuxados[i].telefone;
-                    var cep = dadosPuxados[i].cep;
-                    var numeroEndereco = dadosPuxados[i].numeroEndereco;
-                    var complemento = dadosPuxados[i].complemento;
-            
-                    blocoDeDado.innerHTML += `
+        todasInst.innerHTML += `
                         <div>
                             <p>Nome: ${nomeInstituicao}</p>
                             <p>CNPJ: ${cnpj}</p>
@@ -208,6 +213,18 @@ function dadosDashboard() {
                             <p>Complemento: ${complemento}</p>
                         </div>
                     `;
-                }
-            }
-            
+                    console.log("inner")
+    }
+}
+
+function pesquisarInstituicao(dadosPuxados){
+    var busca = input_busca.value;
+
+    for (i = 0; i < dadosPuxados.length; i++) {
+        var nomeInstituicao = dadosPuxados[i].nomeInstitucional;
+        var nomes = []
+        nomes.push(nomeInstituicao);
+        console.log(nomes)
+
+    }
+}
