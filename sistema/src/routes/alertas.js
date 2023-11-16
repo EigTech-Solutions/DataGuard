@@ -15,10 +15,6 @@ router.get("/notificacoes/buscarNotificacoes/:idInstituicao/:idUsuario", functio
     alertasController.buscarNotificacoes(req, res);
 })
 
-router.get("/notificacoes/buscarNotificacoes/tempoReal/:idInstituicao/:idUsuario", function (req, res) {
-    alertasController.buscarNotificacoesTempoReal(req, res);
-})
-
 router.put("/notificacoes/marcarLido/:idNotificacao", function (req, res) {
     alertasController.marcarLido(req, res);
 })
