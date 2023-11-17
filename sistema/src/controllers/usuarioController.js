@@ -243,6 +243,26 @@ function deletarAcesso(req, res) {
         );
 }
 
+function buscarResponsavelLab(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicao = req.params.idInstituicao;
+
+    usuarioModel.buscarResponsavelLab(idLab, idInstituicao)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     autenticar,
     listar,
@@ -252,5 +272,6 @@ module.exports = {
     cadastrarAcesso,
     atualizar,
     deletar,
-    deletarAcesso
+    deletarAcesso,
+    buscarResponsavelLab
 }

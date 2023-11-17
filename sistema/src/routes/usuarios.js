@@ -40,4 +40,8 @@ router.delete("/deletarAcesso/:idUser/:idAcesso/:idInstituicao", function (req, 
     usuarioController.deletarAcesso(req, res);
 });
 
+router.get("/buscarResponsavelLab/:idLab/:idInstituicao", function (req, res) {
+    usuarioController.buscarResponsavelLab(req, res);
+});
+
 module.exports = router;

@@ -60,7 +60,6 @@ function obterKpis() {
         if (resposta.ok) {
             resposta.json().then(json => {
                 json.map(resposta => {
-                    console.log(resposta);
                     document.getElementById('kpi_qtd_maquinas_ativas').innerHTML = resposta.qtdMaquinas
                     document.getElementById('kpi_qtd_labs').innerHTML = resposta.qtdLabs
                     document.getElementById('kpi_qtd_alertas').innerHTML = resposta.qtdAlertas
@@ -248,7 +247,6 @@ function buscarDadosStatusMaquinas() {
 function plotarGraficoStatusMaquinas(dadosParam) {
     //atualizando as legendas (data e hora dos registros)
     let novosDados = [dadosParam[0].qtdAtivas, dadosParam[0].qtdDesativadas];
-    console.log(dadosParam);
     datasetsStatus[0].data = novosDados;
 
     chartStatusMaquinas.update();
@@ -317,7 +315,6 @@ function buscarRankingLabs() {
     }).then(function (resposta) {
         if (resposta.ok) {
             resposta.json().then(dados => {
-                console.log(dados);
                 atualizarTable(dados);
                 atualizarRankingLabs(dados);
             });

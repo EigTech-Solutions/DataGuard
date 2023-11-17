@@ -19,65 +19,6 @@ function buscarDadosKpis(req, res) {
     });
 }
 
-function buscarNotificacoes(req, res) {
-    var idInstituicao = req.params.idInstituicao;
-    var idUsuario = req.params.idUsuario;
-
-    console.log(`Recuperando as notificações(alertas) da instituição com id ${Number(idInstituicao)} e técnico com id ${idUsuario}`);
-
-    dashboardsModel.buscarNotificacoes(idInstituicao, idUsuario).then(function (resultado) {
-        if (resultado.length > 0) {
-            res.status(200).json(resultado);
-        } else {
-            res.status(204).send("Nenhum resultado encontrado!")
-        }
-    }).catch(function (erro) {
-        console.log(erro);
-        console.log("Houve um erro ao buscar as notificações.", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-    });
-}
-
-function buscarNotificacoesTempoReal(req, res) {
-    var idInstituicao = req.params.idInstituicao;
-    var idUsuario = req.params.idUsuario;
-
-    console.log(`Recuperando as notificações(alertas) da instituição com id ${Number(idInstituicao)} e id do usuário: ${Number(idUsuario)}`);
-
-    dashboardsModel.buscarNotificacoesTempoReal(idInstituicao, idUsuario).then(function (resultado) {
-        if (resultado.length > 0) {
-            res.status(200).json(resultado);
-        } else {
-            res.status(204).send("Nenhum resultado encontrado!")
-        }
-    }).catch(function (erro) {
-        console.log(erro);
-        console.log("Houve um erro ao buscar as notificações.", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-    });
-}
-
-function marcarLido(req, res) {
-    var idNotificacao = req.params.idNotificacao;
-
-    console.log(`Marcando a notificações(alertas) da como lido: id ${Number(idNotificacao)}`);
-    dashboardsModel.marcarLido(idNotificacao)
-        .then(
-            function (resultado) {
-                res.json(resultado);
-            }
-        ).catch(
-            function (erro) {
-                console.log(erro);
-                console.log(
-                    "\nHouve um erro ao marcar como lido! Erro: ",
-                    erro.sqlMessage
-                );
-                res.status(500).json(erro.sqlMessage);
-            }
-        );
-}
-
 function buscarFluxoRede(req, res) {
     var idInstituicao = req.params.idInstituicao;
 
@@ -440,13 +381,10 @@ function buscarColaboradores(req, res) {
 
 module.exports = {
     buscarDadosKpis,
-    buscarNotificacoes,
     buscarFluxoRede,
     buscarFluxoRedeTempoReal,
     buscarStatusMaquinas,
     buscarRankingLabs,
-    buscarNotificacoesTempoReal,
-    marcarLido,
     buscarDadosKpisLabs,
     buscarFluxoRedeLab,
     buscarFluxoRedeLabTempoReal,

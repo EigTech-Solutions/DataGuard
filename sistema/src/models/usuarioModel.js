@@ -35,7 +35,7 @@ function listar(idInstituicao) {
 }
 
 function buscarUser(idUser, idInstituicao) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarUser()");
     var instrucao = `
         SELECT usuario.*, 
             IFNULL(acessoUsuarioAdmin.fkAcesso, 0) AS acessoAdmin, 
@@ -125,6 +125,18 @@ function deletarAcesso(idUser, idAcesso, idInstituicao) {
     return database.executar(instrucao);
 }
 
+function buscarResponsavelLab(idLab, idInstituicao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscar responsavel");
+    var instrucao = `
+        SELECT u.nome, u.email, u.telefone
+        FROM laboratorio l
+        JOIN usuario u ON l.fkResponsavel = u.idUsuario
+        WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao};  
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
     autenticar,
     listar,
@@ -134,5 +146,6 @@ module.exports = {
     cadastrarAcesso,
     atualizar,
     deletar,
-    deletarAcesso
+    deletarAcesso,
+    buscarResponsavelLab
 };

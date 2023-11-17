@@ -1,0 +1,117 @@
+var database = require("../database/config");
+
+function buscarQtdAlertasUrgentesAtencaoMes(idLab, idInstituicao, mes, ano) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
+    var instrucao = `
+        SELECT 
+            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END) as QuantidadeAlertasUrgentes,
+            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) as QuantidadeAlertasAtencao
+        FROM laboratorio l
+        JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        JOIN medicoes med ON m.idMaquina = med.fkMaquina
+        JOIN alertas a ON med.idMonitoramento = a.fkMonitoramento
+        WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
+            AND MONTH(med.dataHora) = ${mes}
+            AND YEAR(med.dataHora) = ${ano}
+        GROUP BY l.idLaboratorio, MONTH(med.dataHora), YEAR(med.dataHora);
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function buscarQtdAlertasUrgentesAtencaoAno(idLab, idInstituicao, ano) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
+    var instrucao = `
+        SELECT 
+            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END) as QuantidadeAlertasUrgentes,
+            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) as QuantidadeAlertasAtencao
+        FROM laboratorio l
+        JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        JOIN medicoes med ON m.idMaquina = med.fkMaquina
+        JOIN alertas a ON med.idMonitoramento = a.fkMonitoramento
+        WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
+            AND YEAR(m.dataHora) = ${ano}
+        GROUP BY l.idLaboratorio, MONTH(m.dataHora), YEAR(m.dataHora);
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+
+function buscarNotificacoes(idInstituicao, idUsuario) {
+
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select  a.idAlertas, a.lido, l.nomeSala, l.numeroSala, DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', m.ipMaquina, m.idMaquina, cm.componente, a.tipo from alertas a 
+            join medicoes me on a.fkMonitoramento = me.idMonitoramento 
+            join componenteMonitorado cm on me.fkComponente = cm.idComponente 
+            join maquina m on cm.fkMaquina = m.idMaquina
+            join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+            where l.fkInstitucional = ${idInstituicao} AND l.fkResponsavel = ${idUsuario} AND a.lido = 0
+            order by me.dataHora desc;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarNotificacoesTempoReal(idInstituicao, idUsuario) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+            select  a.idAlertas, a.lido, l.nomeSala, l.numeroSala, DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', m.ipMaquina, m.idMaquina, cm.componente, cm.tipo from alertas a 
+            join medicoes me on a.fkMonitoramento = me.idMonitoramento 
+            join componenteMonitorado cm on me.fkComponente = cm.idComponente 
+            join maquina m on cm.fkMaquina = m.idMaquina
+            join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+            where l.fkInstitucional = ${idInstituicao} AND l.fkResponsavel = ${idUsuario}
+            order by me.dataHora desc limit 1;
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function marcarLido(idNotificacao) {
+    instrucaoSql = ''
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucaoSql = ``;
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql =
+            `
+           update alertas set lido = 1 where idAlertas = ${idNotificacao}
+            `;
+    } else {
+        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
+        return
+    }
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+module.exports = {
+    buscarQtdAlertasUrgentesAtencaoMes,
+    buscarQtdAlertasUrgentesAtencaoAno,
+    buscarNotificacoes,
+    buscarNotificacoesTempoReal,
+    marcarLido
+};

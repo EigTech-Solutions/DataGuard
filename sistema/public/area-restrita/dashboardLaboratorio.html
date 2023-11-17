@@ -89,12 +89,15 @@
                         </section>
                         <section class="notifications_container">
                             <div class="notification_box">
-                                <span class="notification_title">
-                                    <b>NOTIFICAÇÕES</b>
-                                </span>
-                                <span class="notification_subtitle">
-                                    <a onclick="marcarTodosLido()">MARCAR TODOS COMO LIDO</a>
-                                </span>
+                                <div class="notifications_header">
+                                    <span class="notification_title">
+                                        NOTIFICAÇÕES (5)
+                                    </span>
+                                    <span class="notification_subtitle">
+                                        <a onclick="marcarTodosLido()">MARCAR TODOS COMO LIDO</a>
+                                    </span>
+                                </div>
+
                                 <div class="linha"></div>
                                 <div class="imagem_notification">
                                     <span class="texto_notification">
@@ -104,9 +107,25 @@
                                 </div>
                                 <div class="linha2"></div>
                                 <div class="caixa_de_alertas" id="caixa_de_alertas">
-                                </div>
-                                <div class="notfication_vermais">
-                                    <p><b><a href="">VER MAIS</a></b></p>
+                                    <div class="alertas">
+                                        <div class="tipo_notificacao tipo_notificacao_alerta_color">
+
+                                        </div>
+                                        <div class="notificacao_infos">
+                                            <div class="check_notificacao">
+                                                <img src="../assets/images/check_notchecked.png"
+                                                    class="check_notificacao_img" id="check_notificacao_img" alt="">
+                                            </div>
+                                            <span class="span_notificacao_tipo tipo_notificacao_alerta_txt">
+                                                ATENÇÃO LABORATÓRIO 05
+                                            </span>
+                                            <span class="pc_infos">
+                                                CPU da Maquina abcdefg12334 está em x% (5% acima dos limites)
+                                            </span>
+                                            <a href="#" class="redirecionar_maquina">Ir para máquina</a>
+                                            <span class="data_hora_notificacao">30/09/2023 - 17:04</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </section>

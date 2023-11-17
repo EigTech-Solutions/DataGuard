@@ -15,6 +15,7 @@ var maquinaRouter = require("./src/routes/maquinas");
 var dashboardsRouter = require("./src/routes/dashboards");
 var parametrosMonitoramentoRouter = require("./src/routes/parametrosMonitoramento");
 var instituicaoRouter = require("./src/routes/instituicao");
+var alertasRouter = require("./src/routes/alertas");
 
 
 app.use(express.json());
@@ -30,6 +31,7 @@ app.use("/maquinas", maquinaRouter);
 app.use("/dashboards", dashboardsRouter);
 app.use("/parametrosMonitoramento", parametrosMonitoramentoRouter);
 app.use("/instituicao", instituicaoRouter);
+app.use("/alertas", alertasRouter);
 
 
 app.listen(PORTA, function () {

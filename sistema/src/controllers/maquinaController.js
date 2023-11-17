@@ -249,6 +249,108 @@ function deletar(req, res) {
         );
 }
 
+function buscarTotalPcsInstituicao(req, res) {
+    var idInstituicao = req.params.idInstituicao;
+
+    maquinaModel.buscarTotalPcsInstituicao(idInstituicao)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function buscarTotalPcsLab(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicao = req.params.idInstituicao;
+
+    maquinaModel.buscarTotalPcsLab(idLab, idInstituicao)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function buscarTotalPcsAtivosInativos(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicao = req.params.idInstituicao;
+
+    maquinaModel.buscarTotalPcsAtivosInativos(idLab, idInstituicao)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function buscarTotalPcsCadastradosDesativadosMes(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicao = req.params.idInstituicao;
+    var mes = req.params.mes;
+    var ano = req.params.ano;
+
+    maquinaModel.buscarTotalPcsCadastradosDesativadosMes(idLab, idInstituicao, mes, ano)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function buscarTotalPcsCadastradosDesativadosAno(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicao = req.params.idInstituicao;
+    var ano = req.params.ano;
+
+    maquinaModel.buscarTotalPcsCadastradosDesativadosAno(idLab, idInstituicao, ano)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 
 module.exports = {
     listar,
@@ -258,5 +360,10 @@ module.exports = {
     atualizar,
     atualizarStatus,
     atualizarLaboratorio,
-    deletar
+    deletar,
+    buscarTotalPcsInstituicao,
+    buscarTotalPcsLab,
+    buscarTotalPcsAtivosInativos,
+    buscarTotalPcsCadastradosDesativadosMes,
+    buscarTotalPcsCadastradosDesativadosAno
 }

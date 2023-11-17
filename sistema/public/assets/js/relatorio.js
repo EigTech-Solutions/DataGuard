@@ -166,9 +166,9 @@ function gerarRelatorio() {
                         <th>Telefone</th>
                     </tr>
                     <tr>
-                        <td>Maria Silva</td>
-                        <td>maria.s@etec.com</td>
-                        <td>(11) 91234-5678</td>
+                        <td id="nomeResponsavelLab">-</td>
+                        <td id="emailResponsavelLab">-</td>
+                        <td id="telResponsavelLab">-</td>
                     </tr>
                 </table>
             </section>
@@ -178,8 +178,8 @@ function gerarRelatorio() {
                 <table class="tbThLateral3">
                     <tr>
                         <th>Nível</th>
-                        <td>17%</td>
-                        <td>Atenção</td>
+                        <td>-%</td>
+                        <td>-</td>
                     </tr>
                 </table>
             </section>
@@ -189,11 +189,11 @@ function gerarRelatorio() {
                 <table class="tbThLateral2">
                     <tr>
                         <th>Total de máquinas nos laboratórios</th>
-                        <td>480</td>
+                        <td id="totalPcsLabs">-</td>
                     </tr>
                     <tr>
-                        <th>Total de máquinas no Laboratório XYZ</th>
-                        <td>48 (10%)</td>
+                        <th>Total de máquinas no <span id="labRelatorio"></span></th>
+                        <td id="totalPcsLab">-</td>  
                     </tr>
                 </table>
             </section>
@@ -203,11 +203,11 @@ function gerarRelatorio() {
                 <table class="tbThLateral2">
                     <tr>
                         <th>Máquinas Ativas</th>
-                        <td>40</td>
+                        <td id="totalPcsAtivosLab">-</td>
                     </tr>
                     <tr>
                         <th>Máquinas Inativas</th>
-                        <td>8 (2%)</td>
+                        <td id="totalPcsInativosLab">-</td>
                     </tr>
                 </table>
             </section>
@@ -217,11 +217,11 @@ function gerarRelatorio() {
                 <table class="tbThLateral2">
                     <tr>
                         <th>Máquinas Adicionadas</th>
-                        <td>20</td>
+                        <td id="totalPcsAdicionadosLab">-</td>
                     </tr>
                     <tr>
                         <th>Máquinas Desativadas</th>
-                        <td>5</td>
+                        <td id="totalPcsDesativadosLab">-</td>
                     </tr>
                 </table>
             </section>
@@ -231,12 +231,12 @@ function gerarRelatorio() {
                 <table class="tbThLateral2">
                     <tr>
                         <th>Paradas gerais/totais</th>
-                        <td>3</td>
+                        <td>-</td>
                     </tr>
                 </table>
             </section>
 
-            <br>
+            <br><br>
 
             <section>
                 <p>Máquinas que mais apresentaram erros:</p>
@@ -247,15 +247,15 @@ function gerarRelatorio() {
                     </tr>
                     <tr>
                         <td>1</td>
-                        <td>192.168.05</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>192.168.15</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>192.168.68</td>
+                        <td>-</td>
                     </tr>
                 </table>
             </section>
@@ -269,23 +269,23 @@ function gerarRelatorio() {
                     </tr>
                     <tr>
                         <td>1</td>
-                        <td>192.168.56</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>192.168.65</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>192.168.87</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>4</td>
-                        <td>192.168.09</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>5</td>
-                        <td>192.168.32</td>
+                        <td>-</td>
                     </tr>
                 </table>
             </section>
@@ -295,11 +295,11 @@ function gerarRelatorio() {
                 <table class="tbThLateral2">
                     <tr>
                         <th>Alertas Urgentes</th>
-                        <td>53</td>
+                        <td id="qtdAlertaUrgenteMes">-</td>
                     </tr>
                     <tr>
                         <th>Alertas de Atenção</th>
-                        <td>71</td>
+                        <td id="qtdAlertaAtencaoMes">-</td>
                     </tr>
                     </tr>
                 </table>
@@ -310,30 +310,31 @@ function gerarRelatorio() {
                 <table class="tbThLateral3">
                     <tr>
                         <th>Memória RAM</th>
-                        <td>17%</td>
-                        <td>7 máquinas</td>
+                        <td>-%</td>
+                        <td>- máquinas</td>
                     </tr>
                     <tr>
                         <th>Memória de Disco</th>
-                        <td>33%</td>
-                        <td>13 máquinas</td>
+                        <td>-%</td>
+                        <td>- máquinas</td>
                     </tr>
                     </tr>
                     <tr>
                         <th>CPU</th>
-                        <td>65%</td>
-                        <td>26 máquinas</td>
+                        <td>-%</td>
+                        <td>- máquinas</td>
                     </tr>
                     <tr>
                         <th>Rede</th>
-                        <td>10%</td>
-                        <td>72 máquinas</td>
+                        <td>-%</td>
+                        <td>- máquinas</td>
                     </tr>
                 </table>
             </section>
-        
         `;
         
+        const labRelatorio = divRelatorio.querySelectorAll('#labRelatorio')
+
         fetch(`/laboratorios/buscarLab/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) { 
@@ -345,7 +346,8 @@ function gerarRelatorio() {
 
                     var laboratorio = resposta[0];
 
-                    labRelatorio.innerHTML = `lab teste`;
+                    labRelatorio[0].innerHTML = laboratorio.nomeSala;
+                    labRelatorio[1].innerHTML = laboratorio.nomeSala;
                 });
             } else {
                 throw ('Houve um erro na API!');
@@ -354,21 +356,148 @@ function gerarRelatorio() {
             console.error(resposta);
         });
 
-        // Conteúdo do PDF
-        const conteudoPdf = document.querySelector("#divRelatorio");
+        fetch(`/usuarios/buscarResponsavelLab/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
 
-        // Configuração do arquivo final de PDF
-        const options = {
-            margin: [10, 10, 10, 10],
-            filename: `relatorio${nomeMes}${ano}.pdf`,
-            html2canvas: {scale: 2},
-            jsPDF:{unit: "mm", format: "a4", orientation: "portrait"}
-        }
+                    var usuario = resposta[0];
 
-        // Gerar e baixar o PDF
-        html2pdf().set(options).from(conteudoPdf).save();  
+                    nomeResponsavelLab.innerHTML = usuario.nome;
+                    emailResponsavelLab.innerHTML = usuario.email;
+                    telResponsavelLab.innerHTML = usuario.telefone;
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
 
+        fetch(`/maquinas/buscarTotalPcsInstituicao/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    var maquinas = resposta[0];
+
+                    totalPcsLabs.innerHTML = maquinas.TotalMaquinas;
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+
+        fetch(`/maquinas/buscarTotalPcsLab/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    var maquinas = resposta[0];
+
+                    totalPcsLab.innerHTML = maquinas.TotalMaquinasLaboratorio;
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+
+        fetch(`/maquinas/buscarTotalPcsAtivosInativos/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    var maquinas = resposta[0];
+
+                    totalPcsAtivosLab.innerHTML = maquinas.TotalMaquinasAtivas;
+                    totalPcsInativosLab.innerHTML = `${maquinas.TotalMaquinasInativas} (${maquinas.PercentualMaquinasInativas}%)`;
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+
+        fetch(`/maquinas/buscarTotalPcsCadastradosDesativadosMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    var maquinas = resposta[0];
+
+                    totalPcsAdicionadosLab.innerHTML = maquinas.QtdMaquinasAdicionadas;
+                    totalPcsDesativadosLab.innerHTML = maquinas.QtdMaquinasDesativadas;
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+
+        fetch(`/alertas/buscarQtdAlertasUrgentesAtencaoMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    var alertas = resposta[0];
+
+                    qtdAlertaUrgenteMes.innerHTML = alertas.QuantidadeAlertasUrgentes;
+                    qtdAlertaAtencaoMes.innerHTML = alertas.QuantidadeAlertasAtencao;
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
         
+
+        setTimeout(() => {
+            // Conteúdo do PDF
+            const conteudoPdf = document.querySelector("#divRelatorio");
+    
+            // Configuração do arquivo final de PDF
+            const options = {
+                margin: [10, 10, 10, 10],
+                filename: `relatorio${nomeMes}${ano}.pdf`,
+                html2canvas: {scale: 2},
+                jsPDF:{unit: "mm", format: "a4", orientation: "portrait"}
+            }
+    
+            // Gerar e baixar o PDF
+            html2pdf().set(options).from(conteudoPdf).save();  
+        }, 2000)
+
         Swal.fire({
             position: 'center',
             icon: 'success',

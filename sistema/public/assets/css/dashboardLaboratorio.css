@@ -74,10 +74,6 @@
     line-height: 85%;
 }
 
-.atencao {
-    color: #FF8039;
-}
-
 .notifications_container {
     width: 30%;
     height: 100%;
@@ -85,23 +81,33 @@
 
 .notification_box {
     width: 100%;
+    height: 90vh;
     background-color: #3e5b66;
     padding-top: 2vh;
     border-radius: 15px;
     padding-bottom: 1.5vh;
 }
 
+.notifications_header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
 .notification_title {
-    margin-left: 3vh;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 0.4rem;
 }
 
 .notification_subtitle {
-    font-size: 0.7vw;
-    margin-left: 7.5vh;
-    margin-right: 0.5vh;
-    font-weight: bold;
+    font-size: 0.5rem;
     cursor: pointer;
     text-decoration: underline;
+    margin-right: 0.4rem;
 }
 
 .notification_subtitle a {
@@ -170,7 +176,7 @@
     border-radius: 10px;
 }
 
-.table_rknMaquinas_qtdAlertas{
+.table_rknMaquinas_qtdAlertas {
     text-align: center;
     color: #F43B32;
 }
@@ -231,17 +237,17 @@
     width: 100%;
 }
 
-.ranking_maquinas td{
+.ranking_maquinas td {
     border-bottom: 3px solid #124559;
 }
 
-.ranking_maquinas td:first-child{
+.ranking_maquinas td:first-child {
     border-right: 1px solid #124559;
     border-bottom: 3px solid #124559;
 }
 
 
-.table_rknmaquinas_qtdAlertas{
+.table_rknmaquinas_qtdAlertas {
     padding: 0 0.75rem;
     text-align: center;
     color: #F43B32;
@@ -283,27 +289,31 @@
     height: 25vh;
     display: flex;
     flex-direction: row;
-}
-
-.texto_notification {
-    margin-left: 3vh;
-    margin-top: 2.5vw;
-}
-
-.alertas_nao_lido {
-    margin-top: 1.25vh;
-    width: auto;
-    height: 20vh;
-    display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #124559;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     padding: 0.5rem;
 }
 
-.alertas_lido {
-    background-color: #8aa8b2;
+.imagem_notification img {
+    width: 50%;
+}
+
+.texto_notification {
+    font-family: Poppins;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+.alertas {
+    margin-top: 0.3rem;
+    width: auto;
+    height: 20vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    text-align: center;
 }
 
 .caixa_de_alertas {
@@ -311,51 +321,101 @@
     height: 60vh;
 }
 
-.alertas_nao_lido img {
-    height: 10vh;
+.tipo_notificacao {
+    width: 8%;
+    height: 100%;
 }
 
-.mensagens {
-    margin-left: 2vh;
+.tipo_notificacao_alerta_txt {
+    color: #FF8039;
+}
+
+.tipo_notificacao_urgente_txt {
+    color: #E50305;
+}
+
+.tipo_notificacao_alerta_color {
+    color: #FF8039;
+    background-color: #FF8039;
+}
+
+.tipo_notificacao_urgente_color {
+    color: #E50305;
+    background-color: #E50305;
+    ;
+}
+
+.notificacao_infos {
+    padding: 0rem 0.4rem;
+    position: relative;
+}
+
+.span_notificacao_tipo {
+    width: 50%;
+    font-size: 0.95rem;
+    font-weight: bold;
+    display: block;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    line-height: 1.25rem;
+    margin: 0.3rem 0rem;
+    text-align: left;
+}
+
+.pc_infos {
+    color: rgba(0, 0, 0, 0.75);
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: block;
+    text-align: left;
+}
+
+.redirecionar_maquina {
+    color: rgba(0, 0, 0, 0.8);
     font-size: 0.75rem;
+    text-decoration: underline;
+    text-align: center;
+    margin-top: 0.5rem;
 }
 
-.conf_coputador {
-    display: flex;
-    font-size: 1.8vh;
-    margin-top: 0.5vw;
-    margin-left: 5vh;
-}
-
-.conf_coputador a {
-    color: #AEC3B0;
-    font-size: 2vh;
+.redirecionar_maquina:hover {
+    font-size: 0.8rem;
+    transition: 0.35s;
+    color: rgba(0, 0, 0, 1);
 }
 
 .data_mensagem {
-    font-size: 1.8vh;
+    font-size: 0.65rem;
     margin-top: 0.5vw;
-    margin-left: 20vh;
+    text-align: end;
 }
 
-.mensagem_comp {
-    margin-top: 0.5vw;
+.data_hora_notificacao {
+    display: block;
+    font-size: 0.7rem;
+    text-align: end;
+    color: rgba(0, 0, 0, 1);
+
 }
 
-.mensagem_comp span {
-    color: #AEC3B0;
+.check_notificacao {
+    width: 2vw;
+    height: 5vh;
+    position: absolute;
+    right: 5px;
 }
 
-.mensagem_lab {
-    color: #AEC3B0;
+.check_notificacao_img {
+    width: 100%;
 }
 
-.notfication_vermais {
-    margin-top: 1vh;
-    text-align: center;
-    font-size: 2vh;
+.check_notificacao_img img {
+    width: 50px;
+    height: 50px;
 }
 
-.notfication_vermais a {
-    color: white;
+.check_notificacao_img:hover {
+    transform: scale(1.2);
+    transition: 0.3s;
+    cursor: pointer;
 }
