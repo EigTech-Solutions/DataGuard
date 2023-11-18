@@ -55,4 +55,12 @@ router.get("/buscarTotalPcsCadastradosDesativadosAno/:idLab/:idInstituicao/:ano"
     maquinaController.buscarTotalPcsCadastradosDesativadosAno(req, res);
 });
 
+router.get("/buscarPcsDesativadosMes/:idLab/:idInstituicao/:mes/:ano", function (req, res) {
+    maquinaController.buscarPcsDesativadosMes(req, res);
+});
+
+router.get("/buscarPcsDesativadosAno/:idLab/:idInstituicao/:ano", function (req, res) {
+    maquinaController.buscarPcsDesativadosAno(req, res);
+});
+
 module.exports = router;

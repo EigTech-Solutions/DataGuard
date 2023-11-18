@@ -225,69 +225,15 @@ function gerarRelatorio() {
                     </tr>
                 </table>
             </section>
-            
-            <section>
-                <p>Quantidade de paradas gerais no mês vigente:</p>
-                <table class="tbThLateral2">
-                    <tr>
-                        <th>Paradas gerais/totais</th>
-                        <td>-</td>
-                    </tr>
-                </table>
-            </section>
-
-            <br><br>
 
             <section>
-                <p>Máquinas que mais apresentaram erros:</p>
-                <table class="tbResponsavel">
-                    <tr>
-                        <th>Nº</th>
-                        <th>IP</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>-</td>
-                    </tr>
-                </table>
+                <p>Top 10 Máquinas que mais apresentaram erros:</p>
+                <table class="tbResponsavel" id="tbPcsMaisErros"></table>
             </section>
 
             <section>
                 <p>Máquinas que foram desativadas:</p>
-                <table class="tbResponsavel">
-                    <tr>
-                        <th>Nº</th>
-                        <th>IP</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>-</td>
-                    </tr>
-                </table>
+                <table class="tbResponsavel" id="tbMaquinasDesativadas"></table>
             </section>
                     
             <section>
@@ -307,29 +253,7 @@ function gerarRelatorio() {
             
             <section>
                 <p>Especificação dos alertas abertos (% de máquina que apresentaram erros por hardwares):</p>
-                <table class="tbThLateral3">
-                    <tr>
-                        <th>Memória RAM</th>
-                        <td>-%</td>
-                        <td>- máquinas</td>
-                    </tr>
-                    <tr>
-                        <th>Memória de Disco</th>
-                        <td>-%</td>
-                        <td>- máquinas</td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <th>CPU</th>
-                        <td>-%</td>
-                        <td>- máquinas</td>
-                    </tr>
-                    <tr>
-                        <th>Rede</th>
-                        <td>-%</td>
-                        <td>- máquinas</td>
-                    </tr>
-                </table>
+                <table class="tbThLateral3" id="tbAlertasComponentes"></table>
             </section>
         `;
         
@@ -459,6 +383,76 @@ function gerarRelatorio() {
         }).catch(function (resposta) {
             console.error(resposta);
         });
+        
+        fetch(`/dashboards/dashboardLaboratorio/rankingMaquinas/${idLaboratorio}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    tbPcsMaisErros.innerHTML = "- Nenhuma.";
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    tbPcsMaisErros.innerHTML = `
+                        <tr>
+                            <th>Nº</th>
+                            <th>Nº de Serie</th>
+                        </tr>
+                    `;
+
+                    for (let i = 0; i < 10; i++) {
+                        var maquina = resposta[i];
+                        
+                        tbPcsMaisErros.innerHTML += `
+                            <tr>
+                                <td>${i+1}</td>
+                                <td>${maquina.numeroDeSerie}</td>
+                            </tr>
+                        `;
+                    }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+        
+        fetch(`/maquinas/buscarPcsDesativadosMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    tbMaquinasDesativadas.innerHTML = "- Nenhuma.";
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    tbMaquinasDesativadas.innerHTML = `
+                        <tr>
+                            <th>Nº</th>
+                            <th>Nº de Serie</th>
+                        </tr>
+                    `;
+
+                    for (let i = 0; i < resposta.length; i++) {
+                        var maquina = resposta[i];
+                        
+                        tbMaquinasDesativadas.innerHTML += `
+                            <tr>
+                                <td>${i+1}</td>
+                                <td>${maquina.numeroDeSerie}</td>
+                            </tr>
+                        `;
+                    }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
 
         fetch(`/alertas/buscarQtdAlertasUrgentesAtencaoMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
             if (resposta.ok) {
@@ -473,6 +467,37 @@ function gerarRelatorio() {
 
                     qtdAlertaUrgenteMes.innerHTML = alertas.QuantidadeAlertasUrgentes;
                     qtdAlertaAtencaoMes.innerHTML = alertas.QuantidadeAlertasAtencao;
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+
+        fetch(`/alertas/buscarAlertaPorComponenteMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    tbAlertasComponentes.innerHTML = "- Nenhuma.";
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    tbAlertasComponentes.innerHTML = ``;
+
+                    for (let i = 0; i < resposta.length; i++) {
+                        var alerta = resposta[i];
+                        
+                        tbAlertasComponentes.innerHTML += `
+                            <tr>
+                                <th>${alerta.componente}</th>
+                                <td>${alerta.percentualMaquinas}%</td>
+                                <td>${alerta.qtdMaquinas} máquinas</td>
+                            </tr>
+                        `;
+                    }
                 });
             } else {
                 throw ('Houve um erro na API!');
