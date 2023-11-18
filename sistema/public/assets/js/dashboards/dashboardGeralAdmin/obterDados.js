@@ -208,8 +208,13 @@ function buscarAlertas() {
 //Iniciando o gráfico de variacao de status das máquinas com os valores iniciais
 function plotarGraficoAlertas(dadosParam) {
 
-    alertas.datasets[0].data[0] = dadosParam[0].qtdAlertas
-    alertas.datasets[0].data[1] = dadosParam[1].qtdAlertas;
+    let qtdAlertasAtencao = dadosParam[0].qtdAlertas == undefined ? 0 : dadosParam[0].qtdAlertas;
+    let qtdAlertasUrgente = 0;
+    if (dadosParam.length > 1) {
+        qtdAlertasUrgente = dadosParam[1].qtdAlertas == undefined ? 0 : dadosParam[1].qtdAlertas;
+    }
+    alertas.datasets[0].data[0] = qtdAlertasUrgente;
+    alertas.datasets[0].data[1] = qtdAlertasAtencao;
     chartAlertas.update();
 
     atualizarGraficoAlertas();

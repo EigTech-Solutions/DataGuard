@@ -92,7 +92,7 @@
 .notifications_header {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: baseline;
 }
 
@@ -101,12 +101,14 @@
     font-family: Poppins;
     font-size: 1.2rem;
     font-weight: bold;
+    margin-left: 0.4rem;
 }
 
 .notification_subtitle {
     font-size: 0.5rem;
     cursor: pointer;
     text-decoration: underline;
+    margin-right: 0.4rem;
 }
 
 .notification_subtitle a {
@@ -401,8 +403,24 @@
     height: 50px;
 }
 
-.check_notificacao_img:hover{
+.check_notificacao_img:hover {
     transform: scale(1.2);
     transition: 0.3s;
     cursor: pointer;
+}
+
+@keyframes alertaSumindo {
+    0% {
+        transform: scale(1);
+        filter: grayscale(5%);
+    }
+
+    100% {
+        filter: grayscale(1);
+        transform: scale(0.7);
+    }
+}
+
+.animacao_alerta_sumir {
+    animation: 1.2s alertaSumindo;
 }

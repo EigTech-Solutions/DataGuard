@@ -18,5 +18,12 @@ router.get("/buscarAlertaPorComponenteMes/:idLab/:idInstituicao/:mes/:ano", func
 router.get("/buscarAlertaPorComponenteAno/:idLab/:idInstituicao/:ano", function (req, res) {
     alertasController.buscarAlertaPorComponenteAno(req, res);
 });
+router.get("/notificacoes/buscarNotificacoes/:idInstituicao/:idUsuario", function (req, res) {
+    alertasController.buscarNotificacoes(req, res);
+})
+
+router.put("/notificacoes/marcarLido/:idNotificacao", function (req, res) {
+    alertasController.marcarLido(req, res);
+})
 
 module.exports = router;

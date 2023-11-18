@@ -442,24 +442,37 @@ hr {
     line-height: normal;
 }
 
-.dadosInstituicoes {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 45vh;
-    background: #2B5561;
-    overflow-y: scroll; 
+.campoDeBusca input{
+    height: 6vh;
+    width: 18vw;
+    color: black;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border: none;
+    border-radius: 15px 00px 00px 15px;
 }
 
-.campoDeBusca {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 12vh;
-    background: #263238;
-    border-radius: 0px 0px 20px 20px;
+.campoDeBusca button{
+    height: 6vh;
+    width: 4vw;
+    background-color: #598392;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border: none;
+    border-radius: 00px 15px 15px 00px;
+}
+
+.campoDeBusca img{
+    height: 5vh;
+    width: 2.5vw;
 }
 
 .div-totalDeInstituicao {
@@ -505,4 +518,38 @@ hr {
     font-style: normal;
     font-weight: 500;
     line-height: normal; 
+}
+
+.campoDeBusca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 12vh;
+    background: #263238;
+    border-radius: 0px 0px 20px 20px;
+}
+
+.dadosInstituicoes {
+    display: flex;
+    width: 100%;
+    height: 45vh;
+    background: #598392;
+    overflow-y: scroll; 
+}
+
+.Instituicoes{
+    background-color: #2B5561;
+    height: 5vh;
+    width: 38.1vw;
+    margin-bottom: 0.1vh;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    padding-left: 2vh;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }
