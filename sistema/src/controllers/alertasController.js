@@ -43,6 +43,49 @@ function buscarQtdAlertasUrgentesAtencaoAno(req, res) {
         );
 }
 
+function buscarAlertaPorComponenteMes(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicao = req.params.idInstituicao;
+    var mes = req.params.mes;
+    var ano = req.params.ano;
+
+    alertasModel.buscarAlertaPorComponenteMes(idLab, idInstituicao, mes, ano)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function buscarAlertaPorComponenteAno(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicao = req.params.idInstituicao;
+    var ano = req.params.ano;
+
+    alertasModel.buscarAlertaPorComponenteAno(idLab, idInstituicao, ano)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 function buscarNotificacoes(req, res) {
     var idInstituicao = req.params.idInstituicao;
     var idUsuario = req.params.idUsuario;
@@ -86,6 +129,8 @@ function marcarLido(req, res) {
 module.exports = {
     buscarQtdAlertasUrgentesAtencaoMes,
     buscarQtdAlertasUrgentesAtencaoAno,
+    buscarAlertaPorComponenteMes,
+    buscarAlertaPorComponenteAno,
     buscarNotificacoes,
     marcarLido
 }

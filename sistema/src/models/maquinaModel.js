@@ -82,9 +82,16 @@ function atualizar(idPC, numeroSerie , ip , sistemaOperacional, capMemoriaDisco,
 
 function atualizarStatus(idPC, idInstituicao, status) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function atualizar():", idPC, idInstituicao, status);
+
+    var dataDesativamento;
+    if (status == 0) {
+        dataDesativamento = 'now()';
+    } else {
+        dataDesativamento = null;
+    }
     
     var instrucao = `
-        UPDATE maquina SET status = ${status} WHERE idMaquina = ${idPC} AND fkInstitucional = ${idInstituicao};
+        UPDATE maquina SET status = ${status}, dataDesativamento = ${dataDesativamento} WHERE idMaquina = ${idPC} AND fkInstitucional = ${idInstituicao};
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
@@ -184,6 +191,38 @@ function buscarTotalPcsCadastradosDesativadosAno(idLab,idInstituicao, ano) {
     return database.executar(instrucao);
 }
 
+function buscarPcsDesativadosMes(idLab, idInstituicao, mes, ano) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarPcsDesativadosMes()");
+    var instrucao = `
+        SELECT 
+            idMaquina,
+            numeroDeSerie
+        FROM maquina m
+        WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao}
+            AND MONTH(m.dataDesativamento) = ${mes}
+            AND YEAR(m.dataDesativamento) = ${ano}
+            AND m.status = 0;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function buscarPcsDesativadosAno(idLab, idInstituicao, ano) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarPcsDesativadosMes()");
+    var instrucao = `
+        SELECT 
+            idMaquina,
+            numeroDeSerie
+        FROM maquina m
+        WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao}
+            AND YEAR(m.dataDesativamento) = ${ano}
+            AND m.status = 0;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+
 module.exports = {
     listar,
     buscarPC,
@@ -197,5 +236,7 @@ module.exports = {
     buscarTotalPcsLab,
     buscarTotalPcsAtivosInativos,
     buscarTotalPcsCadastradosDesativadosMes,
-    buscarTotalPcsCadastradosDesativadosAno
+    buscarTotalPcsCadastradosDesativadosAno,
+    buscarPcsDesativadosMes,
+    buscarPcsDesativadosAno
 };
