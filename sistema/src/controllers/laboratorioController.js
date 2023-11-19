@@ -119,6 +119,8 @@ function atualizar(req, res) {
             );
     }
 }
+
+
 function preDelete(req, res) {
     var idLab = req.params.idLab;
     var idInstituicaoLab = req.params.idInstituicao;
@@ -162,11 +164,32 @@ function deletar(req, res) {
 }
 
 
+function buscarNivelPreocupacaoLab(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicao = req.params.idInstituicao;
+
+    laboratorioModel.buscarNivelPreocupacaoLab(idLab, idInstituicao)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     listar,
     buscarLab,
     cadastrar,
     atualizar,
     deletar,
-    preDelete
+    preDelete,
+    buscarNivelPreocupacaoLab
 }

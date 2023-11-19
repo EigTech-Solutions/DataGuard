@@ -27,7 +27,9 @@ router.delete("/deletar/:idLab/:idInstituicao", function (req, res) {
     laboratorioController.deletar(req, res);
 });
 
-
+router.get("/buscarNivelPreocupacaoLab/:idLab/:idInstituicao", function (req, res) {
+    laboratorioController.buscarNivelPreocupacaoLab(req, res);
+});
 
 
 module.exports = router;

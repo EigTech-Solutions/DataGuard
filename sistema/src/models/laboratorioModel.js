@@ -77,6 +77,33 @@ function deletar(idLab, idInstituicao) {
 }
 
 
+function buscarNivelPreocupacaoLab(idLab, idInstituicao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarNivelPreocupacaoLab()");
+    var instrucao = `
+        SELECT
+            l.nomeSala,
+            (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = 1 AND fkInstitucional = 2) as qtdMaquinas,
+            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END) as qtdAlertasUrgentes,
+            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) as qtdAlertasAtencao,
+            ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = 1 AND fkInstitucional = 2)) * 100, 2) as percentualPreocupacao,
+        CASE 
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = 1 AND fkInstitucional = 2)) * 100, 2) <= 15 THEN 'Ótimo'
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = 1 AND fkInstitucional = 2)) * 100, 2) <= 25 THEN 'Bom'
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = 1 AND fkInstitucional = 2)) * 100, 2) <= 50 THEN 'Atenção'
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = 1 AND fkInstitucional = 2)) * 100, 2) <= 75 THEN 'Preocupante'
+            ELSE 'Extremamente preocupante'
+        END as situacao
+        FROM laboratorio l
+        JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        LEFT JOIN medicoes med ON m.idMaquina = med.fkMaquina
+        LEFT JOIN alertas a ON med.idMonitoramento = a.fkMonitoramento
+        WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
+            AND med.dataHora >= CURDATE() - INTERVAL 30 DAY
+        GROUP BY l.idLaboratorio, l.nomeSala;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
 
 module.exports = {
     listar,
@@ -84,5 +111,6 @@ module.exports = {
     cadastrar,
     atualizar,
     deletar,
-    preDelete
+    preDelete,
+    buscarNivelPreocupacaoLab
 };

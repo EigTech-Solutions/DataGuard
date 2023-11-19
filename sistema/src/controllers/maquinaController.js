@@ -374,6 +374,27 @@ function buscarPcsDesativadosMes(req, res) {
         );
 }
 
+function buscarPcsDesativadosAno(req, res) {
+    var idLab = req.params.idLab;
+    var idInstituicao = req.params.idInstituicao;
+    var ano = req.params.ano;
+
+    maquinaModel.buscarPcsDesativadosAno(idLab, idInstituicao, ano)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 
 function buscarTotalPcsCadastradosDesativadosAno(req, res) {
     var idLab = req.params.idLab;
@@ -411,5 +432,5 @@ module.exports = {
     buscarTotalPcsCadastradosDesativadosMes,
     buscarTotalPcsCadastradosDesativadosAno,
     buscarPcsDesativadosMes,
-    //buscarPcsDesativadosAno,
+    buscarPcsDesativadosAno,
 }

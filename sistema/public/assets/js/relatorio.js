@@ -153,7 +153,7 @@ function gerarRelatorio() {
 
         divRelatorio.innerHTML = `
             <div class="tituloRelatorio">
-                <h1>Relatório Mensal - ${nomeMes} ${ano}</h1>
+                <h1>Relatório <span id="periodoRelatorio"></span></h1>
                 <h1 id="labRelatorio">Laboratório XYZ</h1>
             </div>
             
@@ -178,8 +178,8 @@ function gerarRelatorio() {
                 <table class="tbThLateral3">
                     <tr>
                         <th>Nível</th>
-                        <td>-%</td>
-                        <td>-</td>
+                        <td id="percentualPreocupacao">-%</td>
+                        <td id="situacaoPreocupacao">-</td>
                     </tr>
                 </table>
             </section>
@@ -237,7 +237,7 @@ function gerarRelatorio() {
             </section>
                     
             <section>
-                <p>Alertas gerais abertos nesse mês:</p>
+                <p>Alertas gerais abertos:</p>
                 <table class="tbThLateral2">
                     <tr>
                         <th>Alertas Urgentes</th>
@@ -256,6 +256,12 @@ function gerarRelatorio() {
                 <table class="tbThLateral3" id="tbAlertasComponentes"></table>
             </section>
         `;
+
+        if (tipoRelatorioSelecionado == "mensal") {
+            periodoRelatorio.innerHTML = `Mensal - ${nomeMes} ${ano}`;
+        } else {
+            periodoRelatorio.innerHTML = `Anual - ${ano}`;
+        }
         
         const labRelatorio = divRelatorio.querySelectorAll('#labRelatorio')
 
@@ -272,6 +278,27 @@ function gerarRelatorio() {
 
                     labRelatorio[0].innerHTML = laboratorio.nomeSala;
                     labRelatorio[1].innerHTML = laboratorio.nomeSala;
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+
+        fetch(`/laboratorios/buscarNivelPreocupacaoLab/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) { 
+                    console.log("Nenhum resultado encontrado.");
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    var laboratorio = resposta[0];
+
+                    percentualPreocupacao.innerHTML = `${laboratorio.percentualPreocupacao}%`;
+                    situacaoPreocupacao.innerHTML = laboratorio.situacao;
                 });
             } else {
                 throw ('Houve um erro na API!');
@@ -362,27 +389,6 @@ function gerarRelatorio() {
         }).catch(function (resposta) {
             console.error(resposta);
         });
-
-        fetch(`/maquinas/buscarTotalPcsCadastradosDesativadosMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
-            if (resposta.ok) {
-                if (resposta.status == 204) { 
-                    console.log("Nenhum resultado encontrado.");
-                    throw "Nenhum resultado encontrado!!";
-                }
-                resposta.json().then(function (resposta) {
-                    console.log("Dados recebidos: ", JSON.stringify(resposta));
-
-                    var maquinas = resposta[0];
-
-                    totalPcsAdicionadosLab.innerHTML = maquinas.QtdMaquinasAdicionadas;
-                    totalPcsDesativadosLab.innerHTML = maquinas.QtdMaquinasDesativadas;
-                });
-            } else {
-                throw ('Houve um erro na API!');
-            }
-        }).catch(function (resposta) {
-            console.error(resposta);
-        });
         
         fetch(`/dashboards/dashboardLaboratorio/rankingMaquinas/${idLaboratorio}`).then(function (resposta) {
             if (resposta.ok) {
@@ -418,93 +424,225 @@ function gerarRelatorio() {
         }).catch(function (resposta) {
             console.error(resposta);
         });
-        
-        fetch(`/maquinas/buscarPcsDesativadosMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
-            if (resposta.ok) {
-                if (resposta.status == 204) { 
-                    console.log("Nenhum resultado encontrado.");
-                    tbMaquinasDesativadas.innerHTML = "- Nenhuma.";
-                    throw "Nenhum resultado encontrado!!";
+
+        if (tipoRelatorioSelecionado == "mensal") {
+            fetch(`/maquinas/buscarTotalPcsCadastradosDesativadosMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
+                if (resposta.ok) {
+                    if (resposta.status == 204) { 
+                        console.log("Nenhum resultado encontrado.");
+                        throw "Nenhum resultado encontrado!!";
+                    }
+                    resposta.json().then(function (resposta) {
+                        console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                        var maquinas = resposta[0];
+    
+                        totalPcsAdicionadosLab.innerHTML = maquinas.QtdMaquinasAdicionadas;
+                        totalPcsDesativadosLab.innerHTML = maquinas.QtdMaquinasDesativadas;
+                    });
+                } else {
+                    throw ('Houve um erro na API!');
                 }
-                resposta.json().then(function (resposta) {
-                    console.log("Dados recebidos: ", JSON.stringify(resposta));
-
-                    tbMaquinasDesativadas.innerHTML = `
-                        <tr>
-                            <th>Nº</th>
-                            <th>Nº de Serie</th>
-                        </tr>
-                    `;
-
-                    for (let i = 0; i < resposta.length; i++) {
-                        var maquina = resposta[i];
-                        
-                        tbMaquinasDesativadas.innerHTML += `
+            }).catch(function (resposta) {
+                console.error(resposta);
+            });
+            
+            fetch(`/maquinas/buscarPcsDesativadosMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
+                if (resposta.ok) {
+                    if (resposta.status == 204) { 
+                        console.log("Nenhum resultado encontrado.");
+                        tbMaquinasDesativadas.innerHTML = "- Nenhuma.";
+                        throw "Nenhum resultado encontrado!!";
+                    }
+                    resposta.json().then(function (resposta) {
+                        console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                        tbMaquinasDesativadas.innerHTML = `
                             <tr>
-                                <td>${i+1}</td>
-                                <td>${maquina.numeroDeSerie}</td>
+                                <th>Nº</th>
+                                <th>Nº de Serie</th>
                             </tr>
                         `;
+    
+                        for (let i = 0; i < resposta.length; i++) {
+                            var maquina = resposta[i];
+                            
+                            tbMaquinasDesativadas.innerHTML += `
+                                <tr>
+                                    <td>${i+1}</td>
+                                    <td>${maquina.numeroDeSerie}</td>
+                                </tr>
+                            `;
+                        }
+                    });
+                } else {
+                    throw ('Houve um erro na API!');
+                }
+            }).catch(function (resposta) {
+                console.error(resposta);
+            });
+    
+            fetch(`/alertas/buscarQtdAlertasUrgentesAtencaoMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
+                if (resposta.ok) {
+                    if (resposta.status == 204) { 
+                        console.log("Nenhum resultado encontrado.");
+                        throw "Nenhum resultado encontrado!!";
                     }
-                });
-            } else {
-                throw ('Houve um erro na API!');
-            }
-        }).catch(function (resposta) {
-            console.error(resposta);
-        });
-
-        fetch(`/alertas/buscarQtdAlertasUrgentesAtencaoMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
-            if (resposta.ok) {
-                if (resposta.status == 204) { 
-                    console.log("Nenhum resultado encontrado.");
-                    throw "Nenhum resultado encontrado!!";
+                    resposta.json().then(function (resposta) {
+                        console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                        var alertas = resposta[0];
+    
+                        qtdAlertaUrgenteMes.innerHTML = alertas.QuantidadeAlertasUrgentes;
+                        qtdAlertaAtencaoMes.innerHTML = alertas.QuantidadeAlertasAtencao;
+                    });
+                } else {
+                    throw ('Houve um erro na API!');
                 }
-                resposta.json().then(function (resposta) {
-                    console.log("Dados recebidos: ", JSON.stringify(resposta));
-
-                    var alertas = resposta[0];
-
-                    qtdAlertaUrgenteMes.innerHTML = alertas.QuantidadeAlertasUrgentes;
-                    qtdAlertaAtencaoMes.innerHTML = alertas.QuantidadeAlertasAtencao;
-                });
-            } else {
-                throw ('Houve um erro na API!');
-            }
-        }).catch(function (resposta) {
-            console.error(resposta);
-        });
-
-        fetch(`/alertas/buscarAlertaPorComponenteMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
-            if (resposta.ok) {
-                if (resposta.status == 204) { 
-                    console.log("Nenhum resultado encontrado.");
-                    tbAlertasComponentes.innerHTML = "- Nenhuma.";
-                    throw "Nenhum resultado encontrado!!";
+            }).catch(function (resposta) {
+                console.error(resposta);
+            });
+    
+            fetch(`/alertas/buscarAlertaPorComponenteMes/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${mes}/${ano}`).then(function (resposta) {
+                if (resposta.ok) {
+                    if (resposta.status == 204) { 
+                        console.log("Nenhum resultado encontrado.");
+                        tbAlertasComponentes.innerHTML = "- Nenhuma.";
+                        throw "Nenhum resultado encontrado!!";
+                    }
+                    resposta.json().then(function (resposta) {
+                        console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                        tbAlertasComponentes.innerHTML = ``;
+    
+                        for (let i = 0; i < resposta.length; i++) {
+                            var alerta = resposta[i];
+                            
+                            tbAlertasComponentes.innerHTML += `
+                                <tr>
+                                    <th>${alerta.componente}</th>
+                                    <td>${alerta.percentualMaquinas}%</td>
+                                    <td>${alerta.qtdMaquinas} máquinas</td>
+                                </tr>
+                            `;
+                        }
+                    });
+                } else {
+                    throw ('Houve um erro na API!');
                 }
-                resposta.json().then(function (resposta) {
-                    console.log("Dados recebidos: ", JSON.stringify(resposta));
-
-                    tbAlertasComponentes.innerHTML = ``;
-
-                    for (let i = 0; i < resposta.length; i++) {
-                        var alerta = resposta[i];
-                        
-                        tbAlertasComponentes.innerHTML += `
+            }).catch(function (resposta) {
+                console.error(resposta);
+            });
+            
+        } else {
+            fetch(`/maquinas/buscarTotalPcsCadastradosDesativadosAno/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${ano}`).then(function (resposta) {
+                if (resposta.ok) {
+                    if (resposta.status == 204) { 
+                        console.log("Nenhum resultado encontrado.");
+                        throw "Nenhum resultado encontrado!!";
+                    }
+                    resposta.json().then(function (resposta) {
+                        console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                        var maquinas = resposta[0];
+    
+                        totalPcsAdicionadosLab.innerHTML = maquinas.QtdMaquinasAdicionadas;
+                        totalPcsDesativadosLab.innerHTML = maquinas.QtdMaquinasDesativadas;
+                    });
+                } else {
+                    throw ('Houve um erro na API!');
+                }
+            }).catch(function (resposta) {
+                console.error(resposta);
+            });
+            
+            fetch(`/maquinas/buscarPcsDesativadosAno/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${ano}`).then(function (resposta) {
+                if (resposta.ok) {
+                    if (resposta.status == 204) { 
+                        console.log("Nenhum resultado encontrado.");
+                        tbMaquinasDesativadas.innerHTML = "- Nenhuma.";
+                        throw "Nenhum resultado encontrado!!";
+                    }
+                    resposta.json().then(function (resposta) {
+                        console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                        tbMaquinasDesativadas.innerHTML = `
                             <tr>
-                                <th>${alerta.componente}</th>
-                                <td>${alerta.percentualMaquinas}%</td>
-                                <td>${alerta.qtdMaquinas} máquinas</td>
+                                <th>Nº</th>
+                                <th>Nº de Serie</th>
                             </tr>
                         `;
+    
+                        for (let i = 0; i < resposta.length; i++) {
+                            var maquina = resposta[i];
+                            
+                            tbMaquinasDesativadas.innerHTML += `
+                                <tr>
+                                    <td>${i+1}</td>
+                                    <td>${maquina.numeroDeSerie}</td>
+                                </tr>
+                            `;
+                        }
+                    });
+                } else {
+                    throw ('Houve um erro na API!');
+                }
+            }).catch(function (resposta) {
+                console.error(resposta);
+            });
+    
+            fetch(`/alertas/buscarQtdAlertasUrgentesAtencaoAno/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${ano}`).then(function (resposta) {
+                if (resposta.ok) {
+                    if (resposta.status == 204) { 
+                        console.log("Nenhum resultado encontrado.");
+                        throw "Nenhum resultado encontrado!!";
                     }
-                });
-            } else {
-                throw ('Houve um erro na API!');
-            }
-        }).catch(function (resposta) {
-            console.error(resposta);
-        });
+                    resposta.json().then(function (resposta) {
+                        console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                        var alertas = resposta[0];
+    
+                        qtdAlertaUrgenteMes.innerHTML = alertas.QuantidadeAlertasUrgentes;
+                        qtdAlertaAtencaoMes.innerHTML = alertas.QuantidadeAlertasAtencao;
+                    });
+                } else {
+                    throw ('Houve um erro na API!');
+                }
+            }).catch(function (resposta) {
+                console.error(resposta);
+            });
+    
+            fetch(`/alertas/buscarAlertaPorComponenteAno/${idLaboratorio}/${sessionStorage.ID_INSTITUICAO}/${ano}`).then(function (resposta) {
+                if (resposta.ok) {
+                    if (resposta.status == 204) { 
+                        console.log("Nenhum resultado encontrado.");
+                        tbAlertasComponentes.innerHTML = "- Nenhuma.";
+                        throw "Nenhum resultado encontrado!!";
+                    }
+                    resposta.json().then(function (resposta) {
+                        console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                        tbAlertasComponentes.innerHTML = ``;
+    
+                        for (let i = 0; i < resposta.length; i++) {
+                            var alerta = resposta[i];
+                            
+                            tbAlertasComponentes.innerHTML += `
+                                <tr>
+                                    <th>${alerta.componente}</th>
+                                    <td>${alerta.percentualMaquinas}%</td>
+                                    <td>${alerta.qtdMaquinas} máquinas</td>
+                                </tr>
+                            `;
+                        }
+                    });
+                } else {
+                    throw ('Houve um erro na API!');
+                }
+            }).catch(function (resposta) {
+                console.error(resposta);
+            });
+        }
         
 
         setTimeout(() => {
@@ -512,11 +650,23 @@ function gerarRelatorio() {
             const conteudoPdf = document.querySelector("#divRelatorio");
     
             // Configuração do arquivo final de PDF
-            const options = {
-                margin: [10, 10, 10, 10],
-                filename: `relatorio${nomeMes}${ano}.pdf`,
-                html2canvas: {scale: 2},
-                jsPDF:{unit: "mm", format: "a4", orientation: "portrait"}
+            var options = {};
+            if (tipoRelatorioSelecionado == "mensal") {
+                options = {
+                    margin: [10, 10, 10, 10],
+                    filename: `relatorio${nomeMes}${ano}.pdf`,
+                    html2canvas: {scale: 2},
+                    jsPDF:{unit: "mm", format: "a4", orientation: "portrait"}
+                }
+                
+            } else {
+                options = {
+                    margin: [10, 10, 10, 10],
+                    filename: `relatorio${ano}.pdf`,
+                    html2canvas: {scale: 2},
+                    jsPDF:{unit: "mm", format: "a4", orientation: "portrait"}
+                }
+                
             }
     
             // Gerar e baixar o PDF
