@@ -36,29 +36,29 @@ function obterNotificacoes() {
                 resposta.json().then(json => {
                     notificacoes.push(...json)
                     document.getElementById('qtdNotificacoes').innerHTML = notificacoes.length;
+                    console.log(notificacoes);
                     notificacoes.forEach(alerta => {
-                        console.log(alerta);
                         let tipoAlertaCor = alerta.tipo == 'atenção' ? 'tipo_notificacao_alerta_color' : 'tipo_notificacao_urgente_color';
                         let alertaTitle = alerta.tipo == 'atenção' ? "ATENÇÃO " + alerta.nomeSala : "URGENTE " + alerta.nomeSala;
                         let tipoAlertaText = alerta.tipo == 'atenção' ? 'tipo_notificacao_alerta_txt' : 'tipo_notificacao_urgente_txt';
                         let span_PC_infos_data = "";
-                        if (alerta.componente === "Fonte Energia") {
+                        if ((alerta.componente).toLowerCase() === "fonte energia") {
                             span_PC_infos_data = `
                                 ${alerta.componente} da Maquina ${alerta.numeroDeSerie} está desconectada!
                             `
-                        } else if (alerta.componente === "Rede") {
+                        } else if ((alerta.componente).toLowerCase() === "rede") {
                             let qtdAcima = alerta.tipo == 'atenção' ? alerta.valorConsumido - parametros.minLatenciaRede : alerta.valorConsumido - parametros.maxLatenciaRede;
                             span_PC_infos_data = `${alerta.componente} da Maquina ${alerta.numeroDeSerie} está em ${alerta.valorConsumido}ms ( ${qtdAcima}ms acima dos limites) `
-                        } else if (alerta.componente === "Entradas") {
+                        } else if ((alerta.componente).toLowerCase() === "entradas") {
                             let qtdAcima = alerta.tipo == 'atenção' ? alerta.valorConsumido - parametros.minQtdDispositivosConectados : alerta.valorConsumido - parametros.maxQtdDispositivosConectados;
                             span_PC_infos_data = `Quantidade de perifericos da Maquina ${alerta.numeroDeSerie} está em ${alerta.valorConsumido} ( ${qtdAcima} acima dos limites) `
-                        } else if (alerta.componente === "Disco Rigido") {
+                        } else if ((alerta.componente).toLowerCase() === "disco rigido") {
                             let qtdAcima = alerta.tipo == 'atenção' ? alerta.valorConsumido - parametros.minDisco : alerta.valorConsumido - parametros.maxDisco;
                             span_PC_infos_data = `Capacidade de ${alerta.componente} da Maquina ${alerta.numeroDeSerie} está em ${alerta.valorConsumido}% ( ${qtdAcima.toFixed(2)}% acima dos limites) `
-                        } else if (alerta.componente === "Memoria") {
+                        } else if ((alerta.componente).toLowerCase() === "memoria") {
                             let qtdAcima = alerta.tipo == 'atenção' ? alerta.valorConsumido - parametros.minRam : alerta.valorConsumido - parametros.maxRam;
                             span_PC_infos_data = `Uso de ${alerta.componente} RAM da Maquina ${alerta.numeroDeSerie} está em ${alerta.valorConsumido}% ( ${qtdAcima.toFixed(2)}% acima dos limites) `
-                        } else if (alerta.componente === "CPU") {
+                        } else if ((alerta.componente).toLowerCase() === "cpu") {
                             let qtdAcima = alerta.tipo == 'atenção' ? alerta.valorConsumido - parametros.minCpu : alerta.valorConsumido - parametros.maxCpu;
                             span_PC_infos_data = `Uso de ${alerta.componente} da Maquina ${alerta.numeroDeSerie} está em ${alerta.valorConsumido}% ( ${qtdAcima.toFixed(2)}% acima dos limites) `
                         }
@@ -126,6 +126,7 @@ function atualizarNotificacoes() {
                             }
                             if (novaNotificacao) {
                                 notificacoes.push(notificacao);
+                                console.log(notificacoes);
                                 document.getElementById('qtdNotificacoes').innerHTML = notificacoes.length;
                                 let tipoAlertaCor = notificacao.tipo == 'atenção' ? 'tipo_notificacao_alerta_color' : 'tipo_notificacao_urgente_color';
                                 let alertaTitle = notificacao.tipo == 'atenção' ? "ATENÇÃO " + notificacao.nomeSala : "URGENTE " + notificacao.nomeSala;
@@ -134,23 +135,22 @@ function atualizarNotificacoes() {
                                 novoAlerta.classList.add(`alertas`)
                                 novoAlerta.setAttribute('name', `alerta_id_${notificacao.idAlertas}`)
                                 let span_PC_infos_data = "";
-                                if (notificacao.componente === "Fonte Energia") {
+                                if ((notificacao.componente).toLowerCase === "fonte energia") {
                                     span_PC_infos_data = `
-                                ${notificacao.componente} da Maquina ${notificacao.numeroDeSerie} está desconectada!
-                            `
-                                } else if (notificacao.componente === "Rede") {
+                                ${notificacao.componente} da Maquina ${notificacao.numeroDeSerie} está desconectada!`
+                                } else if ((notificacao.componente).toLowerCase() === "rede") {
                                     let qtdAcima = notificacao.tipo == 'atenção' ? notificacao.valorConsumido - parametros.minLatenciaRede : notificacao.valorConsumido - parametros.maxLatenciaRede;
                                     span_PC_infos_data = `${notificacao.componente} da Maquina ${notificacao.numeroDeSerie} está em ${notificacao.valorConsumido}ms ( ${qtdAcima}ms acima dos limites) `
-                                } else if (notificacao.componente === "Entradas") {
+                                } else if ((notificacao.componente).toLowerCase() === "entradas") {
                                     let qtdAcima = notificacao.tipo == 'atenção' ? notificacao.valorConsumido - parametros.minQtdDispositivosConectados : notificacao.valorConsumido - parametros.maxQtdDispositivosConectados;
                                     span_PC_infos_data = `Quantidade de perifericos da Maquina ${notificacao.numeroDeSerie} está em ${notificacao.valorConsumido} ( ${qtdAcima} acima dos limites) `
-                                } else if (notificacao.componente === "Disco Rigido") {
+                                } else if ((notificacao.componente).toLowerCase() === "disco rigido") {
                                     let qtdAcima = notificacao.tipo == 'atenção' ? notificacao.valorConsumido - parametros.minDisco : notificacao.valorConsumido - parametros.maxDisco;
                                     span_PC_infos_data = `Capacidade de ${notificacao.componente} da Maquina ${notificacao.numeroDeSerie} está em ${notificacao.valorConsumido}% ( ${qtdAcima.toFixed(2)}% acima dos limites) `
-                                } else if (notificacao.componente === "Memoria") {
+                                } else if ((notificacao.componente).toLowerCase() === "memoria") {
                                     let qtdAcima = notificacao.tipo == 'atenção' ? notificacao.valorConsumido - parametros.minRam : notificacao.valorConsumido - parametros.maxRam;
                                     span_PC_infos_data = `Uso de ${notificacao.componente} RAM da Maquina ${notificacao.numeroDeSerie} está em ${notificacao.valorConsumido}% ( ${qtdAcima.toFixed(2)}% acima dos limites) `
-                                } else if (notificacao.componente === "CPU") {
+                                } else if ((notificacao.componente).toLowerCase() === "cpu") {
                                     let qtdAcima = notificacao.tipo == 'atenção' ? notificacao.valorConsumido - parametros.minCpu : notificacao.valorConsumido - parametros.maxCpu;
                                     span_PC_infos_data = `Uso de ${notificacao.componente} da Maquina ${notificacao.numeroDeSerie} está em ${notificacao.valorConsumido}% ( ${qtdAcima.toFixed(2)}% acima dos limites) `
                                 }

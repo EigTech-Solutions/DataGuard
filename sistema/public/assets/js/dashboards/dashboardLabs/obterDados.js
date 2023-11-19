@@ -246,7 +246,7 @@ function atualizarTable(tableData) {
         table.innerHTML += `
         <tr>
             <td class="table_rknMaquinas_pos">${i + 1}°</td>
-            <td class="table_rknMaquinas_nomeLab">Máquina ${maquina.ipMaquina}</td>
+            <td class="table_rknMaquinas_nomeLab">Máquina ${maquina.numeroDeSerie}</td>
             <td class="table_rknMaquinas_qtdAlertas">${maquina.qtdAlertas} Alertas</td>
         </tr>
         `

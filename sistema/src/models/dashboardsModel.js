@@ -554,7 +554,7 @@ function buscarRankingMaquinasAdmin(idInstituicao) {
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select m.idMaquina, m.ipMaquina, count(a.idAlertas) qtdAlertas from maquina m
+            select m.idMaquina, m.numeroDeSerie, count(a.idAlertas) qtdAlertas from maquina m
 			left join componenteMonitorado cm on cm.fkMaquina = m.idMaquina
             left join medicoes me on me.fkComponente = cm.idComponente
             left join alertas a on a.fkMonitoramento = me.idMonitoramento
