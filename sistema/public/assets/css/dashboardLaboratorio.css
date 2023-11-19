@@ -419,3 +419,19 @@
     transition: 0.3s;
     cursor: pointer;
 }
+
+@keyframes alertaSumindo {
+    0% {
+        transform: scale(1);
+        filter: grayscale(5%);
+    }
+
+    100% {
+        filter: grayscale(1);
+        transform: scale(0.7);
+    }
+}
+
+.animacao_alerta_sumir {
+    animation: 1.2s alertaSumindo;
+}

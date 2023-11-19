@@ -47,7 +47,7 @@ function buscarNotificacoes(idInstituicao, idUsuario) {
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select  a.idAlertas, a.lido, l.nomeSala, l.numeroSala, DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', m.ipMaquina, m.idMaquina, cm.componente, a.tipo from alertas a 
+            select  a.idAlertas, a.lido, l.nomeSala, l.numeroSala, DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') 'dataHora', m.ipMaquina, m.idMaquina, m.numeroDeSerie, cm.componente, a.tipo, me.valorConsumido  from alertas a 
             join medicoes me on a.fkMonitoramento = me.idMonitoramento 
             join componenteMonitorado cm on me.fkComponente = cm.idComponente 
             join maquina m on cm.fkMaquina = m.idMaquina
