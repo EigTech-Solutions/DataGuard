@@ -31,5 +31,9 @@ router.get("/buscarNivelPreocupacaoLab/:idLab/:idInstituicao", function (req, re
     laboratorioController.buscarNivelPreocupacaoLab(req, res);
 });
 
+router.get("/buscarNivelPreocupacaoLabs/:idInstituicao", function (req, res) {
+    laboratorioController.buscarNivelPreocupacaoLabs(req, res);
+});
+
 
 module.exports = router;
