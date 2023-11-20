@@ -191,36 +191,40 @@ function atualizarGraficoFluxoRede() {
             },
         }).then(function (resposta) {
             if (resposta.ok) {
-                resposta.json().then(response => {
-                    if ((dados.labels.length < 10) && (response[0].dataHora != dados.labels[dados.labels.length - 1])) {
-                        dados.labels.push(response[0].dataHora);
-                        //download
-                        dados.datasets[0].data.push(response[0].MediaDownload)
-                        //upload
-                        dados.datasets[1].data.push(response[0].MediaUpload)
-                        // //ping
-                        dados.datasets[2].data.push(response[0].MediaLatencia)
+                if (resposta.status == 204) {
+                    console.log("Não foi possivel encontrado nenhum registro de rede!");
+                } else {
+                    resposta.json().then(response => {
+                        if ((dados.labels.length < 10) && (response[0].dataHora != dados.labels[dados.labels.length - 1])) {
+                            dados.labels.push(response[0].dataHora);
+                            //download
+                            dados.datasets[0].data.push(response[0].MediaDownload)
+                            //upload
+                            dados.datasets[1].data.push(response[0].MediaUpload)
+                            // //ping
+                            dados.datasets[2].data.push(response[0].MediaLatencia)
 
-                        chartFluxoRede.update();
-                    } else if (response[0].dataHora == dados.labels[9] || (response[0].dataHora == dados.labels[dados.labels.length - 1])) {
-                        console.log("Sem novos registros!");
-                    } else {
-                        console.log("Novos dados!",);
-                        dados.labels.shift();
-                        dados.labels.push(response[0].dataHora);
-                        //download
-                        dados.datasets[0].data.shift();
-                        dados.datasets[0].data.push(response[0].MediaDownload)
-                        //upload
-                        dados.datasets[1].data.shift();
-                        dados.datasets[1].data.push(response[0].MediaUpload)
-                        // //ping
-                        dados.datasets[2].data.shift();
-                        dados.datasets[2].data.push(response[0].MediaLatencia)
+                            chartFluxoRede.update();
+                        } else if (response[0].dataHora == dados.labels[9] || (response[0].dataHora == dados.labels[dados.labels.length - 1])) {
+                            console.log("Sem novos registros!");
+                        } else {
+                            console.log("Novos dados!",);
+                            dados.labels.shift();
+                            dados.labels.push(response[0].dataHora);
+                            //download
+                            dados.datasets[0].data.shift();
+                            dados.datasets[0].data.push(response[0].MediaDownload)
+                            //upload
+                            dados.datasets[1].data.shift();
+                            dados.datasets[1].data.push(response[0].MediaUpload)
+                            // //ping
+                            dados.datasets[2].data.shift();
+                            dados.datasets[2].data.push(response[0].MediaLatencia)
 
-                        chartFluxoRede.update();
-                    }
-                });
+                            chartFluxoRede.update();
+                        }
+                    });
+                }
             } else {
                 console.log("Houve um erro ao tentar obter os dados de fluxo de rede em tempo real :c");
                 resposta.text().then(texto => {
@@ -242,7 +246,7 @@ function atualizarTable(tableData) {
         table.innerHTML += `
         <tr>
             <td class="table_rknMaquinas_pos">${i + 1}°</td>
-            <td class="table_rknMaquinas_nomeLab">Máquina ${maquina.ipMaquina}</td>
+            <td class="table_rknMaquinas_nomeLab">Máquina ${maquina.numeroDeSerie}</td>
             <td class="table_rknMaquinas_qtdAlertas">${maquina.qtdAlertas} Alertas</td>
         </tr>
         `

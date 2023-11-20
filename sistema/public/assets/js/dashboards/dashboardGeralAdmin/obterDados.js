@@ -213,8 +213,8 @@ function plotarGraficoAlertas(dadosParam) {
     if (dadosParam.length > 1) {
         qtdAlertasUrgente = dadosParam[1].qtdAlertas == undefined ? 0 : dadosParam[1].qtdAlertas;
     }
-    alertas.datasets[0].data[0] = qtdAlertasUrgente;
-    alertas.datasets[0].data[1] = qtdAlertasAtencao;
+    alertas.datasets[0].data[0] = qtdAlertasAtencao;
+    alertas.datasets[0].data[1] = qtdAlertasUrgente;
     chartAlertas.update();
 
     atualizarGraficoAlertas();
@@ -336,7 +336,7 @@ function atualizarTableMaquinas(tableData) {
         table.innerHTML += `
         <tr>
             <td class="table_rknMaquinas_pos">${i + 1}°</td>
-            <td class="table_rknMaquinas_nomeLab">Máquina ${maquina.ipMaquina}</td>
+            <td class="table_rknMaquinas_nomeLab">Máquina ${maquina.numeroDeSerie}</td>
             <td class="table_rknMaquinas_qtdAlertas">${maquina.qtdAlertas} Alertas</td>
         </tr>
         `
