@@ -22,7 +22,7 @@ function obterDadosIniciais() {
 
                 console.log(infosMaquina);
 
-                let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco + "GB" : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
+                let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
                 let memoriaRam = infosMaquina.CapacidadeRam === "Desconhecido" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
                 let fonteEnergia = infosMaquina.FonteEnergia == 1 ? "Conectado" : "Desconectado";
                 document.getElementById('local_maquina').innerHTML = infosMaquina.nomeSala;
@@ -69,7 +69,7 @@ function atualizarKpis() {
                             infosMaquina[dado] = "Desconhecido";
                         }
                     }
-                    let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco + "GB" : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
+                    let disco = infosMaquina.TipoDisco === "Desconhecido" ? infosMaquina.CapacidadeDisco : infosMaquina.TipoDisco + " " + infosMaquina.CapacidadeDisco + "GB";
                     let memoriaRam = infosMaquina.CapacidadeRam === "Desconhecido" ? infosMaquina.CapacidadeRam : infosMaquina.CapacidadeRam + "GB";
                     let span_status = document.getElementById('kpi_status');
                     let fonteEnergia = infosMaquina.FonteEnergia == 1 ? "Conectado" : "Desconectado";
