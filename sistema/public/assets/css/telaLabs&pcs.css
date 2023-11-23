@@ -456,7 +456,7 @@ hr {
     border-radius: 15px 00px 00px 15px;
 }
 
-.campoDeBusca button{
+.campoDeBusca .botaoLupa{
     height: 6vh;
     width: 4vw;
     background-color: #598392;
@@ -468,11 +468,23 @@ hr {
     line-height: normal;
     border: none;
     border-radius: 00px 15px 15px 00px;
+    cursor: pointer;
 }
 
 .campoDeBusca img{
     height: 5vh;
     width: 2.5vw;
+}
+
+.campoDeBusca .botaoMais {
+    height: 40px;
+    width: 40px;
+    background-color: #598392;
+    margin-left: 70px;
+    border-radius: 10px;
+    border: none;
+    transform: scale(1.04);
+    cursor: pointer;
 }
 
 .div-totalDeInstituicao {
