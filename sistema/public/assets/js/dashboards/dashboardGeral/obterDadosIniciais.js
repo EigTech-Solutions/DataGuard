@@ -16,27 +16,29 @@ function obterLaboratorios() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(json => {
-                // adicionando os laboratórios a um objeto para futuras pesquisas
-                json.map((resposta, i) => {
-                    labsInstituicao.push(
-                        {
-                            idLaboratorio: Number(resposta.idLaboratorio),
-                            numLaboratorio: Number(resposta.numeroSala),
-                            nomeLaboratorio: resposta.nomeSala
-                        },
-                    )
-                })
+            if (resposta.status !== 204) {
+                resposta.json().then(json => {
+                    // adicionando os laboratórios a um objeto para futuras pesquisas
+                    json.map((resposta, i) => {
+                        labsInstituicao.push(
+                            {
+                                idLaboratorio: Number(resposta.idLaboratorio),
+                                numLaboratorio: Number(resposta.numeroSala),
+                                nomeLaboratorio: resposta.nomeSala
+                            },
+                        )
+                    })
 
-                //ordenando os laboratorios por número de sala
-                labsInstituicao.sort(ordernarLabs);
+                    //ordenando os laboratorios por número de sala
+                    labsInstituicao.sort(ordernarLabs);
 
-                //adicionando os laboratórios como options no combo box
-                labsInstituicao.forEach((lab) => {
-                    let newOption = new Option(`Laboratório ${lab.numLaboratorio}`, lab.idLaboratorio);
-                    document.getElementById('select_dashboard').add(newOption, undefined)
-                })
-            });
+                    //adicionando os laboratórios como options no combo box
+                    labsInstituicao.forEach((lab) => {
+                        let newOption = new Option(`Laboratório ${lab.numLaboratorio}`, lab.idLaboratorio);
+                        document.getElementById('select_dashboard').add(newOption, undefined)
+                    })
+                });
+            }
         } else {
             console.log("Houve um erro ao tentar obter os laboratórios da instituição :c");
             resposta.text().then(texto => {
@@ -126,9 +128,11 @@ function buscarDadosFluxoDeRede() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(dados => {
-                plotarGraficoFluxoDeRede(dados);
-            });
+            if (resposta.status !== 204) {
+                resposta.json().then(dados => {
+                    plotarGraficoFluxoDeRede(dados);
+                });
+            }
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
@@ -314,10 +318,12 @@ function buscarRankingLabs() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(dados => {
-                atualizarTable(dados);
-                atualizarRankingLabs(dados);
-            });
+            if (resposta.status !== 204) {
+                resposta.json().then(dados => {
+                    atualizarTable(dados);
+                });
+            }
+            atualizarRankingLabs(dados);
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
@@ -340,18 +346,20 @@ function atualizarRankingLabs(tabelaAnterior) {
             },
         }).then(function (resposta) {
             if (resposta.ok) {
-                resposta.json().then(response => {
-                    if (response.length > tabelaAnterior.length) {
-                        atualizarTable(response);
-                    } else {
-                        response.forEach((lab, i) => {
-                            if (lab.numeroSala !== tabelaAnterior[i].numeroSala || lab.qtdAlertas !== tabelaAnterior[i].qtdAlertas) {
-                                atualizarTable(response)
-                                return;
-                            }
-                        })
-                    }
-                });
+                if (resposta.status !== 204) {
+                    resposta.json().then(response => {
+                        if (response.length > tabelaAnterior.length) {
+                            atualizarTable(response);
+                        } else {
+                            response.forEach((lab, i) => {
+                                if (lab.numeroSala !== tabelaAnterior[i].numeroSala || lab.qtdAlertas !== tabelaAnterior[i].qtdAlertas) {
+                                    atualizarTable(response)
+                                    return;
+                                }
+                            })
+                        }
+                    });
+                }
             } else {
                 console.log("Houve um erro ao tentar obter os dados do ranking de labs em tempo real :c");
                 resposta.text().then(texto => {

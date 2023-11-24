@@ -405,10 +405,64 @@ function atualizarMemorias() {
     }, 5000);
 }
 
+function buscarSituacao() {
+    fetch(`/maquinas/buscarIndicePreocupacao/${idMaquina}/${sessionStorage.ID_INSTITUICAO}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            if (resposta.status !== 204) {
+                resposta.json().then(response => {
+                    document.getElementById("kpi_situacao").innerHTML = `${response[0].situacao}`;
+                });
+            }
+        } else {
+            console.log("Houve um erro ao tentar obter os dados de fluxo de rede em tempo real :c");
+            resposta.text().then(texto => {
+                console.error(texto);
+            });
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+    })
+    return false;
+}
+
+function atualizarSituacaoMaquina() {
+    setInterval(() => {
+        fetch(`/maquinas/buscarIndicePreocupacao/${idMaquina}/${sessionStorage.ID_INSTITUICAO}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status !== 204) {
+                    resposta.json().then(response => {
+                        if (document.getElementById("kpi_situacao").innerText != response[0].situacao) {
+                            document.getElementById("kpi_situacao").innerHTML = `${response[0].situacao}`;
+                        }
+                    });
+                }
+            } else {
+                console.log("Houve um erro ao tentar obter os dados de fluxo de rede em tempo real :c");
+                resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+        return false;
+    }, 5000);
+}
 
 window.addEventListener("load", function () {
     obterDadosIniciais();
     buscarDadosPorcenCpu();
     buscarDadosFluxoDeRede();
     dadosMemorias();
+    buscarSituacao();
 });

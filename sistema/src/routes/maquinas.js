@@ -63,4 +63,8 @@ router.get("/buscarPcsDesativadosAno/:idLab/:idInstituicao/:ano", function (req,
     maquinaController.buscarPcsDesativadosAno(req, res);
 });
 
+router.get("/buscarIndicePreocupacao/:idMaquina/:idInstituicao", function(req, res){
+    maquinaController.buscarIndicePreocupacao(req, res);
+});
+
 module.exports = router;
