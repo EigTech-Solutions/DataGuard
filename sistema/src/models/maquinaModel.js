@@ -56,9 +56,9 @@ function buscarPorIpOrNumSerie(numBusca, idInstituicao) {
 }
 
 // cadastro de maquinas
-function cadastrar(numeroSerie , ip , sistemaOperacional, capMemoriaDisco, capMemoriaRam , tipoDisco , processador, laboratorio, idInstituicao) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", numeroSerie , ip , sistemaOperacional, capMemoriaDisco, capMemoriaRam , tipoDisco , processador , laboratorio, idInstituicao);
-    
+function cadastrar(numeroSerie, ip, sistemaOperacional, capMemoriaDisco, capMemoriaRam, tipoDisco, processador, laboratorio, idInstituicao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", numeroSerie, ip, sistemaOperacional, capMemoriaDisco, capMemoriaRam, tipoDisco, processador, laboratorio, idInstituicao);
+
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucao = `
@@ -68,9 +68,9 @@ function cadastrar(numeroSerie , ip , sistemaOperacional, capMemoriaDisco, capMe
     return database.executar(instrucao);
 }
 
-function atualizar(idPC, numeroSerie , ip , sistemaOperacional, capMemoriaDisco, capMemoriaRam , tipoDisco , processador , idLaboratorio, idInstituicao) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function atualizar():", idPC, numeroSerie , ip , sistemaOperacional, capMemoriaDisco, capMemoriaRam , tipoDisco , processador , idLaboratorio, idInstituicao);
-    
+function atualizar(idPC, numeroSerie, ip, sistemaOperacional, capMemoriaDisco, capMemoriaRam, tipoDisco, processador, idLaboratorio, idInstituicao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function atualizar():", idPC, numeroSerie, ip, sistemaOperacional, capMemoriaDisco, capMemoriaRam, tipoDisco, processador, idLaboratorio, idInstituicao);
+
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucao = `
@@ -89,7 +89,7 @@ function atualizarStatus(idPC, idInstituicao, status) {
     } else {
         dataDesativamento = null;
     }
-    
+
     var instrucao = `
         UPDATE maquina SET status = ${status}, dataDesativamento = ${dataDesativamento} WHERE idMaquina = ${idPC} AND fkInstitucional = ${idInstituicao};
     `;
@@ -99,7 +99,7 @@ function atualizarStatus(idPC, idInstituicao, status) {
 
 function atualizarLaboratorio(idPC, idInstituicao, idLab) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function atualizar():", idPC, idInstituicao, idLab);
-    
+
     var instrucao = `
         UPDATE maquina SET fkLaboratorio = ${idLab} WHERE idMaquina = ${idPC} AND fkInstitucional = ${idInstituicao};
     `;
@@ -125,7 +125,7 @@ function buscarTotalPcsInstituicao(idInstituicao) {
     return database.executar(instrucao);
 }
 
-function buscarTotalPcsLab(idLab,idInstituicao) {
+function buscarTotalPcsLab(idLab, idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsLab()");
     var instrucao = `
         SELECT 
@@ -141,7 +141,7 @@ function buscarTotalPcsLab(idLab,idInstituicao) {
     return database.executar(instrucao);
 }
 
-function buscarTotalPcsAtivosInativos(idLab,idInstituicao) {
+function buscarTotalPcsAtivosInativos(idLab, idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsLab()");
     var instrucao = `
         SELECT 
@@ -158,7 +158,7 @@ function buscarTotalPcsAtivosInativos(idLab,idInstituicao) {
     return database.executar(instrucao);
 }
 
-function buscarTotalPcsCadastradosDesativadosMes(idLab,idInstituicao, mes, ano) {
+function buscarTotalPcsCadastradosDesativadosMes(idLab, idInstituicao, mes, ano) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsCadastradosDesativadosMes()");
     var instrucao = `
         SELECT 
@@ -175,7 +175,7 @@ function buscarTotalPcsCadastradosDesativadosMes(idLab,idInstituicao, mes, ano) 
     return database.executar(instrucao);
 }
 
-function buscarTotalPcsCadastradosDesativadosAno(idLab,idInstituicao, ano) {
+function buscarTotalPcsCadastradosDesativadosAno(idLab, idInstituicao, ano) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsCadastradosDesativadosMes()");
     var instrucao = `
         SELECT 
@@ -222,6 +222,32 @@ function buscarPcsDesativadosAno(idLab, idInstituicao, ano) {
     return database.executar(instrucao);
 }
 
+function buscarIndicePreocupacaoMaquina(idMaquina, idInstituicao) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarIndicePreocupacaoMaquina()");
+    var instrucao = `
+    SELECT
+            l.nomeSala, l.idLaboratorio, m.idMaquina,
+            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END) as qtdAlertasUrgentes,
+            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) as qtdAlertasAtencao,
+            ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE idMaquina = ${idMaquina} AND fkInstitucional = ${idInstituicao})) * 100, 2) as percentualPreocupacao,
+        CASE 
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE idMaquina = ${idMaquina} AND fkInstitucional = ${idInstituicao})) * 100, 2) <= 15 THEN 'Ótimo'
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE idMaquina = ${idMaquina} AND fkInstitucional = ${idInstituicao})) * 100, 2) <= 25 THEN 'Bom'
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE idMaquina = ${idMaquina} AND fkInstitucional = ${idInstituicao})) * 100, 2) <= 50 THEN 'Atenção'
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE idMaquina = ${idMaquina} AND fkInstitucional = ${idInstituicao})) * 100, 2) <= 75 THEN 'Preocupante'
+            ELSE 'Extremamente preocupante'
+        END as situacao
+        FROM laboratorio l
+        JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        LEFT JOIN medicoes med ON m.idMaquina = med.fkMaquina
+        LEFT JOIN alertas a ON med.idMonitoramento = a.fkMonitoramento
+        WHERE m.idMaquina = ${idMaquina} AND l.fkInstitucional = ${idInstituicao}
+            AND med.dataHora >= CURDATE() - INTERVAL 30 DAY
+        GROUP BY l.idLaboratorio, l.nomeSala;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
 
 module.exports = {
     listar,
@@ -232,11 +258,12 @@ module.exports = {
     atualizarStatus,
     atualizarLaboratorio,
     deletar,
-    buscarTotalPcsInstituicao, 
+    buscarTotalPcsInstituicao,
     buscarTotalPcsLab,
     buscarTotalPcsAtivosInativos,
     buscarTotalPcsCadastradosDesativadosMes,
     buscarTotalPcsCadastradosDesativadosAno,
     buscarPcsDesativadosMes,
-    buscarPcsDesativadosAno
+    buscarPcsDesativadosAno,
+    buscarIndicePreocupacaoMaquina
 };

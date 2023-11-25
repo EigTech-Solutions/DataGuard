@@ -36,8 +36,9 @@
                             </div>
                         </div>
                         <div class="campoDeBusca">
-                            <input id="input_busca">
-                            <button onclick="pesquisarInstituicao()"><img src="../assets/images/lupaDeBusca.png" alt=""></button>
+                            <input id="input_busca" oninput="pesquisarInstituicao()">
+                            <button onclick="pesquisarInstituicao()" class="botaoLupa"><img src="../assets/images/lupaDeBusca.png" alt=""></button>
+                            <button onclick="dadosGeraisInst()" class="botaoMais"><img src="../assets/images/icon_mais.png" alt=""></button>
                         </div>
                     </div>
                     <div class="div-totalDeInstituicao">
@@ -53,6 +54,7 @@
     <!-- divs modais/ pop-ups -->
     <div class="divModal" id="divModal"></div>
     <div class="divModalExcluir" id="divModalExcluir"></div>
+    <div class="divModalDetalhado" id="divModalDetalhado"></div>
 </body>
 
 </html>

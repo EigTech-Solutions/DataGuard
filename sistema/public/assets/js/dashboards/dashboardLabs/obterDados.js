@@ -384,12 +384,64 @@ function atualizarGraficoStatusMaquinas() {
     }, 5000);
 }
 
+function buscarSituacao(idLab) {
+    fetch(`/laboratorios/buscarNivelPreocupacaoLab/${idLab}/${sessionStorage.ID_INSTITUICAO}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            resposta.json().then(dados => {
+                document.getElementById('kpi_situacao').innerHTML = dados[0].situacao
+                atualizarKpiSituacao(idLab)
+            });
+        } else {
+            console.log("Houve um erro ao tentar obter os dados da situação do lab :c");
+            resposta.text().then(texto => {
+                console.error(texto);
+            });
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+    })
+}
+
+function atualizarKpiSituacao(idLab) {
+    setInterval(() => {
+        fetch(`/laboratorios/buscarNivelPreocupacaoLab/${idLab}/${sessionStorage.ID_INSTITUICAO}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(response => {
+                    if (response[0].situacao != document.getElementById('kpi_situacao').innerHTML) {
+                        document.getElementById('kpi_situacao').innerHTML = dados[0].situacao;
+                    }
+                });
+            } else {
+                console.log("Houve um erro ao tentar obter os dados do kpi de situação em tempo real :c");
+                resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+        return false;
+    }, 5000);
+}
+
+
 window.addEventListener("load", function () {
     obterLaboratorios();
     obterKpis();
     buscarDadosFluxoDeRede();
     buscarRankingMaquinas();
     buscarDadosStatusMaquinas();
+    buscarSituacao(idLaboratorio);
 });
 
 
