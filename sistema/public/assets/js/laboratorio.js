@@ -4,7 +4,7 @@ function listarLabs() {
 
     fetch(`/laboratorios/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) { 
+            if (resposta.status == 204) {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -47,15 +47,38 @@ function listarLabs() {
                                     <td>${numSala}</td>
                                     <td>${laboratorio.quantidadeComputadores}</td>
                                     <td>${laboratorio.quantidadeAlertasUltimoMes}</td>
-                                    <td>${laboratorio.situacao}</td>
+                                    <td id="situacaoLab${laboratorio.idLaboratorio}"></td>
                                 </tr>
                             </table>
                             <button onclick="redirecionarParaLab(${laboratorio.idLaboratorio})">ver mais</button>
                         </div>
                     `;
+
+                    var situacaoLab = document.getElementById(`situacaoLab${laboratorio.idLaboratorio}`);
+                    fetch(`/laboratorios/buscarNivelPreocupacaoLab/${laboratorio.idLaboratorio}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+                        if (resposta.ok) {
+                            if (resposta.status == 204) {
+                                console.log("Nenhum resultado encontrado.");
+                                situacaoLab.innerHTML = "-"
+                                // throw "Nenhum resultado encontrado!!";
+                            } else{
+                                resposta.json().then(function (resposta) {
+                                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                                    var laboratorio = resposta[0];
+                                    console.log(laboratorio.situacao);
+
+                                    situacaoLab.innerHTML = `${laboratorio.situacao}`;
+                                });
+                            }
+                        } else {
+                            throw ('Houve um erro na API!');
+                        }
+                    }).catch(function (resposta) {
+                        console.error(resposta);
+                    });
                 }
 
-                // finalizarAguardar();
             });
         } else {
             throw ('Houve um erro na API!');
@@ -196,7 +219,7 @@ function excluirLab(idLab) {
                                 position: 'center',
                                 icon: 'error',
                                 title: 'Erro ao deletar laboratório',
-                                text: 'Possivelmente há maquinas vinculadas a esse laboratório, é necessário desassocia-las para poder exclui-lo.', 
+                                text: 'Possivelmente há maquinas vinculadas a esse laboratório, é necessário desassocia-las para poder exclui-lo.',
                                 showConfirmButton: false,
                                 timer: 1700
                             })
@@ -255,7 +278,7 @@ function abrirModalCardastarLab() {
 
     fetch(`/usuarios/listarTecnicos/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) { 
+            if (resposta.status == 204) {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -332,7 +355,7 @@ function abrirModalEditarLab(idLab) {
 
                 fetch(`/usuarios/listarTecnicos/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
                     if (resposta.ok) {
-                        if (resposta.status == 204) { 
+                        if (resposta.status == 204) {
                             console.log("Nenhum resultado encontrado.");
                             throw "Nenhum resultado encontrado!!";
                         }

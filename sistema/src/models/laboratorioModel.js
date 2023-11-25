@@ -91,6 +91,7 @@ function buscarNivelPreocupacaoLab(idLab, idInstituicao) {
             WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao})) * 100, 2) <= 25 THEN 'Bom'
             WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao})) * 100, 2) <= 50 THEN 'Atenção'
             WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao})) * 100, 2) <= 75 THEN 'Preocupante'
+            WHEN COUNT(a.idAlertas) IS NULL OR COUNT(a.idAlertas) = 0 THEN 'Ótimo'
             ELSE 'Extremamente preocupante'
         END as situacao
         FROM laboratorio l
@@ -99,7 +100,8 @@ function buscarNivelPreocupacaoLab(idLab, idInstituicao) {
         LEFT JOIN alertas a ON med.idMonitoramento = a.fkMonitoramento
         WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
             AND med.dataHora >= CURDATE() - INTERVAL 30 DAY
-        GROUP BY l.idLaboratorio, l.nomeSala;
+        GROUP BY l.idLaboratorio, l.nomeSala
+        ORDER BY l.idLaboratorio;
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
