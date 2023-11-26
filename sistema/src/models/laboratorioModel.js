@@ -4,7 +4,7 @@ function listar(idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
     var instrucao = ""
 
-    if (AMBIENTE_PROCESSO = "producao") {
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
         instrucao = `
             SELECT
                 l.idLaboratorio, l.fkInstitucional, l.nomeSala, l.numeroSala, l.fkResponsavel,
@@ -23,7 +23,7 @@ function listar(idInstituicao) {
             SELECT
                 l.*,
                 COUNT(DISTINCT m.idMaquina) AS quantidadeComputadores,
-                COUNT(DISTINCT a.idAlertas) AS quantidadeAlertasUltimoMes,
+                COUNT(DISTINCT a.idAlertas) AS quantidadeAlertasUltimoMes
             FROM laboratorio l
             LEFT JOIN maquina m ON m.fkLaboratorio = l.idLaboratorio AND l.fkInstitucional = m.fkInstitucional
             LEFT JOIN medicoes dm ON m.idMaquina = dm.fkMaquina

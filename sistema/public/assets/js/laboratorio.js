@@ -1,3 +1,5 @@
+var idLabs = [];
+
 listarLabs();
 
 function listarLabs() {
@@ -9,13 +11,14 @@ function listarLabs() {
                 throw "Nenhum resultado encontrado!!";
             }
 
-            resposta.json().then(function (resposta) {
+            resposta.json().then(async function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                 divCards.innerHTML = "";
 
                 for (let i = 0; i < resposta.length; i++) {
                     var laboratorio = resposta[i];
+                    idLabs.push(laboratorio.idLaboratorio);
 
                     var numCardExibido = laboratorio.numeroSala;
                     var numSala = laboratorio.numeroSala;
@@ -54,16 +57,21 @@ function listarLabs() {
                         </div>
                     `;
 
-                    var situacaoLab = document.getElementById(`situacaoLab${laboratorio.idLaboratorio}`);
-                    fetch(`/laboratorios/buscarNivelPreocupacaoLab/${laboratorio.idLaboratorio}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+                }
+
+                idLabs.forEach(idAtual => {
+                    var situacaoLab = document.getElementById(`situacaoLab${idAtual}`);
+
+                    fetch(`/laboratorios/buscarNivelPreocupacaoLab/${idAtual}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
                         if (resposta.ok) {
                             if (resposta.status == 204) {
                                 console.log("Nenhum resultado encontrado.");
-                                situacaoLab.innerHTML = "-"
+                                situacaoLab.innerHTML = "Ótimo"
                                 // throw "Nenhum resultado encontrado!!";
-                            } else{
+                            } else {
                                 resposta.json().then(function (resposta) {
                                     console.log("Dados recebidos: ", JSON.stringify(resposta));
+                                    console.log("Teste deixa", situacaoLab);
 
                                     var laboratorio = resposta[0];
                                     console.log(laboratorio.situacao);
@@ -77,8 +85,7 @@ function listarLabs() {
                     }).catch(function (resposta) {
                         console.error(resposta);
                     });
-                }
-
+                });
             });
         } else {
             throw ('Houve um erro na API!');
@@ -87,6 +94,10 @@ function listarLabs() {
         console.error(resposta);
         // finalizarAguardar();
     });
+
+}
+
+async function plotarSituacao(idLab, tdSituacaoLab) {
 
 }
 
