@@ -61,12 +61,12 @@ function listarLabs() {
                                 console.log("Nenhum resultado encontrado.");
                                 situacaoLab.innerHTML = "-"
                                 // throw "Nenhum resultado encontrado!!";
-                            } else{
+                            } else {
                                 resposta.json().then(function (resposta) {
                                     console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                                     var laboratorio = resposta[0];
-                                    console.log(laboratorio.situacao);
+                                    console.log(laboratorio.situacao, situacaoLab);
 
                                     situacaoLab.innerHTML = `${laboratorio.situacao}`;
                                 });

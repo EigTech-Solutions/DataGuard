@@ -101,7 +101,6 @@ function buscarNivelPreocupacaoLab(idLab, idInstituicao) {
         WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
             AND med.dataHora >= CURDATE() - INTERVAL 30 DAY
         GROUP BY l.idLaboratorio, l.nomeSala
-        ORDER BY l.idLaboratorio;
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
