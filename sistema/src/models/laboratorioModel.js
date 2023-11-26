@@ -2,25 +2,37 @@ var database = require("../database/config")
 
 function listar(idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
-    var instrucao = `
-        SELECT
-        l.*,
-        COUNT(DISTINCT m.idMaquina) AS quantidadeComputadores,
-        COUNT(DISTINCT a.idAlertas) AS quantidadeAlertasUltimoMes,
-        CASE
-        WHEN COUNT(DISTINCT a.idAlertas) <= 5 THEN 'Ok'
-        WHEN COUNT(DISTINCT a.idAlertas) <= 15 THEN 'Atenção'
-        ELSE 'Urgente'
-        END AS situacao
-    FROM
-        laboratorio l
-    LEFT JOIN maquina m ON m.fkLaboratorio = l.idLaboratorio AND l.fkInstitucional = m.fkInstitucional
-    LEFT JOIN medicoes dm ON m.idMaquina = dm.fkMaquina
-    LEFT JOIN Alertas a ON dm.idMonitoramento = a.fkMonitoramento AND dm.fkMaquina = a.fkMaquina
-    WHERE
-        l.fkInstitucional = ${idInstituicao}
-    GROUP BY l.idLaboratorio;
-    `;
+    var instrucao = ""
+
+    if (AMBIENTE_PROCESSO = "producao") {
+        instrucao = `
+            SELECT
+                l.idLaboratorio, l.fkInstitucional, l.nomeSala, l.numeroSala, l.fkResponsavel,
+                COUNT(DISTINCT m.idMaquina) AS quantidadeComputadores,
+                COUNT(DISTINCT a.idAlertas) AS quantidadeAlertasUltimoMes
+            FROM laboratorio l
+            LEFT JOIN maquina m ON m.fkLaboratorio = l.idLaboratorio AND l.fkInstitucional = m.fkInstitucional
+            LEFT JOIN medicoes dm ON m.idMaquina = dm.fkMaquina
+            LEFT JOIN Alertas a ON dm.idMonitoramento = a.fkMonitoramento AND dm.fkMaquina = a.fkMaquina
+            WHERE
+                l.fkInstitucional = ${idInstituicao}
+            GROUP BY l.idLaboratorio, l.fkInstitucional, l.nomeSala, l.numeroSala, l.fkResponsavel;
+        `
+    } else {
+        instrucao = `
+            SELECT
+                l.*,
+                COUNT(DISTINCT m.idMaquina) AS quantidadeComputadores,
+                COUNT(DISTINCT a.idAlertas) AS quantidadeAlertasUltimoMes,
+            FROM laboratorio l
+            LEFT JOIN maquina m ON m.fkLaboratorio = l.idLaboratorio AND l.fkInstitucional = m.fkInstitucional
+            LEFT JOIN medicoes dm ON m.idMaquina = dm.fkMaquina
+            LEFT JOIN Alertas a ON dm.idMonitoramento = a.fkMonitoramento AND dm.fkMaquina = a.fkMaquina
+            WHERE
+                l.fkInstitucional = ${idInstituicao}
+            GROUP BY l.idLaboratorio;
+        `;
+    }
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
