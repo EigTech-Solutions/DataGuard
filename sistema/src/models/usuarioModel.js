@@ -2,51 +2,100 @@ var database = require("../database/config")
 
 function autenticar(email, senha) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
-    var instrucao = `
+    var instrucao = ""
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `
+            SELECT usuario.*,
+                ISNULL(acessoUsuarioAdmin.fkAcesso, 0) AS acessoAdmin,
+                ISNULL(acessoUsuarioTecnico.fkAcesso, 0) AS acessoTecnico
+            FROM usuario
+                LEFT JOIN acessoUsuario acessoUsuarioAdmin ON usuario.idUsuario = acessoUsuarioAdmin.fkUsuario
+                AND acessoUsuarioAdmin.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Admin')
+                LEFT JOIN acessoUsuario acessoUsuarioTecnico ON usuario.idUsuario = acessoUsuarioTecnico.fkUsuario
+                AND acessoUsuarioTecnico.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Técnico')
+                WHERE    usuario.email = '${email}' AND usuario.senha = '${senha}';
+        `
+    } else {
+        instrucao = `
         SELECT usuario.*, 
             IFNULL(acessoUsuarioAdmin.fkAcesso, 0) AS acessoAdmin, 
             IFNULL(acessoUsuarioTecnico.fkAcesso, 0) AS acessoTecnico
         FROM usuario
-        LEFT JOIN acessoUsuario acessoUsuarioAdmin ON usuario.idUsuario = acessoUsuarioAdmin.fkUsuario
-        AND acessoUsuarioAdmin.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Admin')
-        LEFT JOIN acessoUsuario acessoUsuarioTecnico ON usuario.idUsuario = acessoUsuarioTecnico.fkUsuario
-        AND acessoUsuarioTecnico.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Técnico')
-        WHERE usuario.email = '${email}' AND usuario.senha = '${senha}';
+            LEFT JOIN acessoUsuario acessoUsuarioAdmin ON usuario.idUsuario = acessoUsuarioAdmin.fkUsuario
+            AND acessoUsuarioAdmin.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Admin')
+            LEFT JOIN acessoUsuario acessoUsuarioTecnico ON usuario.idUsuario = acessoUsuarioTecnico.fkUsuario
+            AND acessoUsuarioTecnico.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Técnico')
+            WHERE usuario.email = '${email}' AND usuario.senha = '${senha}';
     `;
+    }
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
 
 function listar(idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
-    var instrucao = `
-        SELECT usuario.*, 
-            IFNULL(acessoUsuarioAdmin.fkAcesso, 0) AS acessoAdmin, 
-            IFNULL(acessoUsuarioTecnico.fkAcesso, 0) AS acessoTecnico
-        FROM usuario
-        LEFT JOIN acessoUsuario acessoUsuarioAdmin ON usuario.idUsuario = acessoUsuarioAdmin.fkUsuario
-        AND acessoUsuarioAdmin.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Admin')
-        LEFT JOIN acessoUsuario acessoUsuarioTecnico ON usuario.idUsuario = acessoUsuarioTecnico.fkUsuario
-        AND acessoUsuarioTecnico.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Técnico')
-        WHERE usuario.fkInstitucional = ${idInstituicao};
-    `;
+
+    var instrucao = "";
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `
+            SELECT usuario.*,
+            ISNULL(acessoUsuarioAdmin.fkAcesso, 0) AS acessoAdmin,
+            ISNULL(acessoUsuarioTecnico.fkAcesso, 0) AS acessoTecnico
+            FROM usuario
+            LEFT JOIN acessoUsuario acessoUsuarioAdmin ON usuario.idUsuario = acessoUsuarioAdmin.fkUsuario
+                                                    AND acessoUsuarioAdmin.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Admin')
+            LEFT JOIN acessoUsuario acessoUsuarioTecnico ON usuario.idUsuario = acessoUsuarioTecnico.fkUsuario
+                                                        AND acessoUsuarioTecnico.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Técnico')
+            WHERE usuario.fkInstitucional = ${idInstituicao}; 
+        `;
+    } else {
+        instrucao = `
+            SELECT usuario.*, 
+                IFNULL(acessoUsuarioAdmin.fkAcesso, 0) AS acessoAdmin, 
+                IFNULL(acessoUsuarioTecnico.fkAcesso, 0) AS acessoTecnico
+            FROM usuario
+                LEFT JOIN acessoUsuario acessoUsuarioAdmin ON usuario.idUsuario = acessoUsuarioAdmin.fkUsuario
+                AND acessoUsuarioAdmin.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Admin')
+                LEFT JOIN acessoUsuario acessoUsuarioTecnico ON usuario.idUsuario = acessoUsuarioTecnico.fkUsuario
+                AND acessoUsuarioTecnico.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Técnico')
+                WHERE usuario.fkInstitucional = ${idInstituicao};
+        `;
+    }
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
 
 function buscarUser(idUser, idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarUser()");
-    var instrucao = `
-        SELECT usuario.*, 
-            IFNULL(acessoUsuarioAdmin.fkAcesso, 0) AS acessoAdmin, 
-            IFNULL(acessoUsuarioTecnico.fkAcesso, 0) AS acessoTecnico
-        FROM usuario
-        LEFT JOIN acessoUsuario acessoUsuarioAdmin ON usuario.idUsuario = acessoUsuarioAdmin.fkUsuario
-        AND acessoUsuarioAdmin.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Admin')
-        LEFT JOIN acessoUsuario acessoUsuarioTecnico ON usuario.idUsuario = acessoUsuarioTecnico.fkUsuario
-        AND acessoUsuarioTecnico.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Técnico') 
-        WHERE idUsuario = ${idUser} AND usuario.fkInstitucional = ${idInstituicao};
-    `;
+
+    var instrucao = "";
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `        
+            SELECT usuario.*,
+            ISNULL(acessoUsuarioAdmin.fkAcesso, 0) AS acessoAdmin,
+            ISNULL(acessoUsuarioTecnico.fkAcesso, 0) AS acessoTecnico
+            FROM usuario
+            LEFT JOIN acessoUsuario acessoUsuarioAdmin ON usuario.idUsuario = acessoUsuarioAdmin.fkUsuario
+                                            AND acessoUsuarioAdmin.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Admin')
+            LEFT JOIN acessoUsuario acessoUsuarioTecnico ON usuario.idUsuario = acessoUsuarioTecnico.fkUsuario
+                                                AND acessoUsuarioTecnico.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Técnico')
+            WHERE usuario.idUsuario = ${idUser} AND usuario.fkInstitucional = ${idInstituicao};
+        `;
+    } else {
+        instrucao = `
+            SELECT usuario.*, 
+                IFNULL(acessoUsuarioAdmin.fkAcesso, 0) AS acessoAdmin, 
+                IFNULL(acessoUsuarioTecnico.fkAcesso, 0) AS acessoTecnico
+            FROM usuario
+            LEFT JOIN acessoUsuario acessoUsuarioAdmin ON usuario.idUsuario = acessoUsuarioAdmin.fkUsuario
+            AND acessoUsuarioAdmin.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Admin')
+            LEFT JOIN acessoUsuario acessoUsuarioTecnico ON usuario.idUsuario = acessoUsuarioTecnico.fkUsuario
+            AND acessoUsuarioTecnico.fkAcesso = (SELECT idAcesso FROM acesso WHERE tipoAcesso = 'Técnico') 
+            WHERE idUsuario = ${idUser} AND usuario.fkInstitucional = ${idInstituicao};
+        `;
+    }
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
@@ -54,13 +103,13 @@ function buscarUser(idUser, idInstituicao) {
 // cadastro de usuarios
 function cadastrar(nome, email, telefone, senha, idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, telefone, senha, idInstituicao);
-    
-    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
-    //  e na ordem de inserção dos dados.
-    var instrucao = `
-        INSERT INTO usuario (nome, email, telefone, senha, fkInstitucional) 
-            VALUES ('${nome}', '${email}', '${telefone}', '${senha}', '${idInstituicao}');
-    `;
+
+    var instrucao = "";
+    instrucao = `
+            INSERT INTO usuario (nome, email, telefone, senha, fkInstitucional) 
+                VALUES ('${nome}', '${email}', '${telefone}', '${senha}', '${idInstituicao}');
+        `;
+
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
@@ -68,9 +117,7 @@ function cadastrar(nome, email, telefone, senha, idInstituicao) {
 // cadastro de usuarios
 function cadastrarAcesso(idUser, idInstituicao, idAcesso) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", idUser, idInstituicao, idAcesso);
-    
-    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
-    //  e na ordem de inserção dos dados.
+
     var instrucao = `
         INSERT INTO acessoUsuario (fkUsuario, fkInstitucional, fkAcesso, dataAcessoUsuario) 
             VALUES (${idUser}, ${idInstituicao}, ${idAcesso}, now());
@@ -81,9 +128,7 @@ function cadastrarAcesso(idUser, idInstituicao, idAcesso) {
 
 function atualizar(idUser, idInstituicao, nome, email, telefone, senha) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", idUser, idInstituicao, nome, email, telefone, senha);
-    
-    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
-    //  e na ordem de inserção dos dados.
+
     var instrucao = `
         UPDATE usuario SET nome = '${nome}', email = '${email}', telefone = '${telefone}', senha = '${senha}'
             WHERE idUsuario = ${idUser} AND fkInstitucional = ${idInstituicao};
@@ -107,7 +152,7 @@ function listarTecnicos(idInstituicao) {
 
 function deletar(idUser, idInstituicao) {
     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function deletar():", idUser, idInstituicao);
-    
+
     var instrucao = `
         DELETE FROM usuario WHERE idUsuario = ${idUser} AND fkInstitucional = ${idInstituicao};
     `;
@@ -117,7 +162,7 @@ function deletar(idUser, idInstituicao) {
 
 function deletarAcesso(idUser, idAcesso, idInstituicao) {
     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function deletar():", idUser, idAcesso, idInstituicao);
-    
+
     var instrucao = `
         DELETE FROM acessoUsuario WHERE fkUsuario = ${idUser} AND fkAcesso = ${idAcesso} AND fkInstitucional = ${idInstituicao};
     `;
