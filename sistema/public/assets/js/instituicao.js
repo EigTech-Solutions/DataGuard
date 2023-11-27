@@ -36,14 +36,6 @@ function cadastrar() {
             'error'
         );
     } else {
-        var dataAtual = new Date();
-        var dia = dataAtual.getDate();
-        var mes = dataAtual.getMonth() + 1;
-        var ano = dataAtual.getFullYear();
-        var dataFormatada = `${ano}-${mes}-${dia}`;
-
-        console.log("Entrei no else");
-
         fetch("/instituicao/cadastrar", {
             method: "POST",
             headers: {
@@ -57,7 +49,6 @@ function cadastrar() {
                 cepInstServer: cepInstbVAR,
                 numeroInstServer: numeroInstbVAR,
                 complementoInstServer: complementoInstbVAR,
-                dataCadastroInstServer: dataFormatada
             })
         }).then(function (resposta) {
             console.log("entrei no fetch")
