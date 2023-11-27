@@ -2,10 +2,10 @@ var database = require("../database/config")
 
 // cadastro de laboratorios
 function cadastrar(nomeInst, cnpjInst, emailInst, telefoneInst, cepInst,
-    numeroInst, complementoInst, dataCadastroInst) {
+    numeroInst, complementoInst) {
     var instrucao = `
     INSERT INTO instituicao (nomeInstitucional, cnpj, email, telefone, cep, numeroEndereco, complemento, fkParametrosMonitoramento, dataCadastro)
-    VALUES ('${nomeInst}', '${cnpjInst}', '${emailInst}', '${telefoneInst}', '${cepInst}', '${numeroInst}', '${complementoInst}', 1, '${dataCadastroInst}');
+    VALUES ('${nomeInst}', '${cnpjInst}', '${emailInst}', '${telefoneInst}', '${cepInst}', '${numeroInst}', '${complementoInst}', 1, now());
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);

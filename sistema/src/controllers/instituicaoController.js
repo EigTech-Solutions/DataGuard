@@ -10,8 +10,6 @@ function cadastrar(req, res) {
     var cepInst = req.body.cepInstServer;
     var numeroInst = req.body.numeroInstServer;
     var complementoInst = req.body.complementoInstServer;
-    var dataCadastroInst = req.body.dataCadastroInstServer;
-
 
     // Faça as validações dos valores
     if (nomeInst == undefined) {
@@ -26,13 +24,11 @@ function cadastrar(req, res) {
         res.status(400).send("O CEP da instituição está undefined!");
     } else if (numeroInst == undefined) {
         res.status(400).send("O numero da instituição está undefined!");
-    } else if (dataCadastroInst == undefined){
-        res.status(400).send("A data de cadastro da instituição está undefined!");
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo laboratorioModel.js
         instituicaoModel.cadastrar(nomeInst, cnpjInst, emailInst, telefoneInst, cepInst, 
-            numeroInst, complementoInst, dataCadastroInst)
+            numeroInst, complementoInst)
             .then(
                 function (resultado) {
                     res.json(resultado);
