@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Instituições</title>
+    <link rel="shortcut icon" href="../assets/images/icon_logo.png" type="image/x-icon">
+    <!-- Importando o css da página -->
+    <link rel="stylesheet" href="../assets/css/basePages.css">
+    <link rel="stylesheet" href="../assets/css/telaLabs&pcs.css">
+    <link rel="stylesheet" href="../assets/css/dashboardInstituicao.css">
+
+    <!-- importando chartsjs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body onload="validarSessao()">
+    <div class="menu-lateral" id="menuLateral"></div>
+    <div class="container-geral">
+        <div class="menu-top" id="menuTop"></div>
+        <div class="container-page">
+            <div class="conteudo-page">
+                <div class="titulo-pagina">
+                    Dashboard de Instituição
+                </div>
+                <div class="container-dashboard">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/js/dashboardInstituicao.js"></script>
+</body>
+
+</html>
+<!-- Importando o JavaScript da página -->
+<script src="../assets/js/basePageInstituicao.js"></script>
+<script src="../assets/js/sessao.js"></script>
+<!-- importando a biblioteca da API sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

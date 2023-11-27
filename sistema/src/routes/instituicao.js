@@ -19,4 +19,8 @@ router.get("/dadosGeraisInst", function(req, res){
     instituicaoController.dadosGeraisInst(req, res);
 });
 
+router.get("/dashDatas", function(req, res){
+    instituicaoController.dashDatas(req, res);
+});
+
 module.exports = router;

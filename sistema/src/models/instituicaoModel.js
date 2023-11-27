@@ -1,22 +1,17 @@
 var database = require("../database/config")
 
 // cadastro de laboratorios
-function cadastrar(nomeInst, cnpjInst, emailInst, telefoneInst, cepInst, 
-    numeroInst, complementoInst) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():"
-    ,nomeInst, cnpjInst, emailInst, telefoneInst, cepInst, numeroInst, complementoInst);
-
-    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
-    //  e na ordem de inserção dos dados.
+function cadastrar(nomeInst, cnpjInst, emailInst, telefoneInst, cepInst,
+    numeroInst, complementoInst, dataCadastroInst) {
     var instrucao = `
-    INSERT INTO instituicao (nomeInstitucional, cnpj, email, telefone, cep, numeroEndereco, complemento, fkParametrosMonitoramento)
-    VALUES ('${nomeInst}', '${cnpjInst}', '${emailInst}', '${telefoneInst}', '${cepInst}', '${numeroInst}', '${complementoInst}', 1);
+    INSERT INTO instituicao (nomeInstitucional, cnpj, email, telefone, cep, numeroEndereco, complemento, fkParametrosMonitoramento, dataCadastro)
+    VALUES ('${nomeInst}', '${cnpjInst}', '${emailInst}', '${telefoneInst}', '${cepInst}', '${numeroInst}', '${complementoInst}', 1, '${dataCadastroInst}');
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
 
-function puxarDados(){
+function puxarDados() {
     var instrucao = `
     SELECT SUM(total_instituicoes) AS quantidade_total_instituicoes, GROUP_CONCAT(nomeInstitucional) AS nomes_instituicoes
 FROM (
@@ -29,7 +24,7 @@ FROM (
     return database.executar(instrucao);
 }
 
-function dadosInstituicao(){
+function dadosInstituicao() {
 
     var instrucao = `
     SELECT nomeInstitucional FROM instituicao;
@@ -55,9 +50,28 @@ function dadosGeraisInst() {
     return database.executar(instrucao);
 }
 
+function dashDatas() {
+    var instrucao = `
+
+    SELECT
+    MONTHNAME(dataCadastro) AS nomeMes,
+    COUNT(*) AS quantidadeDeCadastros
+  FROM
+    instituicao
+  GROUP BY
+    nomeMes
+  ORDER BY
+    MIN(MONTH(dataCadastro));
+  
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
     dadosInstituicao,
-    dadosGeraisInst
+    dadosGeraisInst,
+    dashDatas
 };

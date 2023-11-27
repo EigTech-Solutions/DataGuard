@@ -10,6 +10,7 @@ function cadastrar(req, res) {
     var cepInst = req.body.cepInstServer;
     var numeroInst = req.body.numeroInstServer;
     var complementoInst = req.body.complementoInstServer;
+    var dataCadastroInst = req.body.dataCadastroInstServer;
 
 
     // Faça as validações dos valores
@@ -25,11 +26,13 @@ function cadastrar(req, res) {
         res.status(400).send("O CEP da instituição está undefined!");
     } else if (numeroInst == undefined) {
         res.status(400).send("O numero da instituição está undefined!");
+    } else if (dataCadastroInst == undefined){
+        res.status(400).send("A data de cadastro da instituição está undefined!");
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo laboratorioModel.js
         instituicaoModel.cadastrar(nomeInst, cnpjInst, emailInst, telefoneInst, cepInst, 
-            numeroInst, complementoInst)
+            numeroInst, complementoInst, dataCadastroInst)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -74,10 +77,22 @@ function dadosInstituicao(req, res) {
 }
 
 function dadosGeraisInst(req, res) {
-    console.log("cheguei no controler");
     instituicaoModel.dadosGeraisInst(req, res).then(function (dadosPuxados) {
         if (dadosPuxados.length > 0) {
             res.status(200).json(dadosPuxados);
+        } else {
+            res.status(204).send("Nenhum dado encontrado");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function dashDatas(req, res) {
+    instituicaoModel.dashDatas(req, res).then(function (dashDados) {
+        if (dashDados.length > 0) {
+            res.status(200).json(dashDados);
         } else {
             res.status(204).send("Nenhum dado encontrado");
         }
@@ -91,5 +106,6 @@ module.exports = {
     cadastrar,
     puxarDados,
     dadosInstituicao,
-    dadosGeraisInst
+    dadosGeraisInst,
+    dashDatas
 }

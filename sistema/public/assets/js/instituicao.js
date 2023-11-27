@@ -7,15 +7,16 @@ function cadastrar() {
     var numeroInstbVAR = ipt_numeroInst.value;
     var complementoInstbVAR = ipt_complementoInst.value;
 
-    var idInstituicaoVAR = sessionStorage.ID_INSTITUICAO;
-
     if (nomeInstVAR == "" || cnpjInstbVAR == "" || emailInstbVAR == ""
         || telefoneInstbVAR == "" || cepInstbVAR == "" || numeroInstbVAR == "") {
-        Swal.fire(
-            'Campo obrigatório vazio.',
-            'Preencha todos os campos para continuar!',
-            'error'
-        );
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Erro ao Realizar Cadastro!',
+                text: 'Preencha os campos em branco...',
+                showConfirmButton: false,
+                timer: 3000
+            });
     } else if (telefoneInstbVAR.length > 14) {
         Swal.fire(
             'Número de telefone inválido.',
@@ -35,6 +36,14 @@ function cadastrar() {
             'error'
         );
     } else {
+        var dataAtual = new Date();
+        var dia = dataAtual.getDate();
+        var mes = dataAtual.getMonth() + 1;
+        var ano = dataAtual.getFullYear();
+        var dataFormatada = `${ano}-${mes}-${dia}`;
+
+        console.log("Entrei no else");
+
         fetch("/instituicao/cadastrar", {
             method: "POST",
             headers: {
@@ -47,33 +56,41 @@ function cadastrar() {
                 telefoneInstServer: telefoneInstbVAR,
                 cepInstServer: cepInstbVAR,
                 numeroInstServer: numeroInstbVAR,
-                complementoInstServer: complementoInstbVAR
-
+                complementoInstServer: complementoInstbVAR,
+                dataCadastroInstServer: dataFormatada
             })
         }).then(function (resposta) {
+            console.log("entrei no fetch")
             if (resposta.ok) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Cadastro realizado com sucesso!',
-                    showConfirmButton: true,
-                    // timer: 1500
+                    title: 'Cadastro Realizado com Sucesso!',
+                    text: 'Autenticando Informações...',
+                    showConfirmButton: false,
+                    timer: 2000
                 });
                 fecharModal();
             } else {
-                Swal.fire(
-                    'Ocorreu um erro ao cadastrar.',
-                    'Tente novamente mais tarde',
-                    'error'
-                );
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Ocorreu um erro ao realizar o cadastro!',
+                    text: 'Realize alterações...',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
                 throw ("houve um erro ao tentar se cadastrar");
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
+        }).finally(function() {
+            setTimeout(function() {
+                location.reload();
+            }, 2000);
         });
 
     }
-    location.reload();
 }
 function abrirModalCardastarInstituicao() {
     divModal.style.display = "flex";
