@@ -11,14 +11,15 @@
     display: flex;
 }
 
-.btn-info{
+.more_info_btn_img{
     align-self: flex-end;
     margin-top: -25px;
     width: 30px;
     cursor: pointer;
+    background-color: #124559;
 }
 
-.btn-info:hover{
+.more_info_btn_img:hover{
     transform: scale(1.03);
 }
 
