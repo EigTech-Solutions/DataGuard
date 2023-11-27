@@ -7,7 +7,7 @@ body {
 .container-page .conteudo-page .titulo-pagina{
     border-radius: 5px;
     background-color: rgba(18, 69, 89, 0.5);
-    color: rgba(255, 255, 255, 0.5);
+    color: #f6f6f6;
     font-size: 1.2rem;
     padding: 0.5em 1em;
     border: 0;
@@ -24,7 +24,7 @@ body {
     max-height: 70vh;
     border-radius: 5px;
     background-color: rgba(18, 69, 89, 0.5);
-    color: rgba(255, 255, 255, 0.5);
+    color: #f6f6f6;
     font-size: 1.2rem;
     padding: 0.5em 1em;
     border: 0;
@@ -34,7 +34,6 @@ body {
     outline: none;
 }
 
-.container-dashboard #myChart{
-    color: whitesmoke;
-    font-size: 2rem;
+.info-dashboard{
+    width: 10%;
 }
