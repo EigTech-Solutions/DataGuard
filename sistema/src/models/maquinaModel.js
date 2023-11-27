@@ -225,25 +225,24 @@ function buscarPcsDesativadosAno(idLab, idInstituicao, ano) {
 function buscarIndicePreocupacaoMaquina(idMaquina, idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarIndicePreocupacaoMaquina()");
     var instrucao = `
-    SELECT
-            l.nomeSala, l.idLaboratorio, m.idMaquina,
-            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END) as qtdAlertasUrgentes,
-            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) as qtdAlertasAtencao,
-            ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5))) * 100, 2) as percentualPreocupacao,
-        CASE 
-            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5))) * 100, 2) <= 5 THEN 'Ótimo'
-            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5))) * 100, 2) <= 10 THEN 'Bom'
-            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5))) * 100, 2) <= 15 THEN 'Atenção'
-            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5))) * 100, 2) <= 20 THEN 'Preocupante'
-            ELSE 'Extremamente preocupante'
-        END as situacao
-        FROM laboratorio l
-        JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        SELECT
+            m.idMaquina,
+            COALESCE(SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END), 0) as qtdAlertasUrgentes,
+            COALESCE(SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END), 0) as qtdAlertasAtencao,
+            (COALESCE(SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END), 0) * 1 + COALESCE(SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END), 0) * 0.5) as indicePreocupacao,
+            CASE 
+                WHEN (COALESCE(SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END), 0) * 1 + COALESCE(SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END), 0) * 0.5) <= 5 THEN 'Ótimo'
+                WHEN (COALESCE(SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END), 0) * 1 + COALESCE(SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END), 0) * 0.5) <= 10 THEN 'Bom'
+                WHEN (COALESCE(SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END), 0) * 1 + COALESCE(SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END), 0) * 0.5) <= 15 THEN 'Atenção'
+                WHEN (COALESCE(SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END), 0) * 1 + COALESCE(SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END), 0) * 0.5) <= 20 THEN 'Preocupante'
+                ELSE 'Extremamente preocupante'
+            END as situacao
+        FROM maquina m
         LEFT JOIN medicoes med ON m.idMaquina = med.fkMaquina
         LEFT JOIN alertas a ON med.idMonitoramento = a.fkMonitoramento
-        WHERE m.idMaquina = ${idMaquina} AND l.fkInstitucional = ${idInstituicao}
-            AND med.dataHora >= CURDATE() - INTERVAL 30 DAY
-        GROUP BY l.idLaboratorio, l.nomeSala;
+        WHERE m.idMaquina = ${idMaquina} AND m.fkInstitucional = ${idInstituicao}
+            AND (med.dataHora >= CURDATE() - INTERVAL 30 DAY OR med.dataHora IS NULL)
+        GROUP BY m.idMaquina;
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
