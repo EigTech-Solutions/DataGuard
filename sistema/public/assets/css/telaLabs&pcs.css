@@ -392,6 +392,16 @@ hr {
     flex-direction: column;
 }
 
+.divModal .containerModalUser .campoInstituicao{
+    width: 93%;
+    margin-bottom: 20px;
+    margin-top: -10px;
+}
+
+.divModal .containerModalUser .campoInstituicao select{
+    width: 100%;
+}
+
 .ipt-busca-maquina {
     width: 250px;
     border-radius: 6px;
