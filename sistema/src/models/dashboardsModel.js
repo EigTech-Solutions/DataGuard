@@ -658,22 +658,45 @@ function buscarFluxoRedeMaquinaTempoReal(idMaquina) {
 
 function buscarDadosMemorias(idMaquina) {
     instrucaoSql = ''
-    //revisar
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT 
+        (SELECT TOP 1 me.valorConsumido 
+        FROM medicoes me
+        JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente AND me.fkMaquina = cm.fkMaquina
+        WHERE cm.componente = 'Disco Rigido' AND me.fkMaquina = ${idMaquina}
+        ORDER BY me.dataHora DESC) AS 'usoDisco',
+        (SELECT TOP 1 me.valorConsumido 
+        FROM medicoes me
+        JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente AND me.fkMaquina = cm.fkMaquina
+        WHERE cm.componente = 'Memoria' AND me.fkMaquina = ${idMaquina}
+        ORDER BY me.dataHora DESC) AS 'usoRam',
+        FORMAT((SELECT TOP 1 me.dataHora 
+                FROM medicoes me
+                WHERE me.fkMaquina = ${idMaquina}
+                ORDER BY me.dataHora DESC), 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora';
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
             SELECT
-                me.valorConsumido "usoDisco",
-                (CASE WHEN cm.componente = "Memoria" AND cm.fKMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS "usoRam",
+                (SELECT me.valorConsumido from medicoes me
+                join componentemonitorado cm on cm.idComponente = me.fkComponente
+                where cm.componente = "Disco Rigido" AND me.fkMaquina = ${idMaquina}
+                order by me.dataHora desc 
+                limit 1) "usoDisco",
+                (SELECT me.valorConsumido from medicoes me
+                join componentemonitorado cm on cm.idComponente = me.fkComponente
+                where cm.componente = "Memoria" AND me.fkMaquina = ${idMaquina}
+                order by me.dataHora desc 
+                limit 1) "usoRam",
                 DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora'
             FROM
                 medicoes me
             JOIN
                 componenteMonitorado cm ON me.fkComponente = cm.idComponente AND me.fkMaquina = cm.fkMaquina
             WHERE
-                (cm.componente = "Disco Rigido" OR cm.componente = "Memoria") AND me.fkMaquina = ${idMaquina}
+                me.fkMaquina = ${idMaquina}
             ORDER BY
                 me.dataHora DESC
             LIMIT 1;
@@ -839,24 +862,23 @@ function buscarRankingMaquinasAdmin(idInstituicao) {
 
 function buscarColaboradores(idInstituicao) {
     instrucaoSql = ''
-    //revisar
     if (process.env.AMBIENTE_PROCESSO == "producao") {
         instrucaoSql = `
-        SELECT 
-            u.idUsuario,
-            FORMAT(au.dataAcessoUsuario, 'dd/MM/yyyy, HH:mm') AS 'dataHora', 
-            u.nome
-        FROM 
-            acessoUsuario au
-        LEFT JOIN 
-            usuario u ON au.fkUsuario = u.idUsuario
-        WHERE 
-            u.fkInstitucional = @idInstituicao;
+            SELECT 
+                DISTINCT u.idUsuario,
+                FORMAT(au.dataAcessoUsuario, 'dd/MM/yyyy, HH:mm') AS 'dataHora', 
+                u.nome
+            FROM 
+                acessoUsuario au
+            LEFT JOIN 
+                usuario u ON au.fkUsuario = u.idUsuario
+            WHERE 
+                u.fkInstitucional = @idInstituicao;
         `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select au.fkUsuario, DATE_FORMAT(au.dataAcessoUsuario, '%d/%m/%Y, %H:%i') AS 'dataHora', u.nome 
+            select DISTINCT au.fkUsuario, DATE_FORMAT(au.dataAcessoUsuario, '%d/%m/%Y, %H:%i') AS 'dataHora', u.nome 
             from acessoUsuario au
             join usuario u on au.fkUsuario = u.idUsuario
             WHERE u.fkInstitucional = ${idInstituicao};
