@@ -62,13 +62,13 @@ function buscarPorIpOrNumSerie(req, res) {
 // cadastro das Maquinas
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
-    var numeroSerie  = req.body.numeroSerieServer;
-    var ip  = req.body.ipServer;
-    var sistemaOperacional  = req.body.sistemaOperacionalServer;
-    var capMemoriaDisco  = req.body.capMemoriaDiscoServer;
-    var capMemoriaRam  = req.body.capMemoriaRamServer;
-    var tipoDisco  = req.body.tipoDiscoServer;
-    var processador  = req.body.processadorServer;
+    var numeroSerie = req.body.numeroSerieServer;
+    var ip = req.body.ipServer;
+    var sistemaOperacional = req.body.sistemaOperacionalServer;
+    var capMemoriaDisco = req.body.capMemoriaDiscoServer;
+    var capMemoriaRam = req.body.capMemoriaRamServer;
+    var tipoDisco = req.body.tipoDiscoServer;
+    var processador = req.body.processadorServer;
     var idLaboratorio = req.body.laboratorioServer;
     var idInstituicao = req.body.idInstituicaoServer;
 
@@ -92,7 +92,7 @@ function cadastrar(req, res) {
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        maquinaModel.cadastrar(numeroSerie , ip , sistemaOperacional , capMemoriaDisco, capMemoriaRam, tipoDisco , processador, idLaboratorio, idInstituicao)
+        maquinaModel.cadastrar(numeroSerie, ip, sistemaOperacional, capMemoriaDisco, capMemoriaRam, tipoDisco, processador, idLaboratorio, idInstituicao)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -114,13 +114,13 @@ function atualizar(req, res) {
     var idPC = req.params.idPC;
     var idInstituicao = req.params.idInstituicao;
 
-    var numeroSerie  = req.body.numeroSerieServer;
-    var ip  = req.body.ipServer;
-    var sistemaOperacional  = req.body.sistemaOperacionalServer;
-    var capMemoriaDisco  = req.body.capMemoriaDiscoServer;
-    var capMemoriaRam  = req.body.capMemoriaRamServer;
-    var tipoDisco  = req.body.tipoDiscoServer;
-    var processador  = req.body.processadorServer;
+    var numeroSerie = req.body.numeroSerieServer;
+    var ip = req.body.ipServer;
+    var sistemaOperacional = req.body.sistemaOperacionalServer;
+    var capMemoriaDisco = req.body.capMemoriaDiscoServer;
+    var capMemoriaRam = req.body.capMemoriaRamServer;
+    var tipoDisco = req.body.tipoDiscoServer;
+    var processador = req.body.processadorServer;
     var idLaboratorio = req.body.laboratorioServer;
 
     // Faça as validações dos valores
@@ -143,7 +143,7 @@ function atualizar(req, res) {
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        maquinaModel.atualizar(idPC, numeroSerie , ip , sistemaOperacional , capMemoriaDisco, capMemoriaRam, tipoDisco , processador, idLaboratorio, idInstituicao)
+        maquinaModel.atualizar(idPC, numeroSerie, ip, sistemaOperacional, capMemoriaDisco, capMemoriaRam, tipoDisco, processador, idLaboratorio, idInstituicao)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -165,7 +165,7 @@ function atualizarStatus(req, res) {
     var idPC = req.params.idPC;
     var idInstituicao = req.params.idInstituicao;
 
-    var status  = req.body.statusServer;
+    var status = req.body.statusServer;
 
     // Faça as validações dos valores
     if (status == undefined) {
@@ -199,7 +199,7 @@ function atualizarLaboratorio(req, res) {
     var idPC = req.params.idPC;
     var idInstituicao = req.params.idInstituicao;
 
-    var idLab  = req.body.idLabServer;
+    var idLab = req.body.idLabServer;
 
     // Faça as validações dos valores
     if (idLab == undefined) {
@@ -417,6 +417,26 @@ function buscarTotalPcsCadastradosDesativadosAno(req, res) {
         );
 }
 
+function buscarIndicePreocupacao(req, res) {
+    var idMaquina = req.params.idMaquina;
+    var idInstituicao = req.params.idInstituicao;
+
+    maquinaModel.buscarIndicePreocupacaoMaquina(idMaquina, idInstituicao)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     listar,
     buscarPC,
@@ -433,4 +453,5 @@ module.exports = {
     buscarTotalPcsCadastradosDesativadosAno,
     buscarPcsDesativadosMes,
     buscarPcsDesativadosAno,
+    buscarIndicePreocupacao
 }

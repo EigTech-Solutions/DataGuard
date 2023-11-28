@@ -53,6 +53,7 @@
     display: flex;
     flex-direction: column;
     width: 27%;
+    height: 9vh;
     padding: 0.75rem 0.75rem;
     background-color: rgba(18, 69, 89, 0.50);
     border-radius: 10px;
@@ -434,4 +435,8 @@
 
 .animacao_alerta_sumir {
     animation: 1.2s alertaSumindo;
+}
+
+#kpi_situacao{
+    font-size: 3.2vh;
 }

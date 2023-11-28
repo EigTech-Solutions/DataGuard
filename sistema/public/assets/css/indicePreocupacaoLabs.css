@@ -2,23 +2,24 @@
     /* border: solid 1px; */
     display: flex;
     flex-direction: column-reverse;
-    align-items: center;
-    justify-content: center;
     margin: 0 0 20px 0;
 }
 
 .title-indice-preocupacao{
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-info{
-    align-self: flex-end;
+.more_info_btn_img {
+    display: flex;
     margin-top: -25px;
     width: 30px;
-    cursor: pointer;
+    align-items: center;
+    align-self: flex-end;
 }
 
-.btn-info:hover{
+.more_info_btn_img button:hover{
     transform: scale(1.03);
 }
 
@@ -43,6 +44,8 @@
     border-radius: 25px;
     overflow: hidden;
     gap: 1.4px;
+    align-items: center;
+    justify-content: center;
 }
 
 .section {

@@ -1,21 +1,24 @@
+var idLabs = [];
+
 listarLabs();
 
 function listarLabs() {
 
     fetch(`/laboratorios/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) { 
+            if (resposta.status == 204) {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
 
-            resposta.json().then(function (resposta) {
+            resposta.json().then(async function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                 divCards.innerHTML = "";
 
                 for (let i = 0; i < resposta.length; i++) {
                     var laboratorio = resposta[i];
+                    idLabs.push(laboratorio.idLaboratorio);
 
                     var numCardExibido = laboratorio.numeroSala;
                     var numSala = laboratorio.numeroSala;
@@ -47,15 +50,42 @@ function listarLabs() {
                                     <td>${numSala}</td>
                                     <td>${laboratorio.quantidadeComputadores}</td>
                                     <td>${laboratorio.quantidadeAlertasUltimoMes}</td>
-                                    <td>${laboratorio.situacao}</td>
+                                    <td id="situacaoLab${laboratorio.idLaboratorio}"></td>
                                 </tr>
                             </table>
                             <button onclick="redirecionarParaLab(${laboratorio.idLaboratorio})">ver mais</button>
                         </div>
                     `;
+
                 }
 
-                // finalizarAguardar();
+                idLabs.forEach(idAtual => {
+                    var situacaoLab = document.getElementById(`situacaoLab${idAtual}`);
+
+                    fetch(`/laboratorios/buscarNivelPreocupacaoLab/${idAtual}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+                        if (resposta.ok) {
+                            if (resposta.status == 204) {
+                                console.log("Nenhum resultado encontrado.");
+                                situacaoLab.innerHTML = "Ótimo"
+                                // throw "Nenhum resultado encontrado!!";
+                            } else {
+                                resposta.json().then(function (resposta) {
+                                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+                                    console.log("Teste deixa", situacaoLab);
+
+                                    var laboratorio = resposta[0];
+                                    console.log(laboratorio.situacao, situacaoLab);
+
+                                    situacaoLab.innerHTML = `${laboratorio.situacao}`;
+                                });
+                            }
+                        } else {
+                            throw ('Houve um erro na API!');
+                        }
+                    }).catch(function (resposta) {
+                        console.error(resposta);
+                    });
+                });
             });
         } else {
             throw ('Houve um erro na API!');
@@ -64,6 +94,10 @@ function listarLabs() {
         console.error(resposta);
         // finalizarAguardar();
     });
+
+}
+
+async function plotarSituacao(idLab, tdSituacaoLab) {
 
 }
 
@@ -196,7 +230,7 @@ function excluirLab(idLab) {
                                 position: 'center',
                                 icon: 'error',
                                 title: 'Erro ao deletar laboratório',
-                                text: 'Possivelmente há maquinas vinculadas a esse laboratório, é necessário desassocia-las para poder exclui-lo.', 
+                                text: 'Possivelmente há maquinas vinculadas a esse laboratório, é necessário desassocia-las para poder exclui-lo.',
                                 showConfirmButton: false,
                                 timer: 1700
                             })
@@ -255,7 +289,7 @@ function abrirModalCardastarLab() {
 
     fetch(`/usuarios/listarTecnicos/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) { 
+            if (resposta.status == 204) {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -332,7 +366,7 @@ function abrirModalEditarLab(idLab) {
 
                 fetch(`/usuarios/listarTecnicos/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
                     if (resposta.ok) {
-                        if (resposta.status == 204) { 
+                        if (resposta.status == 204) {
                             console.log("Nenhum resultado encontrado.");
                             throw "Nenhum resultado encontrado!!";
                         }

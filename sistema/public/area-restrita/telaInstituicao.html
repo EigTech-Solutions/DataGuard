@@ -21,7 +21,7 @@
         <div class="container-page">
             <div class="conteudo-page">
                 <div class="title-page">
-                    <h2>Instituição</h2>
+                    <h2>Instituições</h2>
                     <button class="btnAdd" onclick= "abrirModalCardastarInstituicao()">Nova Instituição</button>
                 </div>
                 <hr>
@@ -36,8 +36,9 @@
                             </div>
                         </div>
                         <div class="campoDeBusca">
-                            <input id="input_busca">
-                            <button onclick="pesquisarInstituicao()"><img src="../assets/images/lupaDeBusca.png" alt=""></button>
+                            <input id="input_busca" oninput="pesquisarInstituicao()">
+                            <button onclick="pesquisarInstituicao()" class="botaoLupa"><img src="../assets/images/lupaDeBusca.png" alt=""></button>
+                            <button onclick="dadosGeraisInst()" class="botaoMais"><img src="../assets/images/icon_mais.png" alt=""></button>
                         </div>
                     </div>
                     <div class="div-totalDeInstituicao">
@@ -53,14 +54,13 @@
     <!-- divs modais/ pop-ups -->
     <div class="divModal" id="divModal"></div>
     <div class="divModalExcluir" id="divModalExcluir"></div>
+    <div class="divModalDetalhado" id="divModalDetalhado"></div>
 </body>
 
 </html>
-<!-- Importando o JavaScript da página -->
-<script src="../assets/js/scriptBasePages.js"></script>
-<script src="../assets/js/sessao.js"></script>
-<script src="../assets/js/instituicao.js"></script>
-<script src="../assets/js/relatorio.js"></script>
-<script src="../assets/js/instituicao.js"></script>
 <!-- importando a biblioteca da API sweetalert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Importando o JavaScript da página -->
+<script src="../assets/js/basePageInstituicao.js"></script>
+<script src="../assets/js/sessao.js"></script>
+<script src="../assets/js/instituicao.js"></script>

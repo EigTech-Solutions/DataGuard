@@ -7,28 +7,29 @@ function cadastrar() {
     var numeroInstbVAR = ipt_numeroInst.value;
     var complementoInstbVAR = ipt_complementoInst.value;
 
-    var idInstituicaoVAR = sessionStorage.ID_INSTITUICAO;
-
-    if (nomeInstVAR == "" || cnpjInstbVAR == "" || emailInstbVAR == ""
-        || telefoneInstbVAR == "" || cepInstbVAR == "" || numeroInstbVAR == "") {
-        Swal.fire(
-            'Campo obrigatório vazio.',
-            'Preencha todos os campos para continuar!',
-            'error'
-        );
-    } else if (telefoneInstbVAR.length > 14) {
+    if (nomeInstVAR.trim() === "" || cnpjInstbVAR.trim() === "" || emailInstbVAR.trim() === ""
+        || telefoneInstbVAR.trim() === "" || cepInstbVAR.trim() === "" || numeroInstbVAR.trim() === "") {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Erro ao Realizar Cadastro!',
+            text: 'Preencha todos os campos obrigatórios.',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    } else if (telefoneInstbVAR.length > 14 || telefoneInstbVAR.length < 10) {
         Swal.fire(
             'Número de telefone inválido.',
             'Preencha corretamente para continuar!',
             'error'
         );
-    } else if (cnpjInstbVAR.length != 14) {
+    } else if (!validarCNPJ(cnpjInstbVAR)) {
         Swal.fire(
             'Número de CNPJ inválido.',
             'Preencha corretamente para continuar!',
             'error'
         );
-    } else if (cepInstbVAR.length != 8) {
+    } else if (cepInstbVAR.length !== 8) {
         Swal.fire(
             'Número de CEP inválido.',
             'Preencha corretamente para continuar!',
@@ -47,44 +48,86 @@ function cadastrar() {
                 telefoneInstServer: telefoneInstbVAR,
                 cepInstServer: cepInstbVAR,
                 numeroInstServer: numeroInstbVAR,
-                complementoInstServer: complementoInstbVAR
-
+                complementoInstServer: complementoInstbVAR,
             })
         }).then(function (resposta) {
             if (resposta.ok) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Cadastro realizado com sucesso!',
-                    showConfirmButton: true,
-                    // timer: 1500
+                    title: 'Cadastro Realizado com Sucesso!',
+                    text: 'Autenticando Informações...',
+                    showConfirmButton: false,
+                    timer: 2000
                 });
                 fecharModal();
             } else {
-                Swal.fire(
-                    'Ocorreu um erro ao cadastrar.',
-                    'Tente novamente mais tarde',
-                    'error'
-                );
-                throw ("houve um erro ao tentar se cadastrar");
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Ocorreu um erro ao realizar o cadastro!',
+                    text: 'Realize alterações...',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                throw ("Houve um erro ao tentar se cadastrar");
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
+        }).finally(function() {
+            setTimeout(function() {
+                location.reload();
+            }, 2000);
         });
-
     }
 }
+
+function validarCNPJ(cnpj) {
+    cnpj = cnpj.replace(/[^\d]+/g, '');
+
+    if (cnpj.length !== 14) return false;
+
+    if (/^(\d)\1+$/.test(cnpj)) return false;
+
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    const digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
+
+    for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+    }
+
+    let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+
+    if (resultado != digitos.charAt(0)) return false;
+
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+
+    for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+    }
+
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+
+    return (resultado == digitos.charAt(1));
+}
+
 function abrirModalCardastarInstituicao() {
     divModal.style.display = "flex";
 
     divModal.innerHTML = `
         <div class="containerModalInst">
-            <!--  topo do pop up  -->
             <div class="topo">
                 <div class="titulo"> Cadastro de Instituição </div>
                 <img class="botaoFechar" src="../assets/images/close-circle-twotone.png" alt="icon fechar" onclick="fecharModal()">
             </div>
-            <!--  meio do pop up  -->
             <div class="meioPopUp">
                 <div class="imagemLab">
                     <img  src="../assets/images/imagemLab.png" alt="">
@@ -97,16 +140,15 @@ function abrirModalCardastarInstituicao() {
                     <label for="">Email:</label>
                     <input id="ipt_emailInst" type="text">
                     <label for="">Telefone:</label>
-                    <input id="ipt_telefoneInst" type="number">
+                    <input id="ipt_telefoneInst" type="text">
                     <label for="">CEP:</label>
-                    <input id="ipt_cepeInst" type="number">
+                    <input id="ipt_cepeInst" type="text">
                     <label for="">Numero do endereço:</label>
-                    <input id="ipt_numeroInst" type="number">
+                    <input id="ipt_numeroInst" type="text">
                     <label for="">Complemento:</label>
                     <input id="ipt_complementoInst" type="text">
                 </div>
             </div>
-            <!--  fim do pop up  -->
             <div class="containerFinal">
                 <button class="btnCadastrar" onclick="cadastrar()">cadastrar</button>
             </div>
@@ -122,9 +164,7 @@ function dadosDashboard() {
     fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
             response.json().then(function (dados) {
-
                 mostrarDados(dados)
-
             });
         } else {
             console.error('Nenhuma tarefa encontrada ou erro na API');
@@ -142,17 +182,15 @@ function mostrarDados(dados) {
         totalClasse.innerHTML = `${totalInstituicoes}`
     }
 }
+
 function dadosInstituicao() {
     fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
             response.json().then(function (informacao) {
-
                 mostrarInformacao(informacao)
-
-
             });
         } else {
-            console.error('Nenhuma informaçao encontrada ou erro na API');
+            console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
         .catch(function (error) {
@@ -161,38 +199,81 @@ function dadosInstituicao() {
 }
 dadosInstituicao()
 
-
 function mostrarInformacao(informacao) {
+    blocoDeDado.innerHTML = '';
+
     for (i = 0; i < informacao.length; i++) {
         var nomeInstituicao = informacao[i].nomeInstitucional;
         blocoDeDado.innerHTML += 
-        `<div class="Instituicoes">
+        `<div class="Instituicoes" data-nome="${nomeInstituicao}">
             ${nomeInstituicao}
-         </div>`
-        console.log("for")
+         </div>`;
     }
+}
+
+function pesquisarInstituicao() {
+    var busca = input_busca.value.toLowerCase();
+
+    var instituicoes = document.querySelectorAll('.Instituicoes');
+
+    instituicoes.forEach(function (instituicao) {
+        var nome = instituicao.getAttribute('data-nome').toLowerCase();
+
+        if (nome.includes(busca)) {
+            instituicao.style.display = 'block';
+        } else {
+            instituicao.style.display = 'none';
+        }
+    });
 }
 
 function dadosGeraisInst() {
     fetch(`/instituicao/dadosGeraisInst`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
             response.json().then(function (dadosPuxados) {
-                console.log("Response -> " + response[0].cnpj)
-                console.log("DadosPuxados -> " + dadosPuxados[0].cnpj)
-                mostrarInf(dadosPuxados)
-
+                abrirModalExbirInfosDetalhadas(dadosPuxados);
             });
         } else {
-            console.error('Nenhuma informaçao encontrada ou erro na API');
+            console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
-        .catch(function (error) {
-            console.error(`Erro na obtenção dos dados: ${error.message}`);
-        });
+    .catch(function (error) {
+        console.error(`Erro na obtenção dos dados: ${error.message}`);
+    });
 }
-dadosGeraisInst()
 
-function mostrarInf(dadosPuxados) {
+function abrirModalExbirInfosDetalhadas(dadosPuxados) {
+    document.body.classList.add('modal-open');
+
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    document.body.appendChild(overlay);
+    divModalDetalhado.style.display = "flex";
+
+    divModalDetalhado.innerHTML = `
+    <div id="modalDetalhado">
+      <div class="modal-header">
+        <h2>Informações das Instituições</h2>
+        <button onclick="fecharModalDetalhado()" id="close-modal">Fechar</button>
+      </div>
+      <div class="titulo-rotulo">
+        <div class="modal-body">
+          <p>Nome</p>
+          <p>CNPJ</p>
+          <p>Email</p>
+          <p>Telefone</p>
+          <p>CEP</p>
+          <p>Número do Endereço</p>
+          <p>Complemento</p>
+        </div>
+      </div>
+      <div class="scrollDoModal">
+        <div id="blocoDeDados"></div>
+      </div>
+    </div>
+    `;
+    blocoDeDados.innerHTML = '';
+
     for (i = 0; i < dadosPuxados.length; i++) {
         var nomeInstituicao = dadosPuxados[i].nomeInstitucional;
         var cnpj = dadosPuxados[i].cnpj;
@@ -202,29 +283,26 @@ function mostrarInf(dadosPuxados) {
         var numeroEndereco = dadosPuxados[i].numeroEndereco;
         var complemento = dadosPuxados[i].complemento;
 
-        todasInst.innerHTML += `
-                        <div>
-                            <p>Nome: ${nomeInstituicao}</p>
-                            <p>CNPJ: ${cnpj}</p>
-                            <p>Email: ${email}</p>
-                            <p>Telefone: ${telefone}</p>
-                            <p>CEP: ${cep}</p>
-                            <p>Número do Endereço: ${numeroEndereco}</p>
-                            <p>Complemento: ${complemento}</p>
-                        </div>
-                    `;
-                    console.log("inner")
+        blocoDeDados.innerHTML += `
+        <div class="modal-body-info">
+          <p>${nomeInstituicao}</p>
+          <p class="tom">${cnpj}</p>
+          <p class="emailModal">${email}</p>
+          <p class="tom">${telefone}</p>
+          <p>${cep}</p>
+          <p class="tom">${numeroEndereco}</p>
+          <p>${complemento}</p>
+        </div>`;
     }
 }
 
-function pesquisarInstituicao(dadosPuxados){
-    var busca = input_busca.value;
+function fecharModalDetalhado() {
+    document.body.classList.remove('modal-open');
 
-    for (i = 0; i < dadosPuxados.length; i++) {
-        var nomeInstituicao = dadosPuxados[i].nomeInstitucional;
-        var nomes = []
-        nomes.push(nomeInstituicao);
-        console.log(nomes)
-
+    const overlay = document.querySelector('.modal-overlay');
+    if (overlay) {
+        overlay.parentNode.removeChild(overlay);
     }
+
+    divModalDetalhado.style.display = "none";
 }

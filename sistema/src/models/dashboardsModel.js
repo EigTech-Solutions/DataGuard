@@ -5,7 +5,17 @@ function buscarUltimosKPIs(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT
+        COUNT(m.idMaquina) AS qtdMaquinas,
+        (SELECT COUNT(idLaboratorio) FROM laboratorio WHERE laboratorio.fkInstitucional = ${idInstituicao}) AS qtdLabs,
+        (SELECT COUNT(idAlertas) FROM alertas a
+            JOIN medicoes me ON a.fkMonitoramento = me.idMonitoramento 
+            JOIN maquina m ON m.idMaquina = me.fkMaquina 
+            WHERE m.fkInstitucional = ${idInstituicao} AND me.dataHora >= DATEADD(DAY, -1, GETDATE())) AS qtdAlertas
+        FROM maquina m
+        WHERE m.fkInstitucional = ${idInstituicao} AND m.status = 1;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -30,7 +40,27 @@ function buscarFluxoRede(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT 
+            FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = 'Download' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = 'Upload' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaUpload'
+        FROM 
+            medicoes me
+        JOIN 
+            componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+        JOIN 
+            maquina m ON cm.fkMaquina = m.idMaquina
+        WHERE 
+            (cm.tipo IN ('Ping', 'Download', 'Upload')) AND m.fkInstitucional = ${idInstituicao}
+        GROUP BY 
+            me.dataHora
+        ORDER BY 
+            me.dataHora DESC
+        OFFSET 0 ROWS
+        FETCH FIRST 10 ROWS ONLY;
+        `;
 
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql = `
@@ -67,7 +97,25 @@ function buscarFluxoRedeTempoReal(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `   
+            SELECT TOP 1
+            FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = 'Download' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = 'Upload' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaUpload'
+            FROM 
+            medicoes me
+            JOIN 
+            componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+            maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+            (cm.tipo IN ('Ping', 'Download', 'Upload')) AND m.fkInstitucional = ${idInstituicao}
+            GROUP BY 
+            me.dataHora
+            ORDER BY 
+            me.dataHora DESC;
+        `;
 
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql = `
@@ -103,7 +151,14 @@ function buscarStatusMaquinas(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT
+            COUNT(idMaquina) AS 'qtdMaquinas',
+            (SELECT COUNT(idMaquina) FROM maquina WHERE fkInstitucional = ${idInstituicao} AND status = 1) AS 'qtdAtivas',
+            (SELECT COUNT(idMaquina) FROM maquina WHERE fkInstitucional = ${idInstituicao} AND status = 0) AS 'qtdDesativadas'
+        FROM maquina
+        WHERE fkInstitucional = ${idInstituicao};
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -125,7 +180,12 @@ function buscarRankingLabs(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+            select l.idLaboratorio, l.numeroSala, count(a.idAlertas) qtdAlertas from laboratorio l 
+            left join maquina m on m.fkLaboratorio = l.idLaboratorio 
+            left join alertas a on a.fkMaquina = m.idMaquina where l.fkInstitucional = ${idInstituicao} 
+            group by l.idLaboratorio, l.numeroSala order by qtdAlertas desc;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -147,7 +207,16 @@ function buscarKpisLabs(idLaboratorio) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = ` 
+        SELECT
+        (SELECT COUNT(idMaquina) FROM maquina m WHERE m.fkLaboratorio = ${idLaboratorio} AND m.status = 1) AS 'qtdMaquinas',
+        (SELECT COUNT(a.idAlertas) FROM alertas a 
+            JOIN medicoes me ON a.fkMonitoramento = me.idMonitoramento
+            JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente
+            JOIN maquina m ON cm.fkMaquina = m.idMaquina
+            JOIN laboratorio l ON m.fkLaboratorio = l.idLaboratorio 
+            WHERE l.idLaboratorio = ${idLaboratorio} AND me.dataHora >= DATEADD(DAY, -1, GETDATE())) AS 'qtdAlertas';
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -172,7 +241,25 @@ function buscarFluxoRedeLab(idLaboratorio) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `   
+        SELECT TOP 10
+        FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
+        AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaLatencia',
+        AVG(CASE WHEN cm.tipo = 'Download' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaDownload',
+        AVG(CASE WHEN cm.tipo = 'Upload' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaUpload'
+        FROM 
+        medicoes me
+        JOIN 
+        componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+        JOIN 
+        maquina m ON cm.fkMaquina = m.idMaquina
+        WHERE 
+        cm.tipo IN ('Ping', 'Download', 'Upload') AND m.fkLaboratorio = ${idLaboratorio}
+        GROUP BY 
+        me.dataHora
+        ORDER BY 
+        me.dataHora DESC;
+        `;
 
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql = `
@@ -209,7 +296,25 @@ function buscarFluxoRedeLabTempoReal(idLaboratorio) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT TOP 1
+            FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = 'Download' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = 'Upload' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaUpload'
+        FROM 
+            medicoes me
+        JOIN 
+            componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+        JOIN 
+            maquina m ON cm.fkMaquina = m.idMaquina
+        WHERE 
+            cm.tipo IN ('Ping', 'Download', 'Upload') AND m.fkLaboratorio = ${idLaboratorio}
+        GROUP BY 
+            me.dataHora
+        ORDER BY 
+            me.dataHora DESC;
+        `;
 
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql = `
@@ -245,7 +350,27 @@ function buscarRankingMaquinas(idLaboratorio) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT 
+            m.idMaquina, 
+            m.ipMaquina, 
+            m.numeroDeSerie, 
+            COUNT(a.idAlertas) AS 'qtdAlertas' 
+        FROM 
+            maquina m
+        LEFT JOIN 
+            componenteMonitorado cm ON cm.fkMaquina = m.idMaquina
+        LEFT JOIN 
+            medicoes me ON me.fkComponente = cm.idComponente
+        LEFT JOIN 
+            alertas a ON a.fkMonitoramento = me.idMonitoramento
+        WHERE 
+            m.fkLaboratorio = ${idLaboratorio}
+        GROUP BY 
+            m.idMaquina, m.ipMaquina, m.numeroDeSerie
+        ORDER BY 
+            qtdAlertas DESC;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -268,7 +393,16 @@ function buscarStatusMaquinasLab(idLaboratorio) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT 
+            COUNT(idMaquina) AS 'qtdMaquinas',
+            (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLaboratorio} AND status = 1) AS 'qtdAtivas',
+            (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLaboratorio} AND status = 0) AS 'qtdDesativadas'
+        FROM 
+            maquina 
+        WHERE 
+            fkLaboratorio = ${idLaboratorio};
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -289,7 +423,22 @@ function buscarInfosBasicasMaquina(idMaquina) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = ` 
+            select TOP 1
+            m.numeroDeSerie, m.ipMaquina, m.status, m.sistemaOperacional, l.nomeSala, me.dataHora,
+                        (select cm.modelo from componenteMonitorado cm WHERE cm.componente = 'CPU' AND cm.fkMaquina = ${idMaquina} group by cm.modelo) 'Processador',
+                        (select cm.tipo from componenteMonitorado cm WHERE cm.componente = 'Disco Rigido' AND cm.fkMaquina = ${idMaquina} group by cm.tipo) 'TipoDisco',
+                        (select cm.capacidadeTotal from componenteMonitorado cm WHERE cm.componente = 'Disco Rigido' AND cm.fkMaquina = ${idMaquina} group by cm.capacidadeTotal) 'CapacidadeDisco',
+                        (select cm.capacidadeTotal from componenteMonitorado cm WHERE cm.componente = 'Memoria' AND cm.fkMaquina = ${idMaquina} group by cm.capacidadeTotal) 'CapacidadeRam',
+                        (select me.valorConsumido from medicoes me join componenteMonitorado cm on me.fkComponente = cm.idComponente where cm.componente = 'Fonte Energia' and cm.fkMaquina = ${idMaquina} group by me.valorConsumido) 'FonteEnergia',
+                        (select me.valorConsumido from medicoes me join componenteMonitorado cm on me.fkComponente = cm.idComponente where cm.componente = 'Entradas' and cm.fkMaquina = ${idMaquina} group by me.valorConsumido) 'qtdPerifericos'
+                    from maquina m 
+                        left join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+                        left join medicoes me on me.fkMaquina = m.idMaquina
+                        where m.idMaquina = ${idMaquina}
+                        GROUP BY m.numeroDeSerie, m.ipMaquina, m.status, m.sistemaOperacional, l.nomeSala, me.dataHora
+                        order by dataHora desc;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -297,15 +446,15 @@ function buscarInfosBasicasMaquina(idMaquina) {
             (select cm.modelo from componenteMonitorado cm WHERE cm.componente = "CPU" AND cm.fkMaquina = ${idMaquina} group by cm.modelo) 'Processador',
             (select cm.tipo from componenteMonitorado cm WHERE cm.componente = "Disco Rigido" AND cm.fkMaquina = ${idMaquina} group by cm.tipo) 'TipoDisco',
             (select cm.capacidadeTotal from componenteMonitorado cm WHERE cm.componente = "Disco Rigido" AND cm.fkMaquina = ${idMaquina} group by cm.capacidadeTotal) 'CapacidadeDisco',
-            (select cm.capacidadeTotal from componenteMonitorado cm WHERE cm.componente = "Memória" AND cm.fkMaquina = ${idMaquina} group by cm.capacidadeTotal) 'CapacidadeRam',
+            (select cm.capacidadeTotal from componenteMonitorado cm WHERE cm.componente = "Memoria" AND cm.fkMaquina = ${idMaquina} group by cm.capacidadeTotal) 'CapacidadeRam',
 			(select me.valorConsumido from medicoes me join componenteMonitorado cm on me.fkComponente = cm.idComponente where cm.componente = "Fonte Energia" and cm.fkMaquina = ${idMaquina} group by me.valorConsumido) 'FonteEnergia',
             (select me.valorConsumido from medicoes me join componenteMonitorado cm on me.fkComponente = cm.idComponente where cm.componente = "Entradas" and cm.fkMaquina = ${idMaquina} group by me.valorConsumido) 'qtdPerifericos'
-           from maquina m 
-              left join laboratorio l on m.fkLaboratorio = l.idLaboratorio
-              left join medicoes me on me.fkMaquina = m.idMaquina
-              where m.idMaquina = ${idMaquina}
-              GROUP BY me.dataHora, l.nomeSala
-              order by dataHora desc limit ${idMaquina};
+            from maquina m 
+                left join laboratorio l on m.fkLaboratorio = l.idLaboratorio
+                left join medicoes me on me.fkMaquina = m.idMaquina
+                where m.idMaquina = ${idMaquina}
+                GROUP BY me.dataHora, l.nomeSala
+                order by dataHora desc limit 1;
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
@@ -320,7 +469,22 @@ function buscarPorcentagemUsoCpu(idMaquina) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT 
+        me.valorConsumido AS 'mediaCPU', 
+        FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora'
+        FROM 
+            medicoes me
+        JOIN 
+            componenteMonitorado cm ON me.fkComponente = cm.idComponente
+        WHERE 
+            cm.componente = 'CPU' AND me.fkMaquina = ${idMaquina}
+        GROUP BY 
+            me.dataHora, me.valorConsumido
+        ORDER BY 
+            me.dataHora DESC
+        OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -347,7 +511,21 @@ function buscarPorcentagemUsoCpuTempoReal(idMaquina) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+            SELECT TOP 1
+                me.valorConsumido AS 'mediaCPU', 
+                FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora'
+            FROM 
+                medicoes me
+            JOIN 
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente
+            WHERE 
+                cm.componente = 'CPU' AND me.fkMaquina = ${idMaquina}
+            GROUP BY 
+                me.dataHora, me.valorConsumido
+            ORDER BY 
+                me.dataHora DESC;
+            `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -374,7 +552,25 @@ function buscarFluxoRedeMaquina(idMaquina) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = ` 
+            SELECT TOP 10
+            FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = 'Ping' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = 'Download' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = 'Upload' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            FROM 
+            medicoes me
+            JOIN 
+            componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+            maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+            cm.tipo IN ('Ping', 'Download', 'Upload') AND m.idMaquina = ${idMaquina}
+            GROUP BY 
+            me.dataHora
+            ORDER BY 
+            me.dataHora DESC;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -410,7 +606,25 @@ function buscarFluxoRedeMaquinaTempoReal(idMaquina) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = ` 
+            SELECT TOP 1
+            FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = 'Ping' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
+            AVG(CASE WHEN cm.tipo = 'Download' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
+            AVG(CASE WHEN cm.tipo = 'Upload' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            FROM 
+            medicoes me
+            JOIN 
+            componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+            maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+            cm.tipo IN ('Ping', 'Download', 'Upload') AND m.idMaquina = ${idMaquina}
+            GROUP BY 
+            me.dataHora
+            ORDER BY 
+            me.dataHora DESC;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -444,22 +658,45 @@ function buscarFluxoRedeMaquinaTempoReal(idMaquina) {
 
 function buscarDadosMemorias(idMaquina) {
     instrucaoSql = ''
-
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT 
+        (SELECT TOP 1 me.valorConsumido 
+        FROM medicoes me
+        JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente AND me.fkMaquina = cm.fkMaquina
+        WHERE cm.componente = 'Disco Rigido' AND me.fkMaquina = ${idMaquina}
+        ORDER BY me.dataHora DESC) AS 'usoDisco',
+        (SELECT TOP 1 me.valorConsumido 
+        FROM medicoes me
+        JOIN componenteMonitorado cm ON me.fkComponente = cm.idComponente AND me.fkMaquina = cm.fkMaquina
+        WHERE cm.componente = 'Memoria' AND me.fkMaquina = ${idMaquina}
+        ORDER BY me.dataHora DESC) AS 'usoRam',
+        FORMAT((SELECT TOP 1 me.dataHora 
+                FROM medicoes me
+                WHERE me.fkMaquina = ${idMaquina}
+                ORDER BY me.dataHora DESC), 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora';
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
             SELECT
-                me.valorConsumido "usoDisco",
-                (CASE WHEN cm.componente = "Memoria" AND cm.fKMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS "usoRam",
+                (SELECT me.valorConsumido from medicoes me
+                join componentemonitorado cm on cm.idComponente = me.fkComponente
+                where cm.componente = "Disco Rigido" AND me.fkMaquina = ${idMaquina}
+                order by me.dataHora desc 
+                limit 1) "usoDisco",
+                (SELECT me.valorConsumido from medicoes me
+                join componentemonitorado cm on cm.idComponente = me.fkComponente
+                where cm.componente = "Memoria" AND me.fkMaquina = ${idMaquina}
+                order by me.dataHora desc 
+                limit 1) "usoRam",
                 DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora'
             FROM
                 medicoes me
             JOIN
                 componenteMonitorado cm ON me.fkComponente = cm.idComponente AND me.fkMaquina = cm.fkMaquina
             WHERE
-                (cm.componente = "Disco Rigido" OR cm.componente = "Memoria") AND me.fkMaquina = ${idMaquina}
+                me.fkMaquina = ${idMaquina}
             ORDER BY
                 me.dataHora DESC
             LIMIT 1;
@@ -478,7 +715,13 @@ function buscarDadosKpisAdmin(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT 
+        (SELECT COUNT(idMaquina) FROM maquina WHERE status = 1 AND fkInstitucional = ${idInstituicao}) AS 'qtdMaquinasAtivas',
+        (SELECT COUNT(idMaquina) FROM maquina WHERE status = 0 AND fkInstitucional = ${idInstituicao}) AS 'qtdMaquinasInativas',
+        (SELECT COUNT(idMaquina) FROM maquina WHERE dataCadastro >= DATEADD(MONTH, -1, GETDATE())) AS 'qtdMaquinasCadastradasMes',
+        (SELECT COUNT(idLaboratorio) FROM laboratorio WHERE fkInstitucional = ${idInstituicao}) AS 'qtdLabs';
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -501,7 +744,24 @@ function buscarVariacaoStatusLabs(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+            SELECT 
+            l.idLaboratorio, 
+            l.nomeSala, 
+            COUNT(CASE WHEN m.fkInstitucional = ${idInstituicao} THEN m.idMaquina END) AS 'qtdMaquinas',
+            COUNT(CASE WHEN m.status = 1 AND m.fkInstitucional = ${idInstituicao} THEN m.status END) AS 'qtdMaquinasAtivas',
+            COUNT(CASE WHEN m.status = 0 AND m.fkInstitucional = ${idInstituicao} THEN m.status END) AS 'qtdMaquinasInativas'
+            FROM 
+            laboratorio l
+            JOIN 
+            maquina m ON m.fkLaboratorio = l.idLaboratorio
+            WHERE 
+            m.fkInstitucional = ${idInstituicao}
+            GROUP BY 
+            l.idLaboratorio, l.nomeSala
+            ORDER BY 
+            l.idLaboratorio;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -528,7 +788,19 @@ function buscarQtdAlertas(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT 
+            COUNT(a.tipo) AS 'qtdAlertas', 
+            a.tipo
+        FROM 
+            alertas a
+        JOIN 
+            maquina m ON a.fkMaquina = m.idMaquina
+        WHERE 
+            m.fkInstitucional = ${idInstituicao}
+        GROUP BY 
+            a.tipo;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -550,7 +822,26 @@ function buscarRankingMaquinasAdmin(idInstituicao) {
     instrucaoSql = ''
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+        SELECT 
+            m.idMaquina, 
+            m.numeroDeSerie, 
+            COUNT(a.idAlertas) AS 'qtdAlertas'
+        FROM 
+            maquina m
+        LEFT JOIN 
+            componenteMonitorado cm ON cm.fkMaquina = m.idMaquina
+        LEFT JOIN 
+            medicoes me ON me.fkComponente = cm.idComponente
+        LEFT JOIN 
+            alertas a ON a.fkMonitoramento = me.idMonitoramento
+        WHERE 
+            m.fkInstitucional = @idInstituicao
+        GROUP BY 
+            m.idMaquina, m.numeroDeSerie
+        ORDER BY 
+            qtdAlertas DESC;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
@@ -571,13 +862,23 @@ function buscarRankingMaquinasAdmin(idInstituicao) {
 
 function buscarColaboradores(idInstituicao) {
     instrucaoSql = ''
-
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = ``;
+        instrucaoSql = `
+            SELECT 
+                DISTINCT u.idUsuario,
+                FORMAT(au.dataAcessoUsuario, 'dd/MM/yyyy, HH:mm') AS 'dataHora', 
+                u.nome
+            FROM 
+                acessoUsuario au
+            LEFT JOIN 
+                usuario u ON au.fkUsuario = u.idUsuario
+            WHERE 
+                u.fkInstitucional = @idInstituicao;
+        `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select au.fkUsuario, DATE_FORMAT(au.dataAcessoUsuario, '%d/%m/%Y, %H:%i') AS 'dataHora', u.nome 
+            select DISTINCT au.fkUsuario, DATE_FORMAT(au.dataAcessoUsuario, '%d/%m/%Y, %H:%i') AS 'dataHora', u.nome 
             from acessoUsuario au
             join usuario u on au.fkUsuario = u.idUsuario
             WHERE u.fkInstitucional = ${idInstituicao};

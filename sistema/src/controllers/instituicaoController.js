@@ -11,7 +11,6 @@ function cadastrar(req, res) {
     var numeroInst = req.body.numeroInstServer;
     var complementoInst = req.body.complementoInstServer;
 
-
     // Faça as validações dos valores
     if (nomeInst == undefined) {
         res.status(400).send("O nome da instituição está undefined!");
@@ -74,10 +73,22 @@ function dadosInstituicao(req, res) {
 }
 
 function dadosGeraisInst(req, res) {
-    console.log("cheguei no controler");
     instituicaoModel.dadosGeraisInst(req, res).then(function (dadosPuxados) {
         if (dadosPuxados.length > 0) {
             res.status(200).json(dadosPuxados);
+        } else {
+            res.status(204).send("Nenhum dado encontrado");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function dashDatas(req, res) {
+    instituicaoModel.dashDatas(req, res).then(function (dashDados) {
+        if (dashDados.length > 0) {
+            res.status(200).json(dashDados);
         } else {
             res.status(204).send("Nenhum dado encontrado");
         }
@@ -91,5 +102,6 @@ module.exports = {
     cadastrar,
     puxarDados,
     dadosInstituicao,
-    dadosGeraisInst
+    dadosGeraisInst,
+    dashDatas
 }
