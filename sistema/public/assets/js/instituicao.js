@@ -7,29 +7,29 @@ function cadastrar() {
     var numeroInstbVAR = ipt_numeroInst.value;
     var complementoInstbVAR = ipt_complementoInst.value;
 
-    if (nomeInstVAR == "" || cnpjInstbVAR == "" || emailInstbVAR == ""
-        || telefoneInstbVAR == "" || cepInstbVAR == "" || numeroInstbVAR == "") {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Erro ao Realizar Cadastro!',
-                text: 'Preencha os campos em branco...',
-                showConfirmButton: false,
-                timer: 3000
-            });
-    } else if (telefoneInstbVAR.length > 14) {
+    if (nomeInstVAR.trim() === "" || cnpjInstbVAR.trim() === "" || emailInstbVAR.trim() === ""
+        || telefoneInstbVAR.trim() === "" || cepInstbVAR.trim() === "" || numeroInstbVAR.trim() === "") {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Erro ao Realizar Cadastro!',
+            text: 'Preencha todos os campos obrigatórios.',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    } else if (telefoneInstbVAR.length > 14 || telefoneInstbVAR.length < 10) {
         Swal.fire(
             'Número de telefone inválido.',
             'Preencha corretamente para continuar!',
             'error'
         );
-    } else if (cnpjInstbVAR.length != 14) {
+    } else if (!validarCNPJ(cnpjInstbVAR)) {
         Swal.fire(
             'Número de CNPJ inválido.',
             'Preencha corretamente para continuar!',
             'error'
         );
-    } else if (cepInstbVAR.length != 8) {
+    } else if (cepInstbVAR.length !== 8) {
         Swal.fire(
             'Número de CEP inválido.',
             'Preencha corretamente para continuar!',
@@ -51,7 +51,6 @@ function cadastrar() {
                 complementoInstServer: complementoInstbVAR,
             })
         }).then(function (resposta) {
-            console.log("entrei no fetch")
             if (resposta.ok) {
                 Swal.fire({
                     position: 'center',
@@ -71,7 +70,7 @@ function cadastrar() {
                     showConfirmButton: false,
                     timer: 2000
                 });
-                throw ("houve um erro ao tentar se cadastrar");
+                throw ("Houve um erro ao tentar se cadastrar");
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
@@ -80,20 +79,55 @@ function cadastrar() {
                 location.reload();
             }, 2000);
         });
-
     }
 }
+
+function validarCNPJ(cnpj) {
+    cnpj = cnpj.replace(/[^\d]+/g, '');
+
+    if (cnpj.length !== 14) return false;
+
+    if (/^(\d)\1+$/.test(cnpj)) return false;
+
+    let tamanho = cnpj.length - 2;
+    let numeros = cnpj.substring(0, tamanho);
+    const digitos = cnpj.substring(tamanho);
+    let soma = 0;
+    let pos = tamanho - 7;
+
+    for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+    }
+
+    let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+
+    if (resultado != digitos.charAt(0)) return false;
+
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+
+    for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+    }
+
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+
+    return (resultado == digitos.charAt(1));
+}
+
 function abrirModalCardastarInstituicao() {
     divModal.style.display = "flex";
 
     divModal.innerHTML = `
         <div class="containerModalInst">
-            <!--  topo do pop up  -->
             <div class="topo">
                 <div class="titulo"> Cadastro de Instituição </div>
                 <img class="botaoFechar" src="../assets/images/close-circle-twotone.png" alt="icon fechar" onclick="fecharModal()">
             </div>
-            <!--  meio do pop up  -->
             <div class="meioPopUp">
                 <div class="imagemLab">
                     <img  src="../assets/images/imagemLab.png" alt="">
@@ -106,16 +140,15 @@ function abrirModalCardastarInstituicao() {
                     <label for="">Email:</label>
                     <input id="ipt_emailInst" type="text">
                     <label for="">Telefone:</label>
-                    <input id="ipt_telefoneInst" type="number">
+                    <input id="ipt_telefoneInst" type="text">
                     <label for="">CEP:</label>
-                    <input id="ipt_cepeInst" type="number">
+                    <input id="ipt_cepeInst" type="text">
                     <label for="">Numero do endereço:</label>
-                    <input id="ipt_numeroInst" type="number">
+                    <input id="ipt_numeroInst" type="text">
                     <label for="">Complemento:</label>
                     <input id="ipt_complementoInst" type="text">
                 </div>
             </div>
-            <!--  fim do pop up  -->
             <div class="containerFinal">
                 <button class="btnCadastrar" onclick="cadastrar()">cadastrar</button>
             </div>
@@ -131,9 +164,7 @@ function dadosDashboard() {
     fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
             response.json().then(function (dados) {
-
                 mostrarDados(dados)
-
             });
         } else {
             console.error('Nenhuma tarefa encontrada ou erro na API');
@@ -156,13 +187,10 @@ function dadosInstituicao() {
     fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
             response.json().then(function (informacao) {
-
                 mostrarInformacao(informacao)
-
-
             });
         } else {
-            console.error('Nenhuma informaçao encontrada ou erro na API');
+            console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
         .catch(function (error) {
@@ -170,7 +198,6 @@ function dadosInstituicao() {
         });
 }
 dadosInstituicao()
-
 
 function mostrarInformacao(informacao) {
     blocoDeDado.innerHTML = '';
@@ -181,7 +208,6 @@ function mostrarInformacao(informacao) {
         `<div class="Instituicoes" data-nome="${nomeInstituicao}">
             ${nomeInstituicao}
          </div>`;
-        console.log("for");
     }
 }
 
@@ -205,9 +231,7 @@ function dadosGeraisInst() {
     fetch(`/instituicao/dadosGeraisInst`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
             response.json().then(function (dadosPuxados) {
-                // console.log("Response -> " + response[0].cnpj)
-                // console.log("DadosPuxados -> " + dadosPuxados[0].cnpj)
-                abrirModalExbirInfosDetalhadas(dadosPuxados); // Passa os dados para a função
+                abrirModalExbirInfosDetalhadas(dadosPuxados);
             });
         } else {
             console.error('Nenhuma informação encontrada ou erro na API');
@@ -221,51 +245,35 @@ function dadosGeraisInst() {
 function abrirModalExbirInfosDetalhadas(dadosPuxados) {
     document.body.classList.add('modal-open');
 
-    // Criar a sobreposição do modal
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
     document.body.appendChild(overlay);
     divModalDetalhado.style.display = "flex";
 
     divModalDetalhado.innerHTML = `
-    <!-- Modal Detalhado -->
     <div id="modalDetalhado">
       <div class="modal-header">
         <h2>Informações das Instituições</h2>
         <button onclick="fecharModalDetalhado()" id="close-modal">Fechar</button>
       </div>
       <div class="titulo-rotulo">
-      <div class="modal-body">
-        <p>
-          Nome
-        </p>
-        <p>
-          CNPJ
-        </p>
-        <p>
-          Email
-        </p>
-        <p>
-          Telefone
-        </p>
-        <p>
-          CEP
-        </p>
-        <p>
-          Número do Endereço
-        </p>
-        <p>
-          Complemento
-        </p>
-      </div>
+        <div class="modal-body">
+          <p>Nome</p>
+          <p>CNPJ</p>
+          <p>Email</p>
+          <p>Telefone</p>
+          <p>CEP</p>
+          <p>Número do Endereço</p>
+          <p>Complemento</p>
+        </div>
       </div>
       <div class="scrollDoModal">
-      <div id="blocoDeDados"></div>
+        <div id="blocoDeDados"></div>
       </div>
     </div>
     `;
     blocoDeDados.innerHTML = '';
-    console.log("eeeeeee");
+
     for (i = 0; i < dadosPuxados.length; i++) {
         var nomeInstituicao = dadosPuxados[i].nomeInstitucional;
         var cnpj = dadosPuxados[i].cnpj;
@@ -274,7 +282,7 @@ function abrirModalExbirInfosDetalhadas(dadosPuxados) {
         var cep = dadosPuxados[i].cep;
         var numeroEndereco = dadosPuxados[i].numeroEndereco;
         var complemento = dadosPuxados[i].complemento;
-    
+
         blocoDeDados.innerHTML += `
         <div class="modal-body-info">
           <p>${nomeInstituicao}</p>
@@ -286,13 +294,11 @@ function abrirModalExbirInfosDetalhadas(dadosPuxados) {
           <p>${complemento}</p>
         </div>`;
     }
-    
 }
 
 function fecharModalDetalhado() {
     document.body.classList.remove('modal-open');
 
-    // Remover a sobreposição do modal
     const overlay = document.querySelector('.modal-overlay');
     if (overlay) {
         overlay.parentNode.removeChild(overlay);
