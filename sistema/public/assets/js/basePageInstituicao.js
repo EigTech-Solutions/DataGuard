@@ -9,13 +9,13 @@ menuLateral.innerHTML = `
 
     <ul id="menuList">
         <li>
-            <a href="telaInstituicao.html" id="bntLabMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
-                <img src="../assets/images/carbon_labs.png" alt="icon laboratório"> Instituição
+            <a href="dashboardInstituicao.html" id="bntDashMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
+                <img src="../assets/images/dashboard.png" width="37px" alt="icon dashboard"> Dashboard
             </a>
         </li>
         <li>
-            <a href="dashboardInstituicao.html" id="bntDashMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
-                <img src="../assets/images/dashboard.png" width="37px" alt="icon dashboard"> Dashboard
+            <a href="telaInstituicao.html" id="bntLabMenu" class="menu-link" onclick="atualizarPageAtualMenu(this.id)">
+                <img src="../assets/images/carbon_labs.png" alt="icon laboratório"> Instituições
             </a>
         </li>
     </ul>
