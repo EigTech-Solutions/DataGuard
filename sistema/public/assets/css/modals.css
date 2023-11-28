@@ -3,7 +3,8 @@
 
 .more_info_btn_img button{
     border: none;
-    background-color: #124559;
+    background-color: transparent;
+    cursor: pointer;
 }
 
 .divModal {
@@ -58,13 +59,15 @@
 }
 
 .divModal .meioPopUp {
-    width: 100%;
+    width: 90%;
     height: auto;
     background-color: #A6CEE3;
     display: flex;
     justify-content: space-around;
-    padding-top: 5vw;
-    padding-bottom: 5vw;
+    padding-top: 3vw;
+    padding-bottom: 3vw;
+    padding-left: 5vh;
+    padding-right: 5vh;
 }
 
 .divModal .campoInput {
