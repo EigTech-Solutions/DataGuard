@@ -121,8 +121,8 @@ function buscarNivelPreocupacaoLab(idLab, idInstituicao) {
         SELECT
             l.nomeSala,
             (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao}) as qtdMaquinas,
-            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 E
-            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) as qtdAlertasAtencao,ND) as qtdAlertasUrgentes,
+            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END) as qtdAlertasUrgentes,
+            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) as qtdAlertasAtencao,
             ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao})) * 100, 2) as percentualPreocupacao,
         CASE 
             WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao})) * 100, 2) <= 15 THEN 'Ótimo'
