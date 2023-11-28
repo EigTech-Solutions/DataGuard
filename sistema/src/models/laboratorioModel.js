@@ -91,12 +91,38 @@ function deletar(idLab, idInstituicao) {
 
 function buscarNivelPreocupacaoLab(idLab, idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarNivelPreocupacaoLab()");
-    var instrucao = `
+    var instrucao = ""
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `
+        SELECT
+        l.nomeSala,
+        (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao}) as qtdMaquinas,
+        SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END) AS qtdAlertasUrgentes,
+        SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) AS qtdAlertasAtencao,
+        ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) AS percentualPreocupacao,
+        CASE
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) <= 15 THEN 'Ótimo'
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) <= 25 THEN 'Bom'
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) <= 50 THEN 'Atenção'
+            WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) <= 75 THEN 'Preocupante'
+            WHEN COUNT(a.idAlertas) IS NULL OR COUNT(a.idAlertas) = 0 THEN 'Ótimo'
+            ELSE 'Extremamente preocupante'
+        END AS situacao
+        FROM laboratorio l
+        left JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
+        JOIN medicoes med ON m.idMaquina = med.fkMaquina
+        JOIN alertas a ON med.idMonitoramento = a.fkMonitoramento AND med.fkMaquina = a.fkMaquina
+        WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
+            AND med.dataHora >= DATEADD(DAY, -30, GETDATE())
+        GROUP BY l.idLaboratorio, l.nomeSala;
+`
+    } else {
+        instrucao = `
         SELECT
             l.nomeSala,
             (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao}) as qtdMaquinas,
-            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END) as qtdAlertasUrgentes,
-            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) as qtdAlertasAtencao,
+            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 E
+            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) as qtdAlertasAtencao,ND) as qtdAlertasUrgentes,
             ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao})) * 100, 2) as percentualPreocupacao,
         CASE 
             WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / (SELECT COUNT(idMaquina) FROM maquina WHERE fkLaboratorio = ${idLab} AND fkInstitucional = ${idInstituicao})) * 100, 2) <= 15 THEN 'Ótimo'
@@ -114,13 +140,41 @@ function buscarNivelPreocupacaoLab(idLab, idInstituicao) {
             AND med.dataHora >= CURDATE() - INTERVAL 30 DAY
         GROUP BY l.idLaboratorio, l.nomeSala
     `;
+    }
+
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
 
 function buscarNivelPreocupacaoLabs(idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarNivelPreocupacaoLab()");
-    var instrucao = `
+    var instrucao = ""
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `
+        SELECT
+            i.nomeInstitucional,
+            COUNT(m.idMaquina) AS qtdMaquinas,
+            SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END) AS qtdAlertasUrgentes,
+            SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) AS qtdAlertasAtencao,
+            ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) AS percentualPreocupacao,
+            CASE
+                WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) <= 15 THEN 'Ótimo'
+                WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) <= 25 THEN 'Bom'
+                WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) <= 50 THEN 'Atenção'
+                WHEN ROUND((((SUM(CASE WHEN a.tipo = 'Urgente' THEN 1 ELSE 0 END)) * 1 + (SUM(CASE WHEN a.tipo = 'Atenção' THEN 1 ELSE 0 END) * 0.5)) / COUNT(m.idMaquina)) * 100, 2) <= 75 THEN 'Preocupante'
+                WHEN COUNT(a.idAlertas) IS NULL OR COUNT(a.idAlertas) = 0 THEN 'Ótimo'
+                ELSE 'Extremamente preocupante'
+            END AS situacao
+        FROM instituicao i
+        JOIN maquina m ON i.idInstitucional = m.fkInstitucional
+        LEFT JOIN medicoes med ON m.idMaquina = med.fkMaquina
+        LEFT JOIN alertas a ON med.idMonitoramento = a.fkMonitoramento AND med.fkMaquina = a.fkMaquina
+        WHERE i.idInstitucional = ${idInstituicao}
+            AND med.dataHora >= DATEADD(DAY, -30, GETDATE())
+        GROUP BY i.idInstitucional, i.nomeInstitucional;
+        `
+    } else {
+        instrucao = `
         SELECT
             i.nomeInstitucional,
             (SELECT COUNT(idMaquina) FROM maquina WHERE fkInstitucional = ${idInstituicao}) as qtdMaquinas,
@@ -142,6 +196,8 @@ function buscarNivelPreocupacaoLabs(idInstituicao) {
             AND med.dataHora >= CURDATE() - INTERVAL 30 DAY
         GROUP BY i.idInstitucional, i.nomeInstitucional;
     `;
+    }
+
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
