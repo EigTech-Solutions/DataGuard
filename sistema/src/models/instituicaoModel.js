@@ -65,6 +65,7 @@ function dadosGeraisInst() {
     var instrucao = "";
     if (process.env.AMBIENTE_PROCESSO == "producao") {
         instrucao = ` SELECT 
+        idInstitucional,
         nomeInstitucional,
         cnpj,
         email,
@@ -78,6 +79,7 @@ function dadosGeraisInst() {
     else {
         instrucao = `
         SELECT 
+            idInstitucional,
             nomeInstitucional,
             cnpj,
             email,

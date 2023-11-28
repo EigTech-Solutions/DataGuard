@@ -156,6 +156,207 @@ function abrirModalCardastarInstituicao() {
     `;
 }
 
+function cadastrarUser() {
+    var nomeVAR = ipt_nome.value
+    var emailVAR = ipt_email.value
+    var telefoneVAR = ipt_telefone.value
+    var senhaVAR = ipt_senha.value
+    var repetirSenhaVAR = ipt_repetirSenha.value
+    var idInstituicaoVAR = ipt_instituicao.value;
+
+    var tecnicoCheckbox = document.getElementById("tecnicoCheckbox");
+    var adminCheckbox = document.getElementById("adminCheckbox");
+
+    var isTecnico = tecnicoCheckbox.checked;
+    var isAdmin = adminCheckbox.checked;
+
+    if (nomeVAR == "" || emailVAR == "" || telefoneVAR == "" || senhaVAR == "" || repetirSenhaVAR == "") {
+        Swal.fire(
+            'Campo obrigatório vazio.',
+            'Preencha todos os campos para continuar!',
+            'error'
+        );
+    } else if (senhaVAR != repetirSenhaVAR) {
+        Swal.fire(
+            'Senhas não coincidem!',
+            'Preencha novamente os campos para continuar!',
+            'error'
+        );
+    } else {
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nomeServer: nomeVAR,
+                emailServer: emailVAR,
+                telefoneServer: telefoneVAR,
+                senhaServer: senhaVAR,
+                idInstituicaoServer: idInstituicaoVAR,
+            })  
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (resposta) {
+                    console.log(resposta);
+
+                    if (isAdmin) {
+                        fetch("/usuarios/cadastrarAcesso", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                idUserServer: resposta.insertId,
+                                idInstituicaoServer: idInstituicaoVAR,
+                                idAcessoServer: 2
+                            })
+                        }).then(function (resposta) {
+                            if (resposta.ok) {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Cadastro realizado com sucesso!',
+                                    showConfirmButton: true,
+                                    // timer: 1500
+                                });
+
+                                listarUsuarios();
+                                fecharModal();
+                            } else {
+                                throw ("houve um erro ao tentar se cadastrar");
+                            }
+                        }).catch(function (resposta) {
+                            console.log(`#ERRO: ${resposta}`);
+                        });    
+                    } 
+                    
+                    if (isTecnico) {
+                        fetch("/usuarios/cadastrarAcesso", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                idUserServer: resposta.insertId,
+                                idInstituicaoServer: idInstituicaoVAR,
+                                idAcessoServer: 3
+                            })
+                        }).then(function (resposta) {
+                            if (resposta.ok) {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Cadastro realizado com sucesso!',
+                                    showConfirmButton: true,
+                                    // timer: 1500
+                                });
+                                fecharModal();
+                            } else {
+                                throw ("houve um erro ao tentar se cadastrar");
+                            }
+                        }).catch(function (resposta) {
+                            console.log(`#ERRO: ${resposta}`);
+                        });
+                    }
+                });
+            } else {
+                throw ("houve um erro ao tentar cadastrar");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    }
+}
+
+function abrirModalCardastarUser() {
+    divModal.style.display = "flex";
+    
+    divModal.innerHTML = `
+        <div class="containerModalUser">
+            <!--  topo do pop up  -->
+            <div class="topo">
+                <div class="titulo"> Cadastro de usuário </div>
+                <img class="botaoFechar" src="../assets/images/close-circle-twotone.png" alt="icon fechar" onclick="fecharModal()">
+            </div>
+
+            <!--  meio do pop up  -->
+            <div class="meioPopUp">
+                <div class="divImagemUsuario">
+                    <img class="imagemUsuario" src="../assets/images/ftUsuario.png" alt="">
+                </div>
+                <div class="campoInput">
+                    <label for="">Nome:</label>
+                    <input placeholder="ex: enzin" id="ipt_nome" type="text">
+                    <label for="">Email:</label>
+                    <input placeholder="ex: enzin@gmail.com" id="ipt_email" type="text">
+                    <label for="">Telefone:</label>
+                    <input placeholder="(11) 91234-5678" id="ipt_telefone" type="number">
+                    <label for="">Acessos:</label>
+                    <div class="checkboxs">
+                        <input type="checkbox" id="adminCheckbox"> Administrador
+                        <input type="checkbox" id="tecnicoCheckbox"> Técnico
+                    </div>
+                    
+                </div>
+            </div>
+    
+    
+            <!--  senha e repetir senha  -->
+            <div class="campoInputSenha">
+                <div class="senha">
+                    <label for="">Senha:</label> <br>
+                    <input placeholder="*******" id="ipt_senha" type="password">
+                </div>
+                <div class="senha">
+                    <label for="">Repetir senha:</label> <br>
+                    <input placeholder="*******" id="ipt_repetirSenha" type="password">
+                </div>
+            </div>
+
+            <div class="campoInstituicao">
+                <label for="">Instituição:</label> <br>
+                <select name="ipt_instituicao" id="ipt_instituicao">
+                    <option value="0" selected disabled>Selecione...</option>
+                </select>
+            </div>
+
+            <!--  fim do pop up  -->
+            <div class="containerFinal">
+                <button class="btnCadastrar" onclick="cadastrarUser()">Cadastrar</button>
+            </div>
+        </div>
+    `;
+
+    fetch(`/instituicao/dadosGeraisInst`).then(function (resposta) {
+        if (resposta.ok) {
+            if (resposta.status == 204) {
+                console.log("Nenhum resultado encontrado.");
+                throw "Nenhum resultado encontrado!!";
+            }
+
+            resposta.json().then(function (resposta) {
+                console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                for (let i = 0; i < resposta.length; i++) {
+                    var instituicao = resposta[i];
+                    
+                    ipt_instituicao.innerHTML += `
+                        <option value="${instituicao.idInstitucional}">${instituicao.nomeInstitucional}</option>
+                    `;
+                }
+
+                // finalizarAguardar();
+            });
+        } else {
+            throw ('Houve um erro na API!');
+        }
+    }).catch(function (resposta) {
+        console.error(resposta);
+        // finalizarAguardar();
+    });
+}
+
 function fecharModal() {
     divModal.style.display = "none";
 }
