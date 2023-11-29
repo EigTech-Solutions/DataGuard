@@ -3,18 +3,6 @@ const fluxo_rede = document.getElementById('fluxo_rede_chart').getContext("2d");
 // Configuração e dados de cada linha do chart
 var datasetLinhas = [
     {
-        label: 'Media - Download',
-        data: [],
-        borderColor: 'rgba(251, 154, 153, 1)',
-        backgroundColor: 'rgba(251, 154, 153, 1)',
-    },
-    {
-        label: 'Media - Upload',
-        data: [],
-        borderColor: 'rgba(158, 171, 240, 1)',
-        backgroundColor: 'rgba(158, 171, 240, 1)',
-    },
-    {
         label: 'Media - Ping',
         data: [],
         borderColor: '#A6CEE3',
