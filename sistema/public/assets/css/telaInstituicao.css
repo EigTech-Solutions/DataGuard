@@ -33,6 +33,7 @@
 
 #blocoDeDado img{
     width: 15px;
+    margin-left: auto;
 }
 
 .title-page .btnAdd {
@@ -544,4 +545,12 @@ body.modal-open {
 .btnsAdd{
     display: flex;
     gap: 10px;
+}
+
+.linha-colorida {
+    background-color: #01161E;
+}
+
+.linha-branca {
+    background-color: #0E2229;
 }

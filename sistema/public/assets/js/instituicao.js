@@ -326,7 +326,7 @@ function abrirModalCardastarUser() {
                 <button class="btnCadastrar" onclick="cadastrarUser()">Cadastrar</button>
             </div>
         </div>
-    `;
+    `;}
 
     fetch(`/instituicao/dadosGeraisInst`).then(function (resposta) {
         if (resposta.ok) {
@@ -355,66 +355,124 @@ function abrirModalCardastarUser() {
         console.error(resposta);
         // finalizarAguardar();
     });
-}
+
 
 function fecharModal() {
     divModal.style.display = "none";
 }
 
-function dadosDashboard() {
-    fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
-        if (response.ok) {
-            response.json().then(function (dados) {
-                mostrarDados(dados)
-            });
-        } else {
-            console.error('Nenhuma tarefa encontrada ou erro na API');
-        }
-    })
-        .catch(function (error) {
-            console.error(`Erro na obtenção dos dados: ${error.message}`);
-        });
-}
-dadosDashboard()
+// function dadosDashboard() {
+//     fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
+//         if (response.ok) {
+//             response.json().then(function (dados) {
+//                 mostrarDados(dados)
+//             });
+//         } else {
+//             console.error('Nenhuma tarefa encontrada ou erro na API');
+//         }
+//     })
+//         .catch(function (error) {
+//             console.error(`Erro na obtenção dos dados: ${error.message}`);
+//         });
+// }
+// dadosDashboard()
 
-function mostrarDados(dados) {
-    for (i = 0; i < dados.length; i++) {
-        var totalInstituicoes = dados[i].quantidade_total_instituicoes;
-        totalClasse.innerHTML = `${totalInstituicoes}`
-    }
-}
+// function mostrarDados(dados) {
+//     for (i = 0; i < dados.length; i++) {
+//         var totalInstituicoes = dados[i].quantidade_total_instituicoes;
+//         totalClasse.innerHTML = `${totalInstituicoes}`
+//     }
+// }
 
 function dadosInstituicao() {
     fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
             response.json().then(function (informacao) {
-                mostrarInformacao(informacao)
+                mostrarInformacao(informacao);
             });
         } else {
             console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
-        .catch(function (error) {
-            console.error(`Erro na obtenção dos dados: ${error.message}`);
-        });
+    .catch(function (error) {
+        console.error(`Erro na obtenção dos dados: ${error.message}`);
+    });
 }
-dadosInstituicao()
+
+dadosInstituicao();
 
 function mostrarInformacao(informacao) {
     blocoDeDado.innerHTML = '';
 
-    for (i = 0; i < informacao.length; i++) {
-        var nomeInstituicao = informacao[i].nomeInstitucional;
-        blocoDeDado.innerHTML +=
-            `<div class="Instituicoes" data-nome="${nomeInstituicao}">
+    for (let i = 0; i < informacao.length; i++) {
+        const nomeInstituicao = informacao[i].nomeInstitucional;
+        const idInstitucional = informacao[i].idInstitucional;
+
+        const divElement = document.createElement('div');
+        divElement.classList.add('Instituicoes');
+        divElement.setAttribute('data-nome', nomeInstituicao);
+        divElement.innerHTML = `
             ${nomeInstituicao}
-            <img src="../assets/images/ph_trash-duotone.png" alt="">
-         </div>`;
+            <img src="../assets/images/ph_trash-duotone.png" id="${idInstitucional}" alt="">
+        `;
+
+        divElement.querySelector('img').addEventListener('click', function () {
+            excluirInstituicao(idInstitucional);
+        });
+
+        blocoDeDado.appendChild(divElement);
     }
 }
 
+function excluirInstituicao(idInstitucional) {
+    console.log(idInstitucional);
+    Swal.fire({
+        title: 'Tem certeza que deseja excluir essa instituição?',
+        text: "Após excluído você irá perder todos os dados referentes a essa máquina! Essa ação não poderá ser desfeita.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, deletar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("entrei no if do primeiro then");
+            fetch(`/instituicao/deletarInstituicao/${idInstitucional}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    return resposta.json();
+                } else {
+                    throw new Error(`Erro na exclusão: ${resposta.status}`);
+                }
+            })
+            .then(function (resultado) {
+                Swal.fire(
+                    'Deletado!',
+                    'Instituição excluída com sucesso!',
+                    'success'
+                );
+                location.reload()
+            })
+            .catch(function (erro) {
+                console.error(`#ERRO: ${erro.message}`);
+                Swal.fire(
+                    'Erro!',
+                    'Houve um erro ao excluir a instituição.',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
 function pesquisarInstituicao() {
-    var busca = input_busca.value.toLowerCase();
+    var busca = input_busca_instituicao.value.toLowerCase();
 
     var instituicoes = document.querySelectorAll('.Instituicoes');
 
@@ -478,7 +536,7 @@ function abrirModalExbirInfosDetalhadas(dadosPuxados) {
         </div>
     `;
 
-    const blocoDeDados = document.getElementById('blocoDeDados');
+     const blocoDeDados = document.getElementById('blocoDeDados');
     blocoDeDados.innerHTML = '';
 
     for (let i = 0; i < dadosPuxados.length; i++) {
@@ -516,4 +574,44 @@ function fecharModalDetalhado() {
     }
 
     divModalDetalhado.style.display = "none";
+}
+
+function dadosUsuario() {
+    fetch(`/instituicao/dadosUsuario`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (infoDados) {
+                exibirInfoUser(infoDados);
+            });
+        } else {
+            console.error('Nenhuma informação encontrada ou erro na API');
+        }
+    })
+    .catch(function (error) {
+        console.error(`Erro na obtenção dos dados: ${error.message}`);
+    });
+}
+
+dadosUsuario();
+
+function exibirInfoUser(infoDados) {
+    blocoDeDadoUser.innerHTML = '';
+
+    for (let i = 0; i < infoDados.length; i++) {
+        const nomeUser = infoDados[i].nome;
+        const idUser = infoDados[i].idUsuario;
+
+        const divElement = document.createElement('div');
+        divElement.classList.add('Instituicoes');
+        divElement.setAttribute('data-nome', nomeUser);
+        divElement.innerHTML = `
+            ${nomeUser}
+            <img src="../assets/images/ph_trash-duotone.png" id="${idUser}" alt="">
+        `;
+
+        divElement.querySelector('img').addEventListener('click', function () {
+            excluirInstituicao(idUser);
+        });
+
+        blocoDeDadoUser.appendChild(divElement);
+    }
 }
