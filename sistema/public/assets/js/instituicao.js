@@ -74,8 +74,8 @@ function cadastrar() {
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
-        }).finally(function() {
-            setTimeout(function() {
+        }).finally(function () {
+            setTimeout(function () {
                 location.reload();
             }, 2000);
         });
@@ -194,7 +194,7 @@ function cadastrarUser() {
                 telefoneServer: telefoneVAR,
                 senhaServer: senhaVAR,
                 idInstituicaoServer: idInstituicaoVAR,
-            })  
+            })
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (resposta) {
@@ -228,9 +228,9 @@ function cadastrarUser() {
                             }
                         }).catch(function (resposta) {
                             console.log(`#ERRO: ${resposta}`);
-                        });    
-                    } 
-                    
+                        });
+                    }
+
                     if (isTecnico) {
                         fetch("/usuarios/cadastrarAcesso", {
                             method: "POST",
@@ -271,7 +271,7 @@ function cadastrarUser() {
 
 function abrirModalCardastarUser() {
     divModal.style.display = "flex";
-    
+
     divModal.innerHTML = `
         <div class="containerModalUser">
             <!--  topo do pop up  -->
@@ -340,7 +340,7 @@ function abrirModalCardastarUser() {
 
                 for (let i = 0; i < resposta.length; i++) {
                     var instituicao = resposta[i];
-                    
+
                     ipt_instituicao.innerHTML += `
                         <option value="${instituicao.idInstitucional}">${instituicao.nomeInstitucional}</option>
                     `;
@@ -405,9 +405,10 @@ function mostrarInformacao(informacao) {
 
     for (i = 0; i < informacao.length; i++) {
         var nomeInstituicao = informacao[i].nomeInstitucional;
-        blocoDeDado.innerHTML += 
-        `<div class="Instituicoes" data-nome="${nomeInstituicao}">
+        blocoDeDado.innerHTML +=
+            `<div class="Instituicoes" data-nome="${nomeInstituicao}">
             ${nomeInstituicao}
+            <img src="../assets/images/ph_trash-duotone.png" alt="">
          </div>`;
     }
 }
@@ -438,9 +439,9 @@ function dadosGeraisInst() {
             console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
-    .catch(function (error) {
-        console.error(`Erro na obtenção dos dados: ${error.message}`);
-    });
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
 }
 
 function abrirModalExbirInfosDetalhadas(dadosPuxados) {
@@ -458,21 +459,22 @@ function abrirModalExbirInfosDetalhadas(dadosPuxados) {
                 <button onclick="fecharModalDetalhado()" id="close-modal">Fechar</button>
             </div>
             <div class="modal-body">
-                <table id="idTabela">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>CNPJ</th>
-                            <th>Email</th>
-                            <th>Telefone</th>
-                            <th>CEP</th>
-                            <th>Número</th>
-                            <th>Complemento</th>
-                        </tr>
-                    </thead>
-                    <tbody id="blocoDeDados"></tbody>
-                </table>
-            </div>
+    <table id="idTabela">
+        <thead>
+            <tr class="linha-branca">
+                <th>Nome</th>
+                <th>CNPJ</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>CEP</th>
+                <th>Número</th>
+                <th>Complemento</th>
+            </tr>
+        </thead>
+        <tbody id="blocoDeDados" class="linha-colorida"></tbody>
+    </table>
+</div>
+
         </div>
     `;
 
@@ -498,6 +500,8 @@ function abrirModalExbirInfosDetalhadas(dadosPuxados) {
             <td>${numeroEndereco}</td>
             <td>${complemento}</td>
         `;
+
+        newRow.classList.add(i % 2 === 0 ? 'linha-colorida' : 'linha-branca');
 
         blocoDeDados.appendChild(newRow);
     }

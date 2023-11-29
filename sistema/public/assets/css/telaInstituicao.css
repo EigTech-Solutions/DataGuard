@@ -31,9 +31,14 @@
     font-size: 20px;
 }
 
+#blocoDeDado img{
+    width: 15px;
+}
+
 .title-page .btnAdd {
     width: 250px;
     height: 40px;
+    margin-left: 20px;
     border-radius: 8px;
     border: none;
     background: #2D4C58;
@@ -519,16 +524,6 @@ body.modal-open {
     padding: 20px 10px 20px 10px;
 }
 
-/* .modal-body-info td, tr {
-    display: flex;
-    align-items: center;
-    vertical-align: center;
-    min-height: 50px;
-    flex: 1;
-    width: 12%;
-    margin-bottom: 0;
-} */
-
 #modalDetalhado.hide {
     opacity: 0;
     pointer-events: none;
@@ -550,4 +545,12 @@ body.modal-open {
 
 #idTabela tr{
     width: 100%;
+}
+
+.linha-colorida {
+    background-color: #01161E;
+}
+
+.linha-branca {
+    background-color: #0E2229;
 }
