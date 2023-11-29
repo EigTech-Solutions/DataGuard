@@ -34,7 +34,6 @@
 .container-dashboard {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     max-height: 57vh;
     border-radius: 5px;
@@ -54,6 +53,7 @@
     height: 10px;
     align-self: flex-end;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 .info-dashboard svg:hover {

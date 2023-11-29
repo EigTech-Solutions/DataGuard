@@ -75,15 +75,21 @@ var chartNumCad = new Chart(ctx, {
         },
         plugins: {
             legend: {
-                display: false
+                display: false,
+                position: 'top',
+                align: 'center'
+            },
+            title: {
+                display: true,
+                align: 'center',
+                text: 'Quantidade de Instituições Cadastradas por Mês',
+                font: {
+                    size: 20,
+                },
+                color: '#ffffff'
             }
         }, 
-        title: {
-            display: true,
-            text: 'Quantidade de Instituições Cadastradas por Mês (2023)',
-            fontSize: 16,
-            fontColor: '#f6f6f6'
-        }
+       
     }
 });
 
