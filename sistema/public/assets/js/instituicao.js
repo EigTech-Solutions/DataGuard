@@ -601,7 +601,7 @@ function exibirInfoUser(infoDados) {
         const idUser = infoDados[i].idUsuario;
 
         const divElement = document.createElement('div');
-        divElement.classList.add('Instituicoes');
+        divElement.classList.add('Usuarios');
         divElement.setAttribute('data-nome', nomeUser);
         divElement.innerHTML = `
             ${nomeUser}
@@ -609,9 +609,72 @@ function exibirInfoUser(infoDados) {
         `;
 
         divElement.querySelector('img').addEventListener('click', function () {
-            excluirInstituicao(idUser);
+            excluirUser(idUser);
         });
 
         blocoDeDadoUser.appendChild(divElement);
     }
+}
+
+function excluirUser(idUser) {
+    console.log(idUser);
+    Swal.fire({
+        title: 'Tem certeza que deseja excluir esse Usuário?',
+        text: "Após excluído você irá perder todos os dados referentes a essa máquina! Essa ação não poderá ser desfeita.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, deletar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("entrei no if do primeiro then");
+            fetch(`/instituicao/deletarUsuario/${idUser}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    return resposta.json();
+                } else {
+                    throw new Error(`Erro na exclusão: ${resposta.status}`);
+                }
+            })
+            .then(function (result) {
+                Swal.fire(
+                    'Deletado!',
+                    'Usuario excluído com sucesso!',
+                    'success'
+                );
+                location.reload()
+            })
+            .catch(function (erro) {
+                console.error(`#ERRO: ${erro.message}`);
+                Swal.fire(
+                    'Erro!',
+                    'Houve um erro ao excluir o usuario.',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
+function pesquisarUsuario() {
+    var busca = input_busca_user.value.toLowerCase();
+
+    var usuarios = document.querySelectorAll('.Usuarios');
+
+    usuarios.forEach(function (usuario) {
+        var nome = usuario.getAttribute('data-nome').toLowerCase();
+
+        if (nome.includes(busca)) {
+            usuario.style.display = 'block';
+        } else {
+            usuario.style.display = 'none';
+        }
+    });
 }

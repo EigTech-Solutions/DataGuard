@@ -127,6 +127,21 @@ function dadosUsuario(req, res) {
     });
 }
 
+function deletarUsuario(req, res) {
+    var idUsuario = req.params.idUsuario;
+    console.log(`Entrei no controller deletar: ${idUsuario}`);
+
+    instituicaoModel.deletarUsuario(idUsuario)
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao deletar a usuario: ", erro);
+            res.status(500).json({ error: "Erro interno do servidor" });
+        });
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
@@ -134,5 +149,6 @@ module.exports = {
     dadosGeraisInst,
     dashDatas,
     deletarInstituicao,
-    dadosUsuario
+    dadosUsuario,
+    deletarUsuario
 }

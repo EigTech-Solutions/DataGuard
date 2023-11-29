@@ -36,6 +36,11 @@
     margin-left: auto;
 }
 
+#blocoDeDadoUser img{
+    width: 15px;
+    margin-left: auto;
+}
+
 .title-page .btnAdd {
     width: 250px;
     height: 40px;
@@ -534,10 +539,6 @@ body.modal-open {
     top: 0;
 }
 
-.modal-body .tom{
-    color: #edbaa6;
-}
-
 .modal-body-info .emailModal{
     font-size: 8px;
 }
@@ -553,4 +554,52 @@ body.modal-open {
 
 .linha-branca {
     background-color: #0E2229;
+}
+
+.Usuarios {
+    background-color: #2B5561;
+    height: 5vh;
+    width: 38.1vw;
+    margin-bottom: 0.2vh;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    padding-left: 2vh;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: flex;    
+}
+
+.Usuarios img{
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 35px;
+    height: 20px;
+}
+
+.Instituicoes {
+    background-color: #2B5561;
+    height: 5vh;
+    width: 38.1vw;
+    margin-bottom: 0.2vh;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    padding-left: 2vh;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: flex;    
+}
+
+.Instituicoes img{
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 35px;
+    height: 20px;
 }

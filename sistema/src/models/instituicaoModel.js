@@ -160,6 +160,19 @@ function dadosUsuario() {
     return database.executar(instrucao);
 }
 
+function deletarUsuario(idUsuario) {
+    if (isNaN(idUsuario)) {
+        return Promise.reject("idUsuario inválido");
+    }
+
+    var instrucao = `
+        DELETE FROM usuario
+        WHERE idUsuario = ${idUsuario};
+    `;
+
+    return database.executar(instrucao);
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
@@ -167,5 +180,6 @@ module.exports = {
     dadosGeraisInst,
     dashDatas,
     deletarInstituicao,
-    dadosUsuario
+    dadosUsuario,
+    deletarUsuario
 };
