@@ -421,7 +421,7 @@ hr {
 
 .div-instituicoes {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .div-instituicao {
@@ -458,32 +458,43 @@ hr {
     color: black;
     text-align: center;
     font-family: Poppins;
-    font-size: 32px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
     border: none;
-    border-radius: 15px 00px 00px 15px;
+    border-radius: 10px 00px 00px 10px;
+}
+
+.campoDeBusca input:focus {
+    outline: none;
 }
 
 .campoDeBusca .botaoLupa{
     height: 6vh;
     width: 4vw;
     background-color: #598392;
-    text-align: center;
-    font-family: Poppins;
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 500;
     line-height: normal;
     border: none;
-    border-radius: 00px 15px 15px 00px;
+    border-radius: 00px 10px 10px 00px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .campoDeBusca img{
     height: 5vh;
     width: 2.5vw;
+    transition: ease-in-out;
+}
+
+.campoDeBusca .botaoLupa img:hover {
+    transform: scale(1.05);
+}
+
+.campoDeBusca .botaoMais:hover {
+    transform: scale(1.08);
 }
 
 .campoDeBusca .botaoMais {
@@ -495,6 +506,15 @@ hr {
     border: none;
     transform: scale(1.04);
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: ease-in-out;
+}
+
+.campoDeBusca .botaoMais img{
+    width: 25px;
+    height: 25px;
 }
 
 .div-totalDeInstituicao {

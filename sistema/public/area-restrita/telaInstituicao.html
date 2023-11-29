@@ -22,7 +22,7 @@
             <div class="conteudo-page">
                 <div class="title-page">
                     <h2>Instituições</h2>
-                    <div>
+                    <div class="btnsAdd">
                         <button class="btnAdd" onclick= "abrirModalCardastarInstituicao()">Nova Instituição</button>
                         <button class="btnAdd" onclick= "abrirModalCardastarUser()">Novo Usuário</button>
                     </div>
@@ -34,24 +34,36 @@
                             <p><b>Lista de Instituições</b></p>
                         </div>
                         <div class="dadosInstituicoes">
-                            <div id="blocoDeDado" onload="mostrarInformacao()">
-                                
-                            </div>
+                            <div id="blocoDeDado" onload="mostrarInformacao()"></div>
                         </div>
                         <div class="campoDeBusca">
-                            <input id="input_busca" oninput="pesquisarInstituicao()">
+                            <input id="input_busca_instituicao" oninput="pesquisarInstituicao()">
                             <button onclick="pesquisarInstituicao()" class="botaoLupa"><img src="../assets/images/lupaDeBusca.png" alt=""></button>
                             <button onclick="dadosGeraisInst()" class="botaoMais"><img src="../assets/images/icon_mais.png" alt=""></button>
                         </div>
                     </div>
-                    <div>
+                    <!-- listagem de user -->
+                    <div class="div-instituicao">
+                        <div class="instituicoesTitulo">
+                            <p><b>Lista de Usuário</b></p>
+                        </div>
+                        <div class="dadosInstituicoes">
+                            <div id="blocoDeDadoUser" onload="exibirInfoUser()"></div>
+                        </div>
+                        <div class="campoDeBusca">
+                            <input id="input_busca" oninput="">
+                            <button onclick="" class="botaoLupa"><img src="../assets/images/lupaDeBusca.png" alt=""></button>
+                            <button onclick="" class="botaoMais"><img src="../assets/images/icon_mais.png" alt=""></button>
+                        </div>
+                    </div>
+                    <!-- <div>
                         <div class="div-totalDeInstituicao">
                             <div class="totalTitulo">
                                 <p><b>Número de Instituições Cadastradas no Sistema</b></p>
                             </div>
                             <div class="totalNumero" onload="mostrarDados()" id="totalClasse"></div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

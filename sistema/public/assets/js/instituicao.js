@@ -74,8 +74,8 @@ function cadastrar() {
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
-        }).finally(function() {
-            setTimeout(function() {
+        }).finally(function () {
+            setTimeout(function () {
                 location.reload();
             }, 2000);
         });
@@ -194,7 +194,7 @@ function cadastrarUser() {
                 telefoneServer: telefoneVAR,
                 senhaServer: senhaVAR,
                 idInstituicaoServer: idInstituicaoVAR,
-            })  
+            })
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (resposta) {
@@ -228,9 +228,9 @@ function cadastrarUser() {
                             }
                         }).catch(function (resposta) {
                             console.log(`#ERRO: ${resposta}`);
-                        });    
-                    } 
-                    
+                        });
+                    }
+
                     if (isTecnico) {
                         fetch("/usuarios/cadastrarAcesso", {
                             method: "POST",
@@ -271,7 +271,7 @@ function cadastrarUser() {
 
 function abrirModalCardastarUser() {
     divModal.style.display = "flex";
-    
+
     divModal.innerHTML = `
         <div class="containerModalUser">
             <!--  topo do pop up  -->
@@ -326,7 +326,7 @@ function abrirModalCardastarUser() {
                 <button class="btnCadastrar" onclick="cadastrarUser()">Cadastrar</button>
             </div>
         </div>
-    `;
+    `;}
 
     fetch(`/instituicao/dadosGeraisInst`).then(function (resposta) {
         if (resposta.ok) {
@@ -340,7 +340,7 @@ function abrirModalCardastarUser() {
 
                 for (let i = 0; i < resposta.length; i++) {
                     var instituicao = resposta[i];
-                    
+
                     ipt_instituicao.innerHTML += `
                         <option value="${instituicao.idInstitucional}">${instituicao.nomeInstitucional}</option>
                     `;
@@ -355,65 +355,124 @@ function abrirModalCardastarUser() {
         console.error(resposta);
         // finalizarAguardar();
     });
-}
+
 
 function fecharModal() {
     divModal.style.display = "none";
 }
 
-function dadosDashboard() {
-    fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
-        if (response.ok) {
-            response.json().then(function (dados) {
-                mostrarDados(dados)
-            });
-        } else {
-            console.error('Nenhuma tarefa encontrada ou erro na API');
-        }
-    })
-        .catch(function (error) {
-            console.error(`Erro na obtenção dos dados: ${error.message}`);
-        });
-}
-dadosDashboard()
+// function dadosDashboard() {
+//     fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
+//         if (response.ok) {
+//             response.json().then(function (dados) {
+//                 mostrarDados(dados)
+//             });
+//         } else {
+//             console.error('Nenhuma tarefa encontrada ou erro na API');
+//         }
+//     })
+//         .catch(function (error) {
+//             console.error(`Erro na obtenção dos dados: ${error.message}`);
+//         });
+// }
+// dadosDashboard()
 
-function mostrarDados(dados) {
-    for (i = 0; i < dados.length; i++) {
-        var totalInstituicoes = dados[i].quantidade_total_instituicoes;
-        totalClasse.innerHTML = `${totalInstituicoes}`
-    }
-}
+// function mostrarDados(dados) {
+//     for (i = 0; i < dados.length; i++) {
+//         var totalInstituicoes = dados[i].quantidade_total_instituicoes;
+//         totalClasse.innerHTML = `${totalInstituicoes}`
+//     }
+// }
 
 function dadosInstituicao() {
     fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
             response.json().then(function (informacao) {
-                mostrarInformacao(informacao)
+                mostrarInformacao(informacao);
             });
         } else {
             console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
-        .catch(function (error) {
-            console.error(`Erro na obtenção dos dados: ${error.message}`);
-        });
+    .catch(function (error) {
+        console.error(`Erro na obtenção dos dados: ${error.message}`);
+    });
 }
-dadosInstituicao()
+
+dadosInstituicao();
 
 function mostrarInformacao(informacao) {
     blocoDeDado.innerHTML = '';
 
-    for (i = 0; i < informacao.length; i++) {
-        var nomeInstituicao = informacao[i].nomeInstitucional;
-        blocoDeDado.innerHTML += 
-        `<div class="Instituicoes" data-nome="${nomeInstituicao}">
+    for (let i = 0; i < informacao.length; i++) {
+        const nomeInstituicao = informacao[i].nomeInstitucional;
+        const idInstitucional = informacao[i].idInstitucional;
+
+        const divElement = document.createElement('div');
+        divElement.classList.add('Instituicoes');
+        divElement.setAttribute('data-nome', nomeInstituicao);
+        divElement.innerHTML = `
             ${nomeInstituicao}
-         </div>`;
+            <img src="../assets/images/ph_trash-duotone.png" id="${idInstitucional}" alt="">
+        `;
+
+        divElement.querySelector('img').addEventListener('click', function () {
+            excluirInstituicao(idInstitucional);
+        });
+
+        blocoDeDado.appendChild(divElement);
     }
 }
 
+function excluirInstituicao(idInstitucional) {
+    console.log(idInstitucional);
+    Swal.fire({
+        title: 'Tem certeza que deseja excluir essa instituição?',
+        text: "Após excluído você irá perder todos os dados referentes a essa máquina! Essa ação não poderá ser desfeita.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, deletar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("entrei no if do primeiro then");
+            fetch(`/instituicao/deletarInstituicao/${idInstitucional}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    return resposta.json();
+                } else {
+                    throw new Error(`Erro na exclusão: ${resposta.status}`);
+                }
+            })
+            .then(function (resultado) {
+                Swal.fire(
+                    'Deletado!',
+                    'Instituição excluída com sucesso!',
+                    'success'
+                );
+                location.reload()
+            })
+            .catch(function (erro) {
+                console.error(`#ERRO: ${erro.message}`);
+                Swal.fire(
+                    'Erro!',
+                    'Houve um erro ao excluir a instituição.',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
 function pesquisarInstituicao() {
-    var busca = input_busca.value.toLowerCase();
+    var busca = input_busca_instituicao.value.toLowerCase();
 
     var instituicoes = document.querySelectorAll('.Instituicoes');
 
@@ -438,9 +497,9 @@ function dadosGeraisInst() {
             console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
-    .catch(function (error) {
-        console.error(`Erro na obtenção dos dados: ${error.message}`);
-    });
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
 }
 
 function abrirModalExbirInfosDetalhadas(dadosPuxados) {
@@ -452,48 +511,57 @@ function abrirModalExbirInfosDetalhadas(dadosPuxados) {
     divModalDetalhado.style.display = "flex";
 
     divModalDetalhado.innerHTML = `
-    <div id="modalDetalhado">
-      <div class="modal-header">
-        <h2>Informações das Instituições</h2>
-        <button onclick="fecharModalDetalhado()" id="close-modal">Fechar</button>
-      </div>
-      <div class="titulo-rotulo">
-        <div class="modal-body">
-          <p>Nome</p>
-          <p>CNPJ</p>
-          <p>Email</p>
-          <p>Telefone</p>
-          <p>CEP</p>
-          <p>Número do Endereço</p>
-          <p>Complemento</p>
+        <div id="modalDetalhado">
+            <div class="modal-header">
+                <h2>Informações das Instituições</h2>
+                <button onclick="fecharModalDetalhado()" id="close-modal">Fechar</button>
+            </div>
+            <div class="modal-body">
+    <table id="idTabela">
+        <thead>
+            <tr class="linha-branca">
+                <th>Nome</th>
+                <th>CNPJ</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>CEP</th>
+                <th>Número</th>
+                <th>Complemento</th>
+            </tr>
+        </thead>
+        <tbody id="blocoDeDados" class="linha-colorida"></tbody>
+    </table>
+</div>
+
         </div>
-      </div>
-      <div class="scrollDoModal">
-        <div id="blocoDeDados"></div>
-      </div>
-    </div>
     `;
+
+     const blocoDeDados = document.getElementById('blocoDeDados');
     blocoDeDados.innerHTML = '';
 
-    for (i = 0; i < dadosPuxados.length; i++) {
-        var nomeInstituicao = dadosPuxados[i].nomeInstitucional;
-        var cnpj = dadosPuxados[i].cnpj;
-        var email = dadosPuxados[i].email;
-        var telefone = dadosPuxados[i].telefone;
-        var cep = dadosPuxados[i].cep;
-        var numeroEndereco = dadosPuxados[i].numeroEndereco;
-        var complemento = dadosPuxados[i].complemento;
+    for (let i = 0; i < dadosPuxados.length; i++) {
+        const nomeInstituicao = dadosPuxados[i].nomeInstitucional;
+        const cnpj = dadosPuxados[i].cnpj;
+        const email = dadosPuxados[i].email;
+        const telefone = dadosPuxados[i].telefone;
+        const cep = dadosPuxados[i].cep;
+        const numeroEndereco = dadosPuxados[i].numeroEndereco;
+        const complemento = dadosPuxados[i].complemento;
 
-        blocoDeDados.innerHTML += `
-        <div class="modal-body-info">
-          <p>${nomeInstituicao}</p>
-          <p class="tom">${cnpj}</p>
-          <p class="emailModal">${email}</p>
-          <p class="tom">${telefone}</p>
-          <p>${cep}</p>
-          <p class="tom">${numeroEndereco}</p>
-          <p>${complemento}</p>
-        </div>`;
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${nomeInstituicao}</td>
+            <td>${cnpj}</td>
+            <td>${email}</td>
+            <td>${telefone}</td>
+            <td>${cep}</td>
+            <td>${numeroEndereco}</td>
+            <td>${complemento}</td>
+        `;
+
+        newRow.classList.add(i % 2 === 0 ? 'linha-colorida' : 'linha-branca');
+
+        blocoDeDados.appendChild(newRow);
     }
 }
 
@@ -506,4 +574,44 @@ function fecharModalDetalhado() {
     }
 
     divModalDetalhado.style.display = "none";
+}
+
+function dadosUsuario() {
+    fetch(`/instituicao/dadosUsuario`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (infoDados) {
+                exibirInfoUser(infoDados);
+            });
+        } else {
+            console.error('Nenhuma informação encontrada ou erro na API');
+        }
+    })
+    .catch(function (error) {
+        console.error(`Erro na obtenção dos dados: ${error.message}`);
+    });
+}
+
+dadosUsuario();
+
+function exibirInfoUser(infoDados) {
+    blocoDeDadoUser.innerHTML = '';
+
+    for (let i = 0; i < infoDados.length; i++) {
+        const nomeUser = infoDados[i].nome;
+        const idUser = infoDados[i].idUsuario;
+
+        const divElement = document.createElement('div');
+        divElement.classList.add('Instituicoes');
+        divElement.setAttribute('data-nome', nomeUser);
+        divElement.innerHTML = `
+            ${nomeUser}
+            <img src="../assets/images/ph_trash-duotone.png" id="${idUser}" alt="">
+        `;
+
+        divElement.querySelector('img').addEventListener('click', function () {
+            excluirInstituicao(idUser);
+        });
+
+        blocoDeDadoUser.appendChild(divElement);
+    }
 }

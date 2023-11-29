@@ -3,7 +3,7 @@ exibirParametros();
 function exibirParametros() {
     fetch(`/parametrosMonitoramento/buscarParametrosMonitoramento/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) { 
+            if (resposta.status == 204) {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -56,60 +56,63 @@ function personalizarParametros() {
             body: JSON.stringify({
                 minCpuServer: minCpuVar,
                 maxCpuServer: maxCpuVar,
-                minDiscoServer: minDiscoVar,  
+                minDiscoServer: minDiscoVar,
                 maxDiscoServer: maxDiscoVar,
                 minQtdDispositivosConectadosServer: minQtdDispositivosConectadosVar,
-                maxQtdDispositivosConectadosServer:maxQtdDispositivosConectadosVar ,
+                maxQtdDispositivosConectadosServer: maxQtdDispositivosConectadosVar,
                 minRamServer: minRamVar,
                 maxRamServer: maxRamVar,
                 idInstituicaoServer: idInstituicaoVAR
             })
         }).then(function (resposta) {
-            if (resposta.ok) { 
-                resposta.json().then(function (resposta) {
-                    // verificando se a resposta contém o campo insertId
-                    if (resposta.insertId !== undefined) {
-                        var idParametros = resposta.insertId;
-                        console.log("Id do parametro inserido: " + idParametros);
-        
-                        fetch(`/parametrosMonitoramento/atualizarParametros/${idInstituicaoVAR}`, {
-                            method: "PUT",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                idParametrosServer: idParametros
-                            })
-                        }).then(function (resposta) {
-                            if (resposta.ok) {
-                                // Atualização bem-sucedida
-                                console.log("Parâmetros atualizados com sucesso!");
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'success',
-                                    title: 'Parâmetros personalizados com sucesso!',
-                                    showConfirmButton: true,
-                                    // timer: 1500
-                                });
-                                exibirParametros();
-                            } else {
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'error',
-                                    title: 'Houve um erro ao personalizar Parâmetros!',
-                                    // showConfirmButton: true,
-                                    timer: 1500
-                                });
-                                throw ("Houve um erro ao tentar atualizar os parâmetros");
-                            }
-                        }).catch(function (resposta) {
-                            console.log(`#ERRO: ${resposta}`);
-                        });
-                    } else {
-                        console.log("Resposta não contém o campo insertId.");
-                    }
-                });
-                
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    console.log("Sem respostas", resposta);
+                } else {
+                    resposta.json().then(function (resposta) {
+                        // verificando se a resposta contém o campo insertId
+                        if (resposta.insertId !== undefined) {
+                            var idParametros = resposta.insertId;
+                            console.log("Id do parametro inserido: " + idParametros);
+
+                            fetch(`/parametrosMonitoramento/atualizarParametros/${idInstituicaoVAR}`, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    idParametrosServer: idParametros
+                                })
+                            }).then(function (resposta) {
+                                if (resposta.ok) {
+                                    // Atualização bem-sucedida
+                                    console.log("Parâmetros atualizados com sucesso!");
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'success',
+                                        title: 'Parâmetros personalizados com sucesso!',
+                                        showConfirmButton: true,
+                                        // timer: 1500
+                                    });
+                                    exibirParametros();
+                                } else {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'Houve um erro ao personalizar Parâmetros!',
+                                        // showConfirmButton: true,
+                                        timer: 1500
+                                    });
+                                    throw ("Houve um erro ao tentar atualizar os parâmetros");
+                                }
+                            }).catch(function (resposta) {
+                                console.log(`#ERRO: ${resposta}`);
+                            });
+                        } else {
+                            console.log("Resposta não contém o campo insertId.");
+                        }
+                    });
+                }
             } else {
                 throw ("houve um erro ao tentar se cadastrar");
             }
@@ -122,7 +125,7 @@ function personalizarParametros() {
 function resetParametros() {
     fetch(`/parametrosMonitoramento/buscarParametrosMonitoramento/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) { 
+            if (resposta.status == 204) {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }

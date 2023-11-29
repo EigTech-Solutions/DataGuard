@@ -98,10 +98,41 @@ function dashDatas(req, res) {
     });
 }
 
+
+function deletarInstituicao(req, res) {
+    var idInstitucional = req.params.idInstitucional;
+    console.log(`Entrei no controller deletar: ${idInstitucional}`);
+
+    instituicaoModel.deletarInstituicao(idInstitucional)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao deletar a instituição: ", erro);
+            res.status(500).json({ error: "Erro interno do servidor" });
+        });
+}
+
+function dadosUsuario(req, res) {
+    instituicaoModel.dadosUsuario(req, res).then(function (dadosUser) {
+        if (dadosUser.length > 0) {
+            res.status(200).json(dadosUser);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
     dadosInstituicao,
     dadosGeraisInst,
-    dashDatas
+    dashDatas,
+    deletarInstituicao,
+    dadosUsuario
 }
