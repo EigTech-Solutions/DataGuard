@@ -22,7 +22,10 @@
             <div class="conteudo-page">
                 <div class="title-page">
                     <h2>Instituições</h2>
-                    <button class="btnAdd" onclick= "abrirModalCardastarInstituicao()">Nova Instituição</button>
+                    <div>
+                        <button class="btnAdd" onclick= "abrirModalCardastarInstituicao()">Nova Instituição</button>
+                        <button class="btnAdd" onclick= "abrirModalCardastarUser()">Novo Usuário</button>
+                    </div>
                 </div>
                 <hr>
                 <div class="div-instituicoes">
@@ -41,11 +44,13 @@
                             <button onclick="dadosGeraisInst()" class="botaoMais"><img src="../assets/images/icon_mais.png" alt=""></button>
                         </div>
                     </div>
-                    <div class="div-totalDeInstituicao">
-                        <div class="totalTitulo">
-                            <p><b>Número de Instituições Cadastradas no Sistema</b></p>
+                    <div>
+                        <div class="div-totalDeInstituicao">
+                            <div class="totalTitulo">
+                                <p><b>Número de Instituições Cadastradas no Sistema</b></p>
+                            </div>
+                            <div class="totalNumero" onload="mostrarDados()" id="totalClasse"></div>
                         </div>
-                        <div class="totalNumero" onload="mostrarDados()" id="totalClasse"></div>
                     </div>
                 </div>
             </div>
@@ -53,7 +58,6 @@
     </div>
     <!-- divs modais/ pop-ups -->
     <div class="divModal" id="divModal"></div>
-    <div class="divModalExcluir" id="divModalExcluir"></div>
     <div class="divModalDetalhado" id="divModalDetalhado"></div>
 </body>
 

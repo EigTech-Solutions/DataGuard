@@ -12,7 +12,6 @@ function obterParmetrosMonitoramento() {
             resposta.json().then(function (resposta) {
                 console.log("Dados recebidos: ", JSON.stringify(resposta));
                 parametros = resposta[0];
-                console.log(parametros);
             });
         } else {
             throw ('Houve um erro na API!');
@@ -36,7 +35,6 @@ function obterNotificacoes() {
                 resposta.json().then(json => {
                     notificacoes.push(...json)
                     document.getElementById('qtdNotificacoes').innerHTML = notificacoes.length;
-                    console.log(notificacoes);
                     notificacoes.forEach(alerta => {
                         let tipoAlertaCor = alerta.tipo == 'atenção' ? 'tipo_notificacao_alerta_color' : 'tipo_notificacao_urgente_color';
                         let alertaTitle = alerta.tipo == 'atenção' ? "ATENÇÃO " + alerta.nomeSala : "URGENTE " + alerta.nomeSala;
@@ -218,9 +216,9 @@ function marcarComoLido(idNotificacao) {
 }
 
 function marcarTodosLido() {
-    for (let i = 0; i < alertasNaoLido.length; i++) {
-        alertasNaoLido[i].style.background = "rgba(89, 131, 146, 0.50)";
-    }
+    notificacoes.forEach(alerta => {
+        marcarComoLido(alerta.idAlertas)
+    });
 }
 
 window.addEventListener("load", function () {

@@ -134,9 +134,13 @@ function buscarDadosPorcenCpu() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(dados => {
-                plotarGraficoPorcenCPU(dados);
-            });
+            if (resposta.status == 204) {
+                console.log("Nenhum dado de CPU encontrado!");
+            } else {
+                resposta.json().then(dados => {
+                    plotarGraficoPorcenCPU(dados);
+                });
+            }
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
@@ -217,9 +221,13 @@ function buscarDadosFluxoDeRede() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(dados => {
-                plotarGraficoFluxoDeRede(dados);
-            });
+            if (resposta.status == 204) {
+                console.log("Nenhum dado de fluxo de rede encontrado");
+            } else {
+                resposta.json().then(dados => {
+                    plotarGraficoFluxoDeRede(dados);
+                });
+            }
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
@@ -319,10 +327,14 @@ function dadosMemorias() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(dados => {
-                plotarGraficoMemoriaDisco(dados);
-                plotarGraficoMemoriaRam(dados);
-            });
+            if (resposta.status == 204) {
+                console.log("Sem novos dados de memorias");
+            } else {
+                resposta.json().then(dados => {
+                    plotarGraficoMemoriaDisco(dados);
+                    plotarGraficoMemoriaRam(dados);
+                });
+            }
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
