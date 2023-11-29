@@ -54,7 +54,7 @@ FROM maquina m
 LEFT JOIN laboratorio l ON m.fkLaboratorio = l.idLaboratorio AND m.fkInstitucional = l.fkInstitucional
 LEFT JOIN medicoes dm ON m.idMaquina = dm.fkMaquina
 LEFT JOIN Alertas a ON dm.idMonitoramento = a.fkMonitoramento AND dm.fkMaquina = a.fkMaquina AND MONTH(dm.dataHora) = MONTH(GETDATE())
-WHERE m.fkInstitucional = 2 AND (m.ipMaquina LIKE '${VARIAVELIPMAQUIA}' OR m.numeroDeSerie LIKE '${VARIAVELNUMERODESERIE}%')
+WHERE m.fkInstitucional = 2 AND (m.ipMaquina LIKE '${numBusca}' OR m.numeroDeSerie LIKE '${numBusca}%')
 GROUP BY m.idMaquina, m.ipMaquina, m.numeroDeSerie, m.sistemaOperacional, m.status,m.dataCadastro,m.dataDesativamento, m.fkLaboratorio, m.fkInstitucional, l.nomeSala; `;
     } else {
         instrucao = `
@@ -203,7 +203,7 @@ GROUP BY l.nomeSala, l.idLaboratorio;
 function buscarTotalPcsAtivosInativos(idLab, idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function buscarTotalPcsLab()");
     var instrucao = "";
-    if (process.env.AMBIENTE_PROCESSO == "producao"){
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
         instrucao = `SELECT 
 l.nomeSala as NomeLaboratorio,
 SUM(CASE WHEN m.status = 1 THEN 1 ELSE 0 END) as TotalMaquinasAtivas,
@@ -214,7 +214,7 @@ JOIN maquina m ON l.idLaboratorio = m.fkLaboratorio
 WHERE l.idLaboratorio = ${idLab} AND l.fkInstitucional = ${idInstituicao}
 GROUP BY l.nomeSala, l.idLaboratorio;
 `;
-    }else {
+    } else {
         instrucao = `
         SELECT 
             l.nomeSala as NomeLaboratorio,
