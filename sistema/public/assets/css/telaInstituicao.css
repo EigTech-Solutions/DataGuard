@@ -560,3 +560,8 @@ body.modal-open {
 .modal-body-info .emailModal{
     font-size: 8px;
 }
+
+.btnsAdd{
+    display: flex;
+    gap: 10px;
+}
