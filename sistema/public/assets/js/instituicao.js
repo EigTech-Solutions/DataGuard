@@ -389,6 +389,7 @@ function dadosInstituicao() {
         if (response.ok) {
             response.json().then(function (informacao) {
                 mostrarInformacao(informacao)
+                excluirInstituicao(informacao)
             });
         } else {
             console.error('Nenhuma informação encontrada ou erro na API');
@@ -400,17 +401,69 @@ function dadosInstituicao() {
 }
 dadosInstituicao()
 
+
 function mostrarInformacao(informacao) {
     blocoDeDado.innerHTML = '';
 
     for (i = 0; i < informacao.length; i++) {
         var nomeInstituicao = informacao[i].nomeInstitucional;
+        var idInstitucional = informacao[i].idInstitucional;
         blocoDeDado.innerHTML +=
             `<div class="Instituicoes" data-nome="${nomeInstituicao}">
             ${nomeInstituicao}
-            <img src="../assets/images/ph_trash-duotone.png" alt="">
+            <img src="../assets/images/ph_trash-duotone.png" id="${idInstitucional}" alt="" onclick="excluirInstituicao(${idInstitucional})">
          </div>`;
     }
+    
+    // excluirInstituicao(idInstitucional)
+}
+
+// Seu código para a função excluirInstituicao permanece inalterado.
+
+function excluirInstituicao(idInstitucional) {
+    console.log(idInstitucional);
+    Swal.fire({
+        title: 'Tem certeza que deseja excluir essa instituição?',
+        text: "Após excluído você irá perder todos os dados referentes a essa máquina! Essa ação não poderá ser desfeita.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, deletar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("entrei no if do primeiro then");
+            fetch(`/instituicao/deletarInstituicao/${idInstitucional}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    return resposta.json();
+                } else {
+                    throw new Error(`Erro na exclusão: ${resposta.status}`);
+                }
+            })
+            .then(function (resultado) {
+                Swal.fire(
+                    'Deletado!',
+                    'Instituição excluída com sucesso!',
+                    'success'
+                );
+            })
+            .catch(function (erro) {
+                console.error(`#ERRO: ${erro.message}`);
+                Swal.fire(
+                    'Erro!',
+                    'Houve um erro ao excluir a instituição.',
+                    'error'
+                );
+            });
+        }
+    });
 }
 
 function pesquisarInstituicao() {
@@ -517,3 +570,4 @@ function fecharModalDetalhado() {
 
     divModalDetalhado.style.display = "none";
 }
+

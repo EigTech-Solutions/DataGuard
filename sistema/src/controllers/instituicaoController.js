@@ -98,10 +98,29 @@ function dashDatas(req, res) {
     });
 }
 
+
+function deletarInstituicao(req, res) {
+    var idInstitucional = req.params.idInstitucional;
+    console.log(`Entrei no controller deletar: ${idInstitucional}`);
+
+    instituicaoModel.deletarInstituicao(idInstitucional)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao deletar a instituição: ", erro);
+            res.status(500).json({ error: "Erro interno do servidor" });
+        });
+}
+
+
+
 module.exports = {
     cadastrar,
     puxarDados,
     dadosInstituicao,
     dadosGeraisInst,
-    dashDatas
+    dashDatas,
+    deletarInstituicao
 }

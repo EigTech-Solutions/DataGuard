@@ -33,6 +33,7 @@
 
 #blocoDeDado img{
     width: 15px;
+    margin-left: auto;
 }
 
 .title-page .btnAdd {

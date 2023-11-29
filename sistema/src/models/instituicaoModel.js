@@ -53,7 +53,7 @@ function dadosInstituicao() {
     }
     else {
         instrucao = `
-        SELECT nomeInstitucional FROM instituicao;
+        SELECT idInstitucional, nomeInstitucional FROM instituicao;
         `;
     }
     
@@ -132,10 +132,25 @@ function dashDatas() {
     return database.executar(instrucao);
 }
 
+function deletarInstituicao(idInstitucional) {
+    if (isNaN(idInstitucional)) {
+        return Promise.reject("IdInstitucional inválido");
+    }
+
+    var instrucao = `
+        DELETE FROM instituicao
+        WHERE idInstitucional = ${idInstitucional};
+    `;
+
+    return database.executar(instrucao);
+}
+
+
 module.exports = {
     cadastrar,
     puxarDados,
     dadosInstituicao,
     dadosGeraisInst,
-    dashDatas
+    dashDatas,
+    deletarInstituicao
 };
