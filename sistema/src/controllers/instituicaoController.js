@@ -142,6 +142,19 @@ function deletarUsuario(req, res) {
         });
 }
 
+function dadosGeraisUser(req, res) {
+    instituicaoModel.dadosGeraisUser(req, res).then(function (puxarUser) {
+        if (puxarUser.length > 0) {
+            res.status(200).json(puxarUser);
+        } else {
+            res.status(204).send("Nenhum dado encontrado");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
@@ -150,5 +163,6 @@ module.exports = {
     dashDatas,
     deletarInstituicao,
     dadosUsuario,
-    deletarUsuario
+    deletarUsuario,
+    dadosGeraisUser
 }

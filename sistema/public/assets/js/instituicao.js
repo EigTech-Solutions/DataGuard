@@ -678,3 +678,72 @@ function pesquisarUsuario() {
         }
     });
 }
+
+function dadosGeraisUser() {
+    fetch(`/instituicao/dadosGeraisUser`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (puxarUser) {
+                abrirModalExbirInfosDetalhadasUser(puxarUser);
+            });
+        } else {
+            console.error('Nenhuma informação encontrada ou erro na API');
+        }
+    })
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
+}
+
+function abrirModalExbirInfosDetalhadasUser(puxarUser) {
+    document.body.classList.add('modal-open');
+
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    document.body.appendChild(overlay);
+    divModalDetalhado.style.display = "flex";
+
+    divModalDetalhado.innerHTML = `
+        <div id="modalDetalhado">
+            <div class="modal-header">
+                <h2>Informações das Instituições</h2>
+                <button onclick="fecharModalDetalhado()" id="close-modal">Fechar</button>
+            </div>
+            <div class="modal-body">
+    <table id="idTabela">
+        <thead>
+            <tr class="linha-branca">
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Senha</th>
+                <th>Telefone</th>
+            </tr>
+        </thead>
+        <tbody id="blocoDeDados" class="linha-colorida"></tbody>
+    </table>
+</div>
+
+        </div>
+    `;
+
+     const blocoDeDados = document.getElementById('blocoDeDados');
+    blocoDeDados.innerHTML = '';
+
+    for (let i = 0; i < puxarUser.length; i++) {
+        const nomeInstituicao = puxarUser[i].nome;
+        const email = puxarUser[i].email;
+        const senha = puxarUser[i].senha;
+        const telefone = puxarUser[i].telefone;
+
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${nomeInstituicao}</td>
+            <td>${email}</td>
+            <td>${senha}</td>
+            <td>${telefone}</td>
+        `;
+
+        newRow.classList.add(i % 2 === 0 ? 'linha-colorida' : 'linha-branca');
+
+        blocoDeDados.appendChild(newRow);
+    }
+}

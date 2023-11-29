@@ -35,4 +35,8 @@ router.delete("/deletarUsuario/:idUsuario", function (req, res) {
     instituicaoController.deletarUsuario(req, res);
 });
 
+router.get("/dadosGeraisUser", function(req, res){
+    instituicaoController.dadosGeraisUser(req, res);
+});
+
 module.exports = router;

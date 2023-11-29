@@ -173,6 +173,36 @@ function deletarUsuario(idUsuario) {
     return database.executar(instrucao);
 }
 
+function dadosGeraisUser() {
+    var instrucao = "";
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = ` SELECT 
+        select 
+        idUsuario, 
+        nome, 
+        email, 
+        senha, 
+        telefone 
+        from 
+        usuario;`;
+    }
+    else {
+        instrucao = `
+        select 
+        idUsuario, 
+        nome, 
+        email, 
+        senha, 
+        telefone 
+        from 
+        usuario;
+        `;
+    }
+   
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
@@ -181,5 +211,6 @@ module.exports = {
     dashDatas,
     deletarInstituicao,
     dadosUsuario,
-    deletarUsuario
+    deletarUsuario,
+    dadosGeraisUser
 };
