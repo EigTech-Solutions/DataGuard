@@ -326,7 +326,7 @@ function abrirModalCardastarUser() {
                 <button class="btnCadastrar" onclick="cadastrarUser()">Cadastrar</button>
             </div>
         </div>
-    `;
+    `;}
 
     fetch(`/instituicao/dadosGeraisInst`).then(function (resposta) {
         if (resposta.ok) {
@@ -355,70 +355,74 @@ function abrirModalCardastarUser() {
         console.error(resposta);
         // finalizarAguardar();
     });
-}
+
 
 function fecharModal() {
     divModal.style.display = "none";
 }
 
-function dadosDashboard() {
-    fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
-        if (response.ok) {
-            response.json().then(function (dados) {
-                mostrarDados(dados)
-            });
-        } else {
-            console.error('Nenhuma tarefa encontrada ou erro na API');
-        }
-    })
-        .catch(function (error) {
-            console.error(`Erro na obtenção dos dados: ${error.message}`);
-        });
-}
-dadosDashboard()
+// function dadosDashboard() {
+//     fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
+//         if (response.ok) {
+//             response.json().then(function (dados) {
+//                 mostrarDados(dados)
+//             });
+//         } else {
+//             console.error('Nenhuma tarefa encontrada ou erro na API');
+//         }
+//     })
+//         .catch(function (error) {
+//             console.error(`Erro na obtenção dos dados: ${error.message}`);
+//         });
+// }
+// dadosDashboard()
 
-function mostrarDados(dados) {
-    for (i = 0; i < dados.length; i++) {
-        var totalInstituicoes = dados[i].quantidade_total_instituicoes;
-        totalClasse.innerHTML = `${totalInstituicoes}`
-    }
-}
+// function mostrarDados(dados) {
+//     for (i = 0; i < dados.length; i++) {
+//         var totalInstituicoes = dados[i].quantidade_total_instituicoes;
+//         totalClasse.innerHTML = `${totalInstituicoes}`
+//     }
+// }
 
 function dadosInstituicao() {
     fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
             response.json().then(function (informacao) {
-                mostrarInformacao(informacao)
-                excluirInstituicao(informacao)
+                mostrarInformacao(informacao);
             });
         } else {
             console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
-        .catch(function (error) {
-            console.error(`Erro na obtenção dos dados: ${error.message}`);
-        });
+    .catch(function (error) {
+        console.error(`Erro na obtenção dos dados: ${error.message}`);
+    });
 }
-dadosInstituicao()
 
+dadosInstituicao();
 
 function mostrarInformacao(informacao) {
     blocoDeDado.innerHTML = '';
 
-    for (i = 0; i < informacao.length; i++) {
-        var nomeInstituicao = informacao[i].nomeInstitucional;
-        var idInstitucional = informacao[i].idInstitucional;
-        blocoDeDado.innerHTML +=
-            `<div class="Instituicoes" data-nome="${nomeInstituicao}">
-            ${nomeInstituicao}
-            <img src="../assets/images/ph_trash-duotone.png" id="${idInstitucional}" alt="" onclick="excluirInstituicao(${idInstitucional})">
-         </div>`;
-    }
-    
-    // excluirInstituicao(idInstitucional)
-}
+    for (let i = 0; i < informacao.length; i++) {
+        const nomeInstituicao = informacao[i].nomeInstitucional;
+        const idInstitucional = informacao[i].idInstitucional;
 
-// Seu código para a função excluirInstituicao permanece inalterado.
+        const divElement = document.createElement('div');
+        divElement.classList.add('Instituicoes');
+        divElement.setAttribute('data-nome', nomeInstituicao);
+        divElement.innerHTML = `
+            ${nomeInstituicao}
+            <img src="../assets/images/ph_trash-duotone.png" id="${idInstitucional}" alt="">
+        `;
+
+        divElement.querySelector('img').addEventListener('click', function () {
+            excluirInstituicao(idInstitucional);
+        });
+
+        blocoDeDado.appendChild(divElement);
+    }
+}
 
 function excluirInstituicao(idInstitucional) {
     console.log(idInstitucional);
@@ -453,6 +457,7 @@ function excluirInstituicao(idInstitucional) {
                     'Instituição excluída com sucesso!',
                     'success'
                 );
+                location.reload()
             })
             .catch(function (erro) {
                 console.error(`#ERRO: ${erro.message}`);
@@ -467,7 +472,7 @@ function excluirInstituicao(idInstitucional) {
 }
 
 function pesquisarInstituicao() {
-    var busca = input_busca.value.toLowerCase();
+    var busca = input_busca_instituicao.value.toLowerCase();
 
     var instituicoes = document.querySelectorAll('.Instituicoes');
 
@@ -531,7 +536,7 @@ function abrirModalExbirInfosDetalhadas(dadosPuxados) {
         </div>
     `;
 
-    const blocoDeDados = document.getElementById('blocoDeDados');
+     const blocoDeDados = document.getElementById('blocoDeDados');
     blocoDeDados.innerHTML = '';
 
     for (let i = 0; i < dadosPuxados.length; i++) {
@@ -571,3 +576,42 @@ function fecharModalDetalhado() {
     divModalDetalhado.style.display = "none";
 }
 
+function dadosUsuario() {
+    fetch(`/instituicao/dadosUsuario`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (infoDados) {
+                exibirInfoUser(infoDados);
+            });
+        } else {
+            console.error('Nenhuma informação encontrada ou erro na API');
+        }
+    })
+    .catch(function (error) {
+        console.error(`Erro na obtenção dos dados: ${error.message}`);
+    });
+}
+
+dadosUsuario();
+
+function exibirInfoUser(infoDados) {
+    blocoDeDadoUser.innerHTML = '';
+
+    for (let i = 0; i < infoDados.length; i++) {
+        const nomeUser = infoDados[i].nome;
+        const idUser = infoDados[i].idUsuario;
+
+        const divElement = document.createElement('div');
+        divElement.classList.add('Instituicoes');
+        divElement.setAttribute('data-nome', nomeUser);
+        divElement.innerHTML = `
+            ${nomeUser}
+            <img src="../assets/images/ph_trash-duotone.png" id="${idUser}" alt="">
+        `;
+
+        divElement.querySelector('img').addEventListener('click', function () {
+            excluirInstituicao(idUser);
+        });
+
+        blocoDeDadoUser.appendChild(divElement);
+    }
+}

@@ -546,3 +546,11 @@ body.modal-open {
     display: flex;
     gap: 10px;
 }
+
+.linha-colorida {
+    background-color: #01161E;
+}
+
+.linha-branca {
+    background-color: #0E2229;
+}

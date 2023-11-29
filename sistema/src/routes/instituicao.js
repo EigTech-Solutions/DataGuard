@@ -27,4 +27,8 @@ router.delete("/deletarInstituicao/:idInstitucional", function (req, res) {
     instituicaoController.deletarInstituicao(req, res);
 });
 
+router.get("/dadosUsuario", function (req, res) {
+    instituicaoController.dadosUsuario(req, res);
+});
+
 module.exports = router;

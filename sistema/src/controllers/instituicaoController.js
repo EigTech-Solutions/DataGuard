@@ -114,7 +114,18 @@ function deletarInstituicao(req, res) {
         });
 }
 
-
+function dadosUsuario(req, res) {
+    instituicaoModel.dadosUsuario(req, res).then(function (dadosUser) {
+        if (dadosUser.length > 0) {
+            res.status(200).json(dadosUser);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
 
 module.exports = {
     cadastrar,
@@ -122,5 +133,6 @@ module.exports = {
     dadosInstituicao,
     dadosGeraisInst,
     dashDatas,
-    deletarInstituicao
+    deletarInstituicao,
+    dadosUsuario
 }

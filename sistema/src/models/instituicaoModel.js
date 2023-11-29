@@ -145,6 +145,20 @@ function deletarInstituicao(idInstitucional) {
     return database.executar(instrucao);
 }
 
+function dadosUsuario() {
+    var instrucao = "";
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = ` SELECT nome FROM usuario;`;
+    }
+    else {
+        instrucao = `
+        select idUsuario, nome from usuario;
+        `;
+    }
+    
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
 
 module.exports = {
     cadastrar,
@@ -152,5 +166,6 @@ module.exports = {
     dadosInstituicao,
     dadosGeraisInst,
     dashDatas,
-    deletarInstituicao
+    deletarInstituicao,
+    dadosUsuario
 };
