@@ -538,20 +538,11 @@ body.modal-open {
     color: #edbaa6;
 }
 
-#idTabela{
-    width: 100%;
-    border-collapse: 0;
-    border-spacing: 0;
+.modal-body-info .emailModal{
+    font-size: 8px;
 }
 
-#idTabela tr{
-    width: 100%;
-}
-
-.linha-colorida {
-    background-color: #01161E;
-}
-
-.linha-branca {
-    background-color: #0E2229;
+.btnsAdd{
+    display: flex;
+    gap: 10px;
 }
