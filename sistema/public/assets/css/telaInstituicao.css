@@ -27,9 +27,18 @@
     color: #84969D;
 }
 
+#input_busca{
+    font-size: 20px;
+}
+
+#blocoDeDado img{
+    width: 15px;
+}
+
 .title-page .btnAdd {
     width: 250px;
     height: 40px;
+    margin-left: 20px;
     border-radius: 8px;
     border: none;
     background: #2D4C58;
@@ -402,8 +411,6 @@ hr {
     align-self: center;
 }
 
-
-
 .container_chart_variacao_maquinas {
     border-radius: 10px;
     background: rgba(18, 69, 89, 0.50);
@@ -444,8 +451,6 @@ hr {
     font-family: 'Poppins';
     font-size: 24px;
 }
-
-/* css do modal detalhado */
 
 /* CSS Modal Detalhado */
 #close-modal {
@@ -505,43 +510,18 @@ body.modal-open {
 .modal-body {
     display: flex;
     flex-wrap: wrap;
+    overflow-x: hidden;
 }
 
-.modal-body p {
+.modal-body th, td {
+    text-align: left;
+    width: fit-content;
     flex: 1;
     margin-bottom: 1rem;
     font-size: 0.8rem;
     font-weight: bolder;
-    display: inline-block;
-    align-items: center;
-    justify-content: center;
-    margin-right: 3.5%;
-    margin-left: 3.5%;
     border-bottom: 2px solid #A6CEE3;
-    padding-bottom: 0.5rem;
-}
-
-.modal-body-info {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 0.5rem;
-    font-weight: bolder;
-    margin-right: 3.5%;
-    margin-left: 3.5%;
-    border-bottom: 2px solid #A6CEE3;
-    padding-bottom: 0.5rem;
-}
-
-.modal-body-info p {
-    display: flex;
-    align-items: center;
-    vertical-align: center;
-    min-height: 50px;
-    flex: 1;
-    width: 12%;
-    margin-bottom: 0;
-    font-size: 12px;
-    margin-left: 3%;
+    padding: 20px 10px 20px 10px;
 }
 
 #modalDetalhado.hide {
@@ -553,8 +533,8 @@ body.modal-open {
     top: 0;
 }
 
-.modal-body-info .tom{
-    color: #ffffa5;
+.modal-body .tom{
+    color: #edbaa6;
 }
 
 .modal-body-info .emailModal{

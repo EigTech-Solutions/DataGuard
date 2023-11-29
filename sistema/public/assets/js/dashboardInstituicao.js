@@ -61,8 +61,15 @@ var chartNumCad = new Chart(ctx, {
     data: dataQtd,
     options: {
         scales: {
+            x: {
+                ticks: {
+                    fontSize: 14
+                }
+            },
             y: {
-                beginAtZero: true
+                ticks: {
+                    fontSize: 14
+                }
             }
         },
         plugins: {
@@ -73,3 +80,11 @@ var chartNumCad = new Chart(ctx, {
     }
 });
 
+function alertaInfo(){
+    Swal.fire({
+        position: 'center',
+        title: 'Dashboard de Instituições',
+        text: 'Quantidade de Instituições Cadastradas por Mês no ano de 2023',
+        showConfirmButton: true
+    });
+}
