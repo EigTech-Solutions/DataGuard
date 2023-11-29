@@ -50,11 +50,12 @@ var dataQtd = {
         label: 'Quantidade',
         data: [],
         backgroundColor: [
-            '#00FFFF', '#4b0082', '#a20000', '#ffd700', '#ff00ff', '#ff8c00',
-            '#b8cad4', '#00ff7f', '#cc7722', '#512d1b', '#007fff', '#8b0000'
+            '#B0C4DE', '#87CEFA', '#6495ED', '#4682B4', '#4169E1', '#3271a5',
+            '#B0E0E6', '#5F9EA0', '#87CEEB', '#708090', '#45b6fe', '#3792cb'
         ]
     }]
 }
+
 
 var chartNumCad = new Chart(ctx, {
     type: 'bar',
@@ -76,6 +77,12 @@ var chartNumCad = new Chart(ctx, {
             legend: {
                 display: false
             }
+        }, 
+        title: {
+            display: true,
+            text: 'Quantidade de Instituições Cadastradas por Mês (2023)',
+            fontSize: 16,
+            fontColor: '#f6f6f6'
         }
     }
 });
