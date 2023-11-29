@@ -836,7 +836,7 @@ function buscarRankingMaquinasAdmin(idInstituicao) {
         LEFT JOIN 
             alertas a ON a.fkMonitoramento = me.idMonitoramento
         WHERE 
-            m.fkInstitucional = @idInstituicao
+            m.fkInstitucional = ${idInstituicao}
         GROUP BY 
             m.idMaquina, m.numeroDeSerie
         ORDER BY 
@@ -873,7 +873,7 @@ function buscarColaboradores(idInstituicao) {
             LEFT JOIN 
                 usuario u ON au.fkUsuario = u.idUsuario
             WHERE 
-                u.fkInstitucional = @idInstituicao;
+                u.fkInstitucional = ${idInstituicao};
         `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =

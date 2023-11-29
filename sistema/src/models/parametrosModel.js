@@ -29,27 +29,34 @@ function cadastrar(minCpu, maxCpu, minDisco, maxDisco, minRam, maxRam, minQtdDis
     var instrucao = "";
     if (process.env.AMBIENTE_PROCESSO == "producao") {
         instrucao = `INSERT INTO parametrosMonitoramento (minCpu, maxCpu, minDisco, maxDisco, minRam, maxRam, minQtdDispositivosConectados, maxQtdDispositivosConectados, minLatenciaRede, maxLatenciaRede) 
+        OUTPUT INSERTED.idParametrosMonitoramento
         VALUES (${minCpu}, ${maxCpu}, ${minDisco}, ${maxDisco}, ${minRam}, ${maxRam}, ${minQtdDispositivosConectados}, ${maxQtdDispositivosConectados}, 100, 400);
         `;
+        return database.executar(instrucao).then(resultado => {
+            // Aqui, você deve retornar o ID inserido no corpo da resposta
+            console.log(resultado);
+            return { insertId: resultado.idParametrosMonitoramento };
+        }).catch(erro => {
+            console.log(erro);
+            console.log("\nHouve um erro ao realizar o cadastro! Erro: ", erro.sqlMessage);
+            throw erro; // Certifique-se de repassar o erro para que seja tratado no bloco catch superior
+        });
     }
     else {
         instrucao = `
         INSERT INTO parametrosMonitoramento (minCpu, maxCpu, minDisco, maxDisco, minRam, maxRam, minQtdDispositivosConectados, maxQtdDispositivosConectados, minLatenciaRede, maxLatenciaRede) 
             VALUES (${minCpu}, ${maxCpu}, ${minDisco}, ${maxDisco}, ${minRam}, ${maxRam}, ${minQtdDispositivosConectados}, ${maxQtdDispositivosConectados}, 100, 400);
     `;
-    }
-    
-    console.log("Executando a instrução SQL: \n" + instrucao);
-    return database.executar(instrucao)
-        .then(resultado => {
+        console.log("Executando a instrução SQL: \n" + instrucao);
+        database.executar(instrucao).then(resultado => {
             // Aqui, você deve retornar o ID inserido no corpo da resposta
             return { insertId: resultado.insertId };
-        })
-        .catch(erro => {
+        }).catch(erro => {
             console.log(erro);
             console.log("\nHouve um erro ao realizar o cadastro! Erro: ", erro.sqlMessage);
             throw erro; // Certifique-se de repassar o erro para que seja tratado no bloco catch superior
         });
+    }
 }
 
 function atualizarParametros(idInstituicao, idParametrosMonitoramento) {
@@ -67,7 +74,7 @@ function atualizarParametros(idInstituicao, idParametrosMonitoramento) {
         WHERE idInstitucional = ${idInstituicao};
     `;
     }
-    
+
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
@@ -87,7 +94,7 @@ function resetarParametros(idInstituicao) {
         WHERE idInstitucional = ${idInstituicao};
     `;
     }
-    
+
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
@@ -105,7 +112,7 @@ function deletar(idParametros) {
         DELETE FROM parametrosMonitoramento WHERE idParametrosMonitoramento = ${idParametros};
     `;
     }
-   
+
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
