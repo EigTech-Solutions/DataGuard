@@ -203,6 +203,82 @@ function dadosGeraisUser() {
     return database.executar(instrucao);
 }
 
+function puxarUser() {
+    var instrucao = "";
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `SELECT SUM(total_usuarios) AS quantidade_total_users, GROUP_CONCAT(nome) AS nomes
+        FROM (
+          SELECT COUNT(*) AS total_usuarios, nome
+          FROM usuario
+          GROUP BY nome
+        ) AS subquery;
+        `;
+    }
+    else {
+        instrucao = `
+        SELECT SUM(total_usuarios) AS quantidade_total_users, GROUP_CONCAT(nome) AS nomes
+    FROM (
+      SELECT COUNT(*) AS total_usuarios, nome
+      FROM usuario
+      GROUP BY nome
+    ) AS subquery;
+        `;
+    }
+   
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function puxarMaquinas() {
+    var instrucao = "";
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `
+        SELECT 
+        COUNT(*) AS quantidade_total_maquinas, 
+        GROUP_CONCAT(idMaquina) AS idsMaquinas
+      FROM maquina;
+        `;
+    }
+    else {
+        instrucao = `
+        SELECT 
+    COUNT(*) AS quantidade_total_maquinas, 
+    GROUP_CONCAT(idMaquina) AS idsMaquinas
+    FROM maquina;
+        `;
+    }
+   
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function puxarLabs() {
+    var instrucao = "";
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `
+        SELECT SUM(total_labs) AS quantidade_total_labs, GROUP_CONCAT(nomeSala) AS nomes_labs
+    FROM (
+      SELECT COUNT(*) AS total_labs, nomeSala
+      FROM laboratorio
+      GROUP BY nomeSala
+    ) AS subquery;
+        `;
+    }
+    else {
+        instrucao = `
+        SELECT SUM(total_labs) AS quantidade_total_labs, GROUP_CONCAT(nomeSala) AS nomes_labs
+    FROM (
+      SELECT COUNT(*) AS total_labs, nomeSala
+      FROM laboratorio
+      GROUP BY nomeSala
+    ) AS subquery;
+        `;
+    }
+   
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
@@ -212,5 +288,8 @@ module.exports = {
     deletarInstituicao,
     dadosUsuario,
     deletarUsuario,
-    dadosGeraisUser
+    dadosGeraisUser,
+    puxarUser,
+    puxarMaquinas,
+    puxarLabs
 };

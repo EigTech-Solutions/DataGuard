@@ -155,6 +155,45 @@ function dadosGeraisUser(req, res) {
     });
 }
 
+function puxarUser(req, res) {
+    instituicaoModel.puxarUser(req, res).then(function (dadoUser) {
+        if (dadoUser.length > 0) {
+            res.status(200).json(dadoUser);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function puxarMaquinas(req, res) {
+    instituicaoModel.puxarMaquinas(req, res).then(function (dadosMaquinas) {
+        if (dadosMaquinas.length > 0) {
+            res.status(200).json(dadosMaquinas);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function puxarLabs(req, res) {
+    instituicaoModel.puxarLabs(req, res).then(function (dadosLabs) {
+        if (dadosLabs.length > 0) {
+            res.status(200).json(dadosLabs);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
@@ -164,5 +203,8 @@ module.exports = {
     deletarInstituicao,
     dadosUsuario,
     deletarUsuario,
-    dadosGeraisUser
+    dadosGeraisUser,
+    puxarUser,
+    puxarMaquinas,
+    puxarLabs
 }

@@ -39,4 +39,16 @@ router.get("/dadosGeraisUser", function(req, res){
     instituicaoController.dadosGeraisUser(req, res);
 });
 
+router.get("/puxarUser", function (req, res) {
+    instituicaoController.puxarUser(req, res);
+});
+
+router.get("/puxarMaquinas", function (req, res) {
+    instituicaoController.puxarMaquinas(req, res);
+});
+
+router.get("/puxarLabs", function (req, res) {
+    instituicaoController.puxarLabs(req, res);
+});
+
 module.exports = router;

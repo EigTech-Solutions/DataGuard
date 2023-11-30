@@ -361,29 +361,6 @@ function fecharModal() {
     divModal.style.display = "none";
 }
 
-// function dadosDashboard() {
-//     fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
-//         if (response.ok) {
-//             response.json().then(function (dados) {
-//                 mostrarDados(dados)
-//             });
-//         } else {
-//             console.error('Nenhuma tarefa encontrada ou erro na API');
-//         }
-//     })
-//         .catch(function (error) {
-//             console.error(`Erro na obtenção dos dados: ${error.message}`);
-//         });
-// }
-// dadosDashboard()
-
-// function mostrarDados(dados) {
-//     for (i = 0; i < dados.length; i++) {
-//         var totalInstituicoes = dados[i].quantidade_total_instituicoes;
-//         totalClasse.innerHTML = `${totalInstituicoes}`
-//     }
-// }
-
 function dadosInstituicao() {
     fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
         if (response.ok) {
