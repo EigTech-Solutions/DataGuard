@@ -180,7 +180,6 @@ hr {
     width: 100%;
     height: 100vh;
     display: none;
-    position: absolute;
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(10px);
@@ -188,9 +187,19 @@ hr {
     z-index: 5;
 }
 
+.posicao{
+    margin-bottom: 32%;
+    margin-right: 35%;
+}
+
+.posicaoInst{
+    margin-bottom: 38%;
+    margin-right: 38%;
+}
+
 .divModal .containerModalInst {
     position: fixed;
-    width: 52%;
+    width: 40%;
     height: 65%;
     background-color: #A6CEE3;
     border-radius: 25px;
@@ -248,6 +257,7 @@ hr {
     border: 1px solid #01161E;
     background: #FAFAFA;
     padding-left: 5px;
+    outline: none;
 }
 
 .divModal select {
@@ -257,12 +267,14 @@ hr {
     border: 1px solid #01161E;
     background: #FAFAFA;
     padding-left: 5px;
+    outline: none;
 }
 
 .divModal label {
     font-size: 15px;
     color: #000000;
     font-weight: bold;
+    margin-top: 2%;
 }
 
 .divModal .containerFinal {
@@ -559,13 +571,13 @@ body.modal-open {
 .Usuarios {
     background-color: #2B5561;
     height: 5vh;
-    width: 38.1vw;
+    width: 36.3vw;
     margin-bottom: 0.2vh;
     padding-top: 1vw;
     padding-bottom: 1vw;
     padding-left: 2vh;
     color: #FFF;
-    font-family: Poppins;
+    font-family: 'Poppins';
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
@@ -583,13 +595,13 @@ body.modal-open {
 .Instituicoes {
     background-color: #2B5561;
     height: 5vh;
-    width: 38.1vw;
+    width: 36.3vw;
     margin-bottom: 0.2vh;
     padding-top: 1vw;
     padding-bottom: 1vw;
     padding-left: 2vh;
     color: #FFF;
-    font-family: Poppins;
+    font-family: 'Poppins';
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
