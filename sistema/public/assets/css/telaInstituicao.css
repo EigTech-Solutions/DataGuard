@@ -429,6 +429,17 @@ hr {
     align-self: center;
 }
 
+.ranking_maquinas_header .more_info_btn_img,
+.chart_fluxo_header .more_info_btn_img {
+    cursor: pointer;
+}
+
+.ranking_maquinas_header .more_info_btn_img:hover,
+.chart_fluxo_header .more_info_btn_img:hover {
+    transform: scale(1.15);
+    transition: 0.4s;
+}
+
 .container_chart_variacao_maquinas {
     border-radius: 10px;
     background: rgba(18, 69, 89, 0.50);
