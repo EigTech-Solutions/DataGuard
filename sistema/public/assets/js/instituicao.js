@@ -401,30 +401,6 @@ function dadosInstituicao() {
 
 dadosInstituicao();
 
-// function mostrarInformacao(informacao) {
-//     blocoDeDado.innerHTML = '';
-
-//     for (let i = 0; i < informacao.length; i++) {
-//         const nomeInstituicao = informacao[i].nomeInstitucional;
-//         const idInstitucional = informacao[i].idInstitucional;
-
-//         const divElement = document.createElement('div');
-//         divElement.classList.add('Instituicoes');
-//         divElement.setAttribute('data-nome', nomeInstituicao);
-//         divElement.innerHTML = `
-//             ${nomeInstituicao}
-//             <img src="../assets/images/ph_trash-duotone.png" id="${idInstitucional}" alt="">
-//             <img src="../assets/images/bxs_edit.png" alt="">
-//         `;
-
-//         divElement.querySelector('img').addEventListener('click', function () {
-//             excluirInstituicao(idInstitucional);
-//         });
-
-//         blocoDeDado.appendChild(divElement);
-//     }
-// }
-
 function mostrarInformacao(informacao) {
     blocoDeDado.innerHTML = '';
 
@@ -510,6 +486,73 @@ function excluirInstituicao(idInstitucional) {
                 );
             });
         }
+    });
+}
+
+function abrirModalEditarInstituicao(idInstituicao, nomeAtual, enderecoAtual) {
+    const inputNome = document.createElement('input');
+    inputNome.type = 'text';
+    inputNome.id = 'novoNome';
+    inputNome.value = nomeAtual;
+
+    const inputEndereco = document.createElement('input');
+    inputEndereco.type = 'text';
+    inputEndereco.id = 'novoEndereco';
+    inputEndereco.value = enderecoAtual;
+
+    const btnAtualizar = document.createElement('button');
+    btnAtualizar.classList.add('btnCadastrar');
+    btnAtualizar.textContent = 'Atualizar';
+    btnAtualizar.addEventListener('click', function () {
+        editarInstituicao(idInstituicao);
+    });
+
+    divModal.innerHTML = '';
+
+    divModal.appendChild(inputNome);
+    divModal.appendChild(inputEndereco);
+    divModal.appendChild(btnAtualizar);
+
+    divModal.style.display = 'flex';
+}
+
+function editarInstituicao(idInstitucional){
+    var novoNome = document.getElementById("novoNome").value;
+    var novoEndereco = document.getElementById("novoEndereco").value;
+
+    if (!novoNome || !novoEndereco) {
+        Swal.fire(
+            'Campos obrigatórios vazios.',
+            'Preencha todos os campos para continuar!',
+            'error'
+        );
+        return;
+    }
+
+    fetch(`/instituicoes/editar/${idInstituicao}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            novoNome: novoNome,
+            novoEndereco: novoEndereco
+        })
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Edição realizada com sucesso!',
+                showConfirmButton: true,
+            });
+            listarInstituicoes();
+            fecharModal();
+        } else {
+            throw ("Houve um erro ao tentar editar a instituição.");
+        }
+    }).catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
     });
 }
 
