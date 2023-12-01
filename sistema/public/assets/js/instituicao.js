@@ -226,12 +226,15 @@ function cadastrarUser() {
                                     position: 'center',
                                     icon: 'success',
                                     title: 'Cadastro realizado com sucesso!',
-                                    showConfirmButton: true,
+                                    showConfirmButton: false,
                                     // timer: 1500
                                 });
 
                                 listarUsuarios();
                                 fecharModal();
+                                setTimeout(function(){
+                                    location.reload()
+                                },2000);
                             } else {
                                 throw ("houve um erro ao tentar se cadastrar");
                             }
@@ -257,10 +260,13 @@ function cadastrarUser() {
                                     position: 'center',
                                     icon: 'success',
                                     title: 'Cadastro realizado com sucesso!',
-                                    showConfirmButton: true,
+                                    showConfirmButton: false,
                                     // timer: 1500
                                 });
                                 fecharModal();
+                                setTimeout(function(){
+                                    location.reload()
+                                },2000);
                             } else {
                                 throw ("houve um erro ao tentar se cadastrar");
                             }
@@ -395,6 +401,30 @@ function dadosInstituicao() {
 
 dadosInstituicao();
 
+// function mostrarInformacao(informacao) {
+//     blocoDeDado.innerHTML = '';
+
+//     for (let i = 0; i < informacao.length; i++) {
+//         const nomeInstituicao = informacao[i].nomeInstitucional;
+//         const idInstitucional = informacao[i].idInstitucional;
+
+//         const divElement = document.createElement('div');
+//         divElement.classList.add('Instituicoes');
+//         divElement.setAttribute('data-nome', nomeInstituicao);
+//         divElement.innerHTML = `
+//             ${nomeInstituicao}
+//             <img src="../assets/images/ph_trash-duotone.png" id="${idInstitucional}" alt="">
+//             <img src="../assets/images/bxs_edit.png" alt="">
+//         `;
+
+//         divElement.querySelector('img').addEventListener('click', function () {
+//             excluirInstituicao(idInstitucional);
+//         });
+
+//         blocoDeDado.appendChild(divElement);
+//     }
+// }
+
 function mostrarInformacao(informacao) {
     blocoDeDado.innerHTML = '';
 
@@ -407,14 +437,30 @@ function mostrarInformacao(informacao) {
         divElement.setAttribute('data-nome', nomeInstituicao);
         divElement.innerHTML = `
             ${nomeInstituicao}
-            <img src="../assets/images/ph_trash-duotone.png" id="${idInstitucional}" alt="">
+            <img src="../assets/images/ph_trash-duotone.png" data-action="excluir" id="${idInstitucional}" alt="">
+            <img src="../assets/images/bxs_edit.png" data-action="editar" id="${idInstitucional}" alt="">
         `;
 
-        divElement.querySelector('img').addEventListener('click', function () {
-            excluirInstituicao(idInstitucional);
+        const imgExcluir = divElement.querySelector('img[data-action="excluir"]');
+        const imgEditar = divElement.querySelector('img[data-action="editar"]');
+
+        imgExcluir.addEventListener('click', function () {
+            executarAcao(idInstitucional, 'excluir');
+        });
+
+        imgEditar.addEventListener('click', function () {
+            executarAcao(idInstitucional, 'editar');
         });
 
         blocoDeDado.appendChild(divElement);
+    }
+}
+
+function executarAcao(idInstitucional, acao) {
+    if (acao === 'excluir') {
+        excluirInstituicao(idInstitucional);
+    } else if (acao === 'editar') {
+        editarInstituicao(idInstitucional);
     }
 }
 
@@ -451,7 +497,9 @@ function excluirInstituicao(idInstitucional) {
                     'Instituição excluída com sucesso!',
                     'success'
                 );
-                location.reload()
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
             })
             .catch(function (erro) {
                 console.error(`#ERRO: ${erro.message}`);
@@ -599,14 +647,30 @@ function exibirInfoUser(infoDados) {
         divElement.setAttribute('data-nome', nomeUser);
         divElement.innerHTML = `
             ${nomeUser}
-            <img src="../assets/images/ph_trash-duotone.png" id="${idUser}" alt="">
-        `;
+            <img src="../assets/images/ph_trash-duotone.png" data-action="excluir" id="${idUser}" alt="">
+            <img src="../assets/images/bxs_edit.png" data-action="editar" id="${idUser}" alt="">
+            `;
 
-        divElement.querySelector('img').addEventListener('click', function () {
-            excluirUser(idUser);
+        const imgExcluir = divElement.querySelector('img[data-action="excluir"]');
+        const imgEditar = divElement.querySelector('img[data-action="editar"]');
+
+        imgExcluir.addEventListener('click', function () {
+            executarAcaoUser(idUser, 'excluir');
+        });
+
+        imgEditar.addEventListener('click', function () {
+            executarAcaoUser(idUser, 'editar');
         });
 
         blocoDeDadoUser.appendChild(divElement);
+    }
+}
+
+function executarAcaoUser(id, acao) {
+    if (acao === 'excluir') {
+        excluirUser(id);
+    } else if (acao === 'editar') {
+        editarUser(id);
     }
 }
 
@@ -643,7 +707,9 @@ function excluirUser(idUser) {
                     'Usuario excluído com sucesso!',
                     'success'
                 );
-                location.reload()
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
             })
             .catch(function (erro) {
                 console.error(`#ERRO: ${erro.message}`);
