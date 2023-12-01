@@ -413,9 +413,11 @@ function mostrarInformacao(informacao) {
         divElement.setAttribute('data-nome', nomeInstituicao);
         divElement.innerHTML = `
             ${nomeInstituicao}
+            <div class="imgClass">
             <img src="../assets/images/ph_trash-duotone.png" data-action="excluir" id="${idInstitucional}" alt="">
             <img src="../assets/images/bxs_edit.png" data-action="editar" id="${idInstitucional}" alt="">
-        `;
+            </div>        
+            `;
 
         const imgExcluir = divElement.querySelector('img[data-action="excluir"]');
         const imgEditar = divElement.querySelector('img[data-action="editar"]');
@@ -690,8 +692,10 @@ function exibirInfoUser(infoDados) {
         divElement.setAttribute('data-nome', nomeUser);
         divElement.innerHTML = `
             ${nomeUser}
+            <div class="imgClass">
             <img src="../assets/images/ph_trash-duotone.png" data-action="excluir" id="${idUser}" alt="">
             <img src="../assets/images/bxs_edit.png" data-action="editar" id="${idUser}" alt="">
+            </div>
             `;
 
         const imgExcluir = divElement.querySelector('img[data-action="excluir"]');

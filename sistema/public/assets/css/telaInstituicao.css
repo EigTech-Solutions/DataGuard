@@ -569,7 +569,9 @@ body.modal-open {
 }
 
 .Usuarios {
-    background-color: #2B5561;
+    display: flex;
+    justify-content: space-between;
+    background-color: #2D4C58;
     height: 5vh;
     width: 36.3vw;
     margin-bottom: 0.2vh;
@@ -582,7 +584,7 @@ body.modal-open {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    display: flex;    
+    align-items: center;    
 }
 
 .Usuarios img{
@@ -593,7 +595,9 @@ body.modal-open {
 }
 
 .Instituicoes {
-    background-color: #2B5561;
+    display: flex;
+    justify-content: space-between;
+    background-color: #2D4C58;
     height: 5vh;
     width: 36.3vw;
     margin-bottom: 0.2vh;
@@ -606,7 +610,7 @@ body.modal-open {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    display: flex;    
+    align-items: center;
 }
 
 .Instituicoes img{
@@ -614,4 +618,11 @@ body.modal-open {
     margin-top: 10px;
     width: 35px;
     height: 20px;
+}
+
+.imgClass{
+    width: 15vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
