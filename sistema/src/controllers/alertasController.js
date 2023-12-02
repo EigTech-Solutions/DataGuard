@@ -28,7 +28,7 @@ function buscarQtdAlertasUrgentesAtencaoAno(req, res) {
     var ano = req.params.ano;
 
     alertasModel.buscarQtdAlertasUrgentesAtencaoAno(idLab, idInstituicao, ano)
-        .then(function (resultado) {
+        .then(function (resultado) {   
             if (resultado.length > 0) {
                 res.status(200).json(resultado);
             } else {
