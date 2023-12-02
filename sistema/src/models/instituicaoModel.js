@@ -103,12 +103,12 @@ function dashDatas() {
         SELECT
         FORMAT(dataCadastro, 'MMMM') AS nomeMes,
         COUNT(*) AS quantidadeDeCadastros
-    FROM
-        instituicao
-    GROUP BY
-        FORMAT(dataCadastro, 'MMMM')
-    ORDER BY
-        MIN(MONTH(dataCadastro));
+        FROM
+            instituicao
+        GROUP BY
+            FORMAT(dataCadastro, 'MMMM')
+        ORDER BY
+            MIN(MONTH(dataCadastro));
        `;
     }
     else {
