@@ -28,6 +28,13 @@ function listarPCs() {
                     var statusMaquinaId = `statusMaquina_${maquina.idMaquina}`;
                     var iconAlterarStatusId = `iconAlterarStatus_${maquina.idMaquina}`;
 
+                    var localPc;
+                    if (maquina.local == null) {
+                        localPc = "Não alocado"; 
+                    } else {
+                        localPc = maquina.local;
+                    }
+
                     divCards.innerHTML += `
                         <div class="card-exibicao">
                             <div class="top-card">  
@@ -49,7 +56,7 @@ function listarPCs() {
                                 </tr>
                                 <tr>
                                     <td id="${statusMaquinaId}"></td>
-                                    <td>${maquina.local}</td>
+                                    <td>${localPc}</td>
                                     <td>${maquina.quantidadeAlertasUltimoMes}</td>
                                     <td id="situacaoPc${maquina.idMaquina}"></td>
                                 </tr>
@@ -403,16 +410,24 @@ function buscarIpOrNumSeriePc() {
     
                     for (let i = 0; i < resposta.length; i++) {
                         var maquina = resposta[i];
-    
+                        idPcs.push(maquina.idMaquina);
+
                         var numCardExibido = i + 1;
-    
+
                         if (numCardExibido < 10) {
                             numCardExibido = '0' + numCardExibido;
                         }
-    
+
                         var statusMaquinaId = `statusMaquina_${maquina.idMaquina}`;
                         var iconAlterarStatusId = `iconAlterarStatus_${maquina.idMaquina}`;
-    
+
+                        var localPc;
+                        if (maquina.local == null) {
+                            localPc = "Não alocado"; 
+                        } else {
+                            localPc = maquina.local;
+                        }
+
                         divCards.innerHTML += `
                             <div class="card-exibicao">
                                 <div class="top-card">  
@@ -434,15 +449,43 @@ function buscarIpOrNumSeriePc() {
                                     </tr>
                                     <tr>
                                         <td id="${statusMaquinaId}"></td>
-                                        <td>${maquina.local}</td>
+                                        <td>${localPc}</td>
                                         <td>${maquina.quantidadeAlertasUltimoMes}</td>
-                                        <td>${maquina.situacao}</td>
+                                        <td id="situacaoPc${maquina.idMaquina}"></td>
                                     </tr>
                                 </table>
                                 <button onclick="redirecionarParaMaq(${maquina.idMaquina})">ver mais</button>
                             </div>
                         `;
-    
+
+                        idPcs.forEach(idAtual => {
+                            var situacaoPc = document.getElementById(`situacaoPc${idAtual}`);
+        
+                            fetch(`/maquinas/buscarIndicePreocupacao/${idAtual}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+                                if (resposta.ok) {
+                                    if (resposta.status == 204) {
+                                        console.log("Nenhum resultado encontrado.");
+                                        situacaoPc.innerHTML = "Ótimo"
+                                        // throw "Nenhum resultado encontrado!!";
+                                    } else {
+                                        resposta.json().then(function (resposta) {
+                                            console.log("Dados recebidos: ", JSON.stringify(resposta));
+                                            console.log("Teste deixa", situacaoPc);
+        
+                                            var maquina = resposta[0];
+                                            console.log(maquina.situacao, situacaoPc);
+        
+                                            situacaoPc.innerHTML = `${maquina.situacao}`;
+                                        });
+                                    }
+                                } else {
+                                    throw ('Houve um erro na API!');
+                                }
+                            }).catch(function (resposta) {
+                                console.error(resposta);
+                            });
+                        });
+
                         // Atualiza o status da máquina
                         if (maquina.status == 0) { 
                             document.getElementById(statusMaquinaId).innerHTML = "Desativada";

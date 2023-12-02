@@ -25,8 +25,8 @@ function dadosDashboard() {
 
                     dataQtd.labels.push(mesEmPortugues);
                     dataQtd.datasets[0].data.push(dtaCadastro);
-                    console.log(`quantidade cadastro: ${dtaCadastro}`);
-                    console.log(`meses: ${meses}`);
+                    // console.log(`quantidade cadastro: ${dtaCadastro}`);
+                    // console.log(`meses: ${meses}`);
                 }
                 chartNumCad.update();
             });
@@ -100,4 +100,98 @@ function alertaInfo(){
         text: 'Quantidade de Instituições Cadastradas por Mês no ano de 2023',
         showConfirmButton: true
     });
+}
+
+function dadosQtdInst() {
+    fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (dados) {
+                mostrarDados(dados)
+            });
+        } else {
+            console.error('Nenhuma tarefa encontrada ou erro na API');
+        }
+    })
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
+}
+dadosQtdInst()
+
+function mostrarDados(dados) {
+    for (i = 0; i < dados.length; i++) {
+        var totalInstituicoes = dados[i].quantidade_total_instituicoes;
+        kpi_qtdInstituicoes.innerHTML = `${totalInstituicoes}`
+    }
+}
+
+function dadosQtdUser() {
+    fetch(`/instituicao/puxarUser`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (dadoUser) {
+                mostrarUser(dadoUser)
+            });
+        } else {
+            console.error('Nenhuma tarefa encontrada ou erro na API');
+        }
+    })
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
+}
+dadosQtdUser()
+
+function mostrarUser(dadoUser) {
+    console.log(dadoUser);
+    for (i = 0; i < dadoUser.length; i++) {
+        var totalUsers = dadoUser[i].quantidade_total_users;
+        kpi_qtdUsers.innerHTML = `${totalUsers}`
+        console.log(totalUsers);
+    }
+}
+
+function dadosQtdMaquinas() {
+    fetch(`/instituicao/puxarMaquinas`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (dadosMaquinas) {
+                mostrarMaquinas(dadosMaquinas)
+            });
+        } else {
+            console.error('Nenhuma tarefa encontrada ou erro na API');
+        }
+    })
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
+}
+dadosQtdMaquinas()
+
+function mostrarMaquinas(dadosMaquinas) {
+    for (i = 0; i < dadosMaquinas.length; i++) {
+        var totalMaquinas = dadosMaquinas[i].quantidade_total_maquinas;
+        kpi_qtdMaquinas.innerHTML = `${totalMaquinas}`
+    }
+}
+
+function dadosQtdLabs() {
+    fetch(`/instituicao/puxarLabs`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (dadosLabs) {
+                mostrarLabs(dadosLabs)
+            });
+        } else {
+            console.error('Nenhuma tarefa encontrada ou erro na API');
+        }
+    })
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
+}
+dadosQtdLabs()
+
+function mostrarLabs(dadosLabs) {
+    for (i = 0; i < dadosLabs.length; i++) {
+        var totalLabs = dadosLabs[i].quantidade_total_labs;
+        kpi_qtdLabs.innerHTML = `${totalLabs}`
+    }
 }

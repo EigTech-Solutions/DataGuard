@@ -36,6 +36,11 @@
     margin-left: auto;
 }
 
+#blocoDeDadoUser img{
+    width: 15px;
+    margin-left: auto;
+}
+
 .title-page .btnAdd {
     width: 250px;
     height: 40px;
@@ -175,7 +180,6 @@ hr {
     width: 100%;
     height: 100vh;
     display: none;
-    position: absolute;
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(10px);
@@ -183,9 +187,19 @@ hr {
     z-index: 5;
 }
 
+.posicao{
+    margin-bottom: 32%;
+    margin-right: 35%;
+}
+
+.posicaoInst{
+    margin-bottom: 38%;
+    margin-right: 38%;
+}
+
 .divModal .containerModalInst {
     position: fixed;
-    width: 52%;
+    width: 40%;
     height: 65%;
     background-color: #A6CEE3;
     border-radius: 25px;
@@ -243,6 +257,7 @@ hr {
     border: 1px solid #01161E;
     background: #FAFAFA;
     padding-left: 5px;
+    outline: none;
 }
 
 .divModal select {
@@ -252,12 +267,14 @@ hr {
     border: 1px solid #01161E;
     background: #FAFAFA;
     padding-left: 5px;
+    outline: none;
 }
 
 .divModal label {
     font-size: 15px;
     color: #000000;
     font-weight: bold;
+    margin-top: 2%;
 }
 
 .divModal .containerFinal {
@@ -412,6 +429,17 @@ hr {
     align-self: center;
 }
 
+.ranking_maquinas_header .more_info_btn_img,
+.chart_fluxo_header .more_info_btn_img {
+    cursor: pointer;
+}
+
+.ranking_maquinas_header .more_info_btn_img:hover,
+.chart_fluxo_header .more_info_btn_img:hover {
+    transform: scale(1.15);
+    transition: 0.4s;
+}
+
 .container_chart_variacao_maquinas {
     border-radius: 10px;
     background: rgba(18, 69, 89, 0.50);
@@ -485,8 +513,8 @@ body.modal-open {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 90%;
+    width: 80%;
+    max-width: 80%;
     max-height: 80vh;
     overflow-y: auto;
     border-radius: 10px;
@@ -534,10 +562,6 @@ body.modal-open {
     top: 0;
 }
 
-.modal-body .tom{
-    color: #edbaa6;
-}
-
 .modal-body-info .emailModal{
     font-size: 8px;
 }
@@ -553,4 +577,63 @@ body.modal-open {
 
 .linha-branca {
     background-color: #0E2229;
+}
+
+.Usuarios {
+    display: flex;
+    justify-content: space-between;
+    background-color: #2D4C58;
+    height: 5vh;
+    width: 36.3vw;
+    margin-bottom: 0.2vh;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    padding-left: 2vh;
+    color: #FFF;
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    align-items: center;    
+}
+
+.Usuarios img{
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 35px;
+    height: 20px;
+}
+
+.Instituicoes {
+    display: flex;
+    justify-content: space-between;
+    background-color: #2D4C58;
+    height: 5vh;
+    width: 36.3vw;
+    margin-bottom: 0.2vh;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+    padding-left: 2vh;
+    color: #FFF;
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    align-items: center;
+}
+
+.Instituicoes img{
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 35px;
+    height: 20px;
+}
+
+.imgClass{
+    width: 15vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }

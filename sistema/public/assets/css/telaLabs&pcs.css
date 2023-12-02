@@ -425,14 +425,21 @@ hr {
 }
 
 .div-instituicao {
+    padding-left: 2%;
     display: flex;
-    width: 40vw;
+    height: 60vh;
+    border-radius: 20px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    flex-direction: column;
+}
+
+.div-usuario {
+    display: flex;
     height: 60vh;
     border-radius: 20px;
     background: #598392;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     flex-direction: column;
-
 }
 
 .instituicoesTitulo {
@@ -517,51 +524,6 @@ hr {
     height: 25px;
 }
 
-.div-totalDeInstituicao {
-    display: flex;
-    flex-direction: column;
-    width: 20vw;
-    height: 55vh;
-    border-radius: 20px;
-    background: #124559;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    padding: 20px;
-}
-
-.totalTitulo{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 28vh;
-    border-radius: 20px;
-    background: #124559;
-    color: #FFF;
-    text-align: center;
-    font-family: Poppins;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-}
-
-.totalNumero{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 28vh;
-    border-radius: 20px;
-    background: #124559;
-    color: #FFF;
-    text-align: center;
-    font-family: Poppins;
-    font-size: 110px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal; 
-}
-
 .campoDeBusca {
     display: flex;
     align-items: center;
@@ -574,24 +536,8 @@ hr {
 
 .dadosInstituicoes {
     display: flex;
-    width: 100%;
     height: 45vh;
+    width: 38.1vw;
     background: #598392;
     overflow-y: scroll; 
-}
-
-.Instituicoes{
-    background-color: #2B5561;
-    height: 5vh;
-    width: 38.1vw;
-    margin-bottom: 0.1vh;
-    padding-top: 1vw;
-    padding-bottom: 1vw;
-    padding-left: 2vh;
-    color: #FFF;
-    font-family: Poppins;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
 }

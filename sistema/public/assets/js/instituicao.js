@@ -123,6 +123,7 @@ function abrirModalCardastarInstituicao() {
     divModal.style.display = "flex";
 
     divModal.innerHTML = `
+    <div class="posicaoInst">
         <div class="containerModalInst">
             <div class="topo">
                 <div class="titulo"> Cadastro de Instituição </div>
@@ -133,26 +134,34 @@ function abrirModalCardastarInstituicao() {
                     <img  src="../assets/images/imagemLab.png" alt="">
                 </div>
                 <div class="campoInput">
-                    <label for="">Nome da Instituição:</label>
-                    <input id="ipt_nomeInst" type="text">
-                    <label for="">CNPJ:</label>
-                    <input id="ipt_cnpjInst" type="number">
-                    <label for="">Email:</label>
-                    <input id="ipt_emailInst" type="text">
-                    <label for="">Telefone:</label>
-                    <input id="ipt_telefoneInst" type="text">
-                    <label for="">CEP:</label>
-                    <input id="ipt_cepeInst" type="text">
-                    <label for="">Numero do endereço:</label>
-                    <input id="ipt_numeroInst" type="text">
-                    <label for="">Complemento:</label>
-                    <input id="ipt_complementoInst" type="text">
+                    <label for="">Nome da Instituição :</label>
+                    <input id="ipt_nomeInst" type="text"
+                    placeholder="ex: etec exemplo">
+                    <label for="">CNPJ :</label>
+                    <input id="ipt_cnpjInst" type="number"
+                    placeholder="00000000000000">
+                    <label for="">Email :</label>
+                    <input id="ipt_emailInst" type="text"
+                    placeholder="etec_exemplo@cps.sp.gov.br">
+                    <label for="">Telefone :</label>
+                    <input id="ipt_telefoneInst" type="text"
+                    placeholder="(11) 95581-2133">
+                    <label for="">CEP :</label>
+                    <input id="ipt_cepeInst" type="text"
+                    placeholder="00000000">
+                    <label for="">Numero do endereço :</label>
+                    <input id="ipt_numeroInst" type="text"
+                    placeholder="000">
+                    <label for="">Complemento :</label>
+                    <input id="ipt_complementoInst" type="text"
+                    placeholder="Próximo ao mêtro">
                 </div>
             </div>
             <div class="containerFinal">
                 <button class="btnCadastrar" onclick="cadastrar()">cadastrar</button>
             </div>
         </div>
+    </div>
     `;
 }
 
@@ -217,12 +226,15 @@ function cadastrarUser() {
                                     position: 'center',
                                     icon: 'success',
                                     title: 'Cadastro realizado com sucesso!',
-                                    showConfirmButton: true,
+                                    showConfirmButton: false,
                                     // timer: 1500
                                 });
 
                                 listarUsuarios();
                                 fecharModal();
+                                setTimeout(function(){
+                                    location.reload()
+                                },2000);
                             } else {
                                 throw ("houve um erro ao tentar se cadastrar");
                             }
@@ -248,10 +260,13 @@ function cadastrarUser() {
                                     position: 'center',
                                     icon: 'success',
                                     title: 'Cadastro realizado com sucesso!',
-                                    showConfirmButton: true,
+                                    showConfirmButton: false,
                                     // timer: 1500
                                 });
                                 fecharModal();
+                                setTimeout(function(){
+                                    location.reload()
+                                },2000);
                             } else {
                                 throw ("houve um erro ao tentar se cadastrar");
                             }
@@ -273,6 +288,7 @@ function abrirModalCardastarUser() {
     divModal.style.display = "flex";
 
     divModal.innerHTML = `
+    <div class="posicao">
         <div class="containerModalUser">
             <!--  topo do pop up  -->
             <div class="topo">
@@ -286,16 +302,16 @@ function abrirModalCardastarUser() {
                     <img class="imagemUsuario" src="../assets/images/ftUsuario.png" alt="">
                 </div>
                 <div class="campoInput">
-                    <label for="">Nome:</label>
+                    <label for="">Nome :</label>
                     <input placeholder="ex: enzin" id="ipt_nome" type="text">
-                    <label for="">Email:</label>
+                    <label for="">Email :</label>
                     <input placeholder="ex: enzin@gmail.com" id="ipt_email" type="text">
-                    <label for="">Telefone:</label>
+                    <label for="">Telefone :</label>
                     <input placeholder="(11) 91234-5678" id="ipt_telefone" type="number">
-                    <label for="">Acessos:</label>
+                    <label for="">Acessos :</label>
                     <div class="checkboxs">
-                        <input type="checkbox" id="adminCheckbox"> Administrador
-                        <input type="checkbox" id="tecnicoCheckbox"> Técnico
+                        <input type="checkbox" id="adminCheckbox"> <label for="adminCheckbox">Administrador</label>
+                        <input type="checkbox" id="tecnicoCheckbox"> <label for="tecnicoCheckbox">Técnico</label>
                     </div>
                     
                 </div>
@@ -305,17 +321,17 @@ function abrirModalCardastarUser() {
             <!--  senha e repetir senha  -->
             <div class="campoInputSenha">
                 <div class="senha">
-                    <label for="">Senha:</label> <br>
+                    <label for="">Senha :</label> <br>
                     <input placeholder="*******" id="ipt_senha" type="password">
                 </div>
                 <div class="senha">
-                    <label for="">Repetir senha:</label> <br>
+                    <label for="">Repetir senha :</label> <br>
                     <input placeholder="*******" id="ipt_repetirSenha" type="password">
                 </div>
             </div>
 
             <div class="campoInstituicao">
-                <label for="">Instituição:</label> <br>
+                <label for="">Instituição :</label> <br>
                 <select name="ipt_instituicao" id="ipt_instituicao">
                     <option value="0" selected disabled>Selecione...</option>
                 </select>
@@ -326,63 +342,47 @@ function abrirModalCardastarUser() {
                 <button class="btnCadastrar" onclick="cadastrarUser()">Cadastrar</button>
             </div>
         </div>
-    `;}
-
-    fetch(`/instituicao/dadosGeraisInst`).then(function (resposta) {
-        if (resposta.ok) {
-            if (resposta.status == 204) {
-                console.log("Nenhum resultado encontrado.");
-                throw "Nenhum resultado encontrado!!";
-            }
-
-            resposta.json().then(function (resposta) {
-                console.log("Dados recebidos: ", JSON.stringify(resposta));
-
-                for (let i = 0; i < resposta.length; i++) {
-                    var instituicao = resposta[i];
-
-                    ipt_instituicao.innerHTML += `
-                        <option value="${instituicao.idInstitucional}">${instituicao.nomeInstitucional}</option>
-                    `;
+    </div>
+    `;
+    exibirSelect()
+}
+    function exibirSelect(){
+        fetch(`/instituicao/dadosGeraisInst`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    console.log("Nenhum resultado encontrado.");
+                    throw "Nenhum resultado encontrado!!";
                 }
+    
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+    
+                    for (let i = 0; i < resposta.length; i++) {
+                        console.log('oieeeeeeeeeee');
+                        var instituicao = resposta[i];
+    
+                        ipt_instituicao.innerHTML += `
+                            <option value="${instituicao.idInstitucional}">${instituicao.nomeInstitucional}</option>
+                        `;
+                    }
+    
+                    // finalizarAguardar();
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+            // finalizarAguardar();
+        });
+    }
 
-                // finalizarAguardar();
-            });
-        } else {
-            throw ('Houve um erro na API!');
-        }
-    }).catch(function (resposta) {
-        console.error(resposta);
-        // finalizarAguardar();
-    });
+    
 
 
 function fecharModal() {
     divModal.style.display = "none";
 }
-
-// function dadosDashboard() {
-//     fetch(`/instituicao/puxarDados`, { cache: 'no-store' }).then(function (response) {
-//         if (response.ok) {
-//             response.json().then(function (dados) {
-//                 mostrarDados(dados)
-//             });
-//         } else {
-//             console.error('Nenhuma tarefa encontrada ou erro na API');
-//         }
-//     })
-//         .catch(function (error) {
-//             console.error(`Erro na obtenção dos dados: ${error.message}`);
-//         });
-// }
-// dadosDashboard()
-
-// function mostrarDados(dados) {
-//     for (i = 0; i < dados.length; i++) {
-//         var totalInstituicoes = dados[i].quantidade_total_instituicoes;
-//         totalClasse.innerHTML = `${totalInstituicoes}`
-//     }
-// }
 
 function dadosInstituicao() {
     fetch(`/instituicao/dadosInstituicao`, { cache: 'no-store' }).then(function (response) {
@@ -413,14 +413,32 @@ function mostrarInformacao(informacao) {
         divElement.setAttribute('data-nome', nomeInstituicao);
         divElement.innerHTML = `
             ${nomeInstituicao}
-            <img src="../assets/images/ph_trash-duotone.png" id="${idInstitucional}" alt="">
-        `;
+            <div class="imgClass">
+            <img src="../assets/images/ph_trash-duotone.png" data-action="excluir" id="${idInstitucional}" alt="">
+            <img src="../assets/images/bxs_edit.png" data-action="editar" id="${idInstitucional}" alt="">
+            </div>        
+            `;
 
-        divElement.querySelector('img').addEventListener('click', function () {
-            excluirInstituicao(idInstitucional);
+        const imgExcluir = divElement.querySelector('img[data-action="excluir"]');
+        const imgEditar = divElement.querySelector('img[data-action="editar"]');
+
+        imgExcluir.addEventListener('click', function () {
+            executarAcao(idInstitucional, 'excluir');
+        });
+
+        imgEditar.addEventListener('click', function () {
+            executarAcao(idInstitucional, 'editar');
         });
 
         blocoDeDado.appendChild(divElement);
+    }
+}
+
+function executarAcao(idInstitucional, acao) {
+    if (acao === 'excluir') {
+        excluirInstituicao(idInstitucional);
+    } else if (acao === 'editar') {
+        editarInstituicao(idInstitucional);
     }
 }
 
@@ -457,7 +475,9 @@ function excluirInstituicao(idInstitucional) {
                     'Instituição excluída com sucesso!',
                     'success'
                 );
-                location.reload()
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
             })
             .catch(function (erro) {
                 console.error(`#ERRO: ${erro.message}`);
@@ -471,6 +491,73 @@ function excluirInstituicao(idInstitucional) {
     });
 }
 
+function abrirModalEditarInstituicao(idInstituicao, nomeAtual, enderecoAtual) {
+    const inputNome = document.createElement('input');
+    inputNome.type = 'text';
+    inputNome.id = 'novoNome';
+    inputNome.value = nomeAtual;
+
+    const inputEndereco = document.createElement('input');
+    inputEndereco.type = 'text';
+    inputEndereco.id = 'novoEndereco';
+    inputEndereco.value = enderecoAtual;
+
+    const btnAtualizar = document.createElement('button');
+    btnAtualizar.classList.add('btnCadastrar');
+    btnAtualizar.textContent = 'Atualizar';
+    btnAtualizar.addEventListener('click', function () {
+        editarInstituicao(idInstituicao);
+    });
+
+    divModal.innerHTML = '';
+
+    divModal.appendChild(inputNome);
+    divModal.appendChild(inputEndereco);
+    divModal.appendChild(btnAtualizar);
+
+    divModal.style.display = 'flex';
+}
+
+function editarInstituicao(idInstitucional){
+    var novoNome = document.getElementById("novoNome").value;
+    var novoEndereco = document.getElementById("novoEndereco").value;
+
+    if (!novoNome || !novoEndereco) {
+        Swal.fire(
+            'Campos obrigatórios vazios.',
+            'Preencha todos os campos para continuar!',
+            'error'
+        );
+        return;
+    }
+
+    fetch(`/instituicoes/editar/${idInstituicao}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            novoNome: novoNome,
+            novoEndereco: novoEndereco
+        })
+    }).then(function (resposta) {
+        if (resposta.ok) {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Edição realizada com sucesso!',
+                showConfirmButton: true,
+            });
+            listarInstituicoes();
+            fecharModal();
+        } else {
+            throw ("Houve um erro ao tentar editar a instituição.");
+        }
+    }).catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+    });
+}
+
 function pesquisarInstituicao() {
     var busca = input_busca_instituicao.value.toLowerCase();
 
@@ -479,7 +566,7 @@ function pesquisarInstituicao() {
     instituicoes.forEach(function (instituicao) {
         var nome = instituicao.getAttribute('data-nome').toLowerCase();
 
-        if (nome.includes(busca)) {
+        if (nome.includes(busca.trim())) {
             instituicao.style.display = 'block';
         } else {
             instituicao.style.display = 'none';
@@ -601,17 +688,169 @@ function exibirInfoUser(infoDados) {
         const idUser = infoDados[i].idUsuario;
 
         const divElement = document.createElement('div');
-        divElement.classList.add('Instituicoes');
+        divElement.classList.add('Usuarios');
         divElement.setAttribute('data-nome', nomeUser);
         divElement.innerHTML = `
             ${nomeUser}
-            <img src="../assets/images/ph_trash-duotone.png" id="${idUser}" alt="">
-        `;
+            <div class="imgClass">
+            <img src="../assets/images/ph_trash-duotone.png" data-action="excluir" id="${idUser}" alt="">
+            <img src="../assets/images/bxs_edit.png" data-action="editar" id="${idUser}" alt="">
+            </div>
+            `;
 
-        divElement.querySelector('img').addEventListener('click', function () {
-            excluirInstituicao(idUser);
+        const imgExcluir = divElement.querySelector('img[data-action="excluir"]');
+        const imgEditar = divElement.querySelector('img[data-action="editar"]');
+
+        imgExcluir.addEventListener('click', function () {
+            executarAcaoUser(idUser, 'excluir');
+        });
+
+        imgEditar.addEventListener('click', function () {
+            executarAcaoUser(idUser, 'editar');
         });
 
         blocoDeDadoUser.appendChild(divElement);
+    }
+}
+
+function executarAcaoUser(id, acao) {
+    if (acao === 'excluir') {
+        excluirUser(id);
+    } else if (acao === 'editar') {
+        editarUser(id);
+    }
+}
+
+function excluirUser(idUser) {
+    console.log(idUser);
+    Swal.fire({
+        title: 'Tem certeza que deseja excluir esse Usuário?',
+        text: "Após excluído você irá perder todos os dados referentes a essa máquina! Essa ação não poderá ser desfeita.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, deletar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("entrei no if do primeiro then");
+            fetch(`/instituicao/deletarUsuario/${idUser}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    return resposta.json();
+                } else {
+                    throw new Error(`Erro na exclusão: ${resposta.status}`);
+                }
+            })
+            .then(function (result) {
+                Swal.fire(
+                    'Deletado!',
+                    'Usuario excluído com sucesso!',
+                    'success'
+                );
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            })
+            .catch(function (erro) {
+                console.error(`#ERRO: ${erro.message}`);
+                Swal.fire(
+                    'Erro!',
+                    'Houve um erro ao excluir o usuario.',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
+function pesquisarUsuario() {
+    var busca = input_busca_user.value.toLowerCase();
+
+    var usuarios = document.querySelectorAll('.Usuarios');
+
+    usuarios.forEach(function (usuario) {
+        var nome = usuario.getAttribute('data-nome').toLowerCase();
+
+        if (nome.includes(busca)) {
+            usuario.style.display = 'block';
+        } else {
+            usuario.style.display = 'none';
+        }
+    });
+}
+
+function dadosGeraisUser() {
+    fetch(`/instituicao/dadosGeraisUser`, { cache: 'no-store' }).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (puxarUser) {
+                abrirModalExbirInfosDetalhadasUser(puxarUser);
+            });
+        } else {
+            console.error('Nenhuma informação encontrada ou erro na API');
+        }
+    })
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
+}
+
+function abrirModalExbirInfosDetalhadasUser(puxarUser) {
+    document.body.classList.add('modal-open');
+
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    document.body.appendChild(overlay);
+    divModalDetalhado.style.display = "flex";
+
+    divModalDetalhado.innerHTML = `
+        <div id="modalDetalhado">
+            <div class="modal-header">
+                <h2>Informações das Instituições</h2>
+                <button onclick="fecharModalDetalhado()" id="close-modal">Fechar</button>
+            </div>
+            <div class="modal-body">
+    <table id="idTabela">
+        <thead>
+            <tr class="linha-branca">
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Senha</th>
+                <th>Telefone</th>
+            </tr>
+        </thead>
+        <tbody id="blocoDeDados" class="linha-colorida"></tbody>
+    </table>
+</div>
+
+        </div>
+    `;
+
+     const blocoDeDados = document.getElementById('blocoDeDados');
+    blocoDeDados.innerHTML = '';
+
+    for (let i = 0; i < puxarUser.length; i++) {
+        const nomeInstituicao = puxarUser[i].nome;
+        const email = puxarUser[i].email;
+        const senha = puxarUser[i].senha;
+        const telefone = puxarUser[i].telefone;
+
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${nomeInstituicao}</td>
+            <td>${email}</td>
+            <td>${senha}</td>
+            <td>${telefone}</td>
+        `;
+
+        newRow.classList.add(i % 2 === 0 ? 'linha-colorida' : 'linha-branca');
+
+        blocoDeDados.appendChild(newRow);
     }
 }

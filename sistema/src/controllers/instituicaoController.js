@@ -127,6 +127,73 @@ function dadosUsuario(req, res) {
     });
 }
 
+function deletarUsuario(req, res) {
+    var idUsuario = req.params.idUsuario;
+    console.log(`Entrei no controller deletar: ${idUsuario}`);
+
+    instituicaoModel.deletarUsuario(idUsuario)
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao deletar a usuario: ", erro);
+            res.status(500).json({ error: "Erro interno do servidor" });
+        });
+}
+
+function dadosGeraisUser(req, res) {
+    instituicaoModel.dadosGeraisUser(req, res).then(function (puxarUser) {
+        if (puxarUser.length > 0) {
+            res.status(200).json(puxarUser);
+        } else {
+            res.status(204).send("Nenhum dado encontrado");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function puxarUser(req, res) {
+    instituicaoModel.puxarUser(req, res).then(function (dadoUser) {
+        if (dadoUser.length > 0) {
+            res.status(200).json(dadoUser);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function puxarMaquinas(req, res) {
+    instituicaoModel.puxarMaquinas(req, res).then(function (dadosMaquinas) {
+        if (dadosMaquinas.length > 0) {
+            res.status(200).json(dadosMaquinas);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function puxarLabs(req, res) {
+    instituicaoModel.puxarLabs(req, res).then(function (dadosLabs) {
+        if (dadosLabs.length > 0) {
+            res.status(200).json(dadosLabs);
+        } else {
+            res.status(204).send("Nenhum dado encontrado")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
@@ -134,5 +201,10 @@ module.exports = {
     dadosGeraisInst,
     dashDatas,
     deletarInstituicao,
-    dadosUsuario
+    dadosUsuario,
+    deletarUsuario,
+    dadosGeraisUser,
+    puxarUser,
+    puxarMaquinas,
+    puxarLabs
 }
