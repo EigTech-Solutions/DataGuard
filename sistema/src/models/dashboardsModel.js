@@ -555,9 +555,7 @@ function buscarFluxoRedeMaquina(idMaquina) {
         instrucaoSql = ` 
             SELECT TOP 10
             FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
-            AVG(CASE WHEN cm.tipo = 'Ping' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
-            AVG(CASE WHEN cm.tipo = 'Download' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
-            AVG(CASE WHEN cm.tipo = 'Upload' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            AVG(CASE WHEN cm.tipo = 'Ping' AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia'
             FROM 
             medicoes me
             JOIN 
@@ -576,9 +574,7 @@ function buscarFluxoRedeMaquina(idMaquina) {
             `
             SELECT 
             DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
-            AVG(CASE WHEN cm.tipo = "Ping" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
-            AVG(CASE WHEN cm.tipo = "Download" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
-            AVG(CASE WHEN cm.tipo = "Upload" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            AVG(CASE WHEN cm.tipo = "Ping" AND m.idMaquina = ${idMaquina} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia'
             FROM 
                 medicoes me
             JOIN 
@@ -789,25 +785,16 @@ function buscarQtdAlertas(idInstituicao) {
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
         instrucaoSql = `
-        SELECT 
-            COUNT(a.tipo) AS 'qtdAlertas', 
-            a.tipo
-        FROM 
-            alertas a
-        JOIN 
-            maquina m ON a.fkMaquina = m.idMaquina
-        WHERE 
-            m.fkInstitucional = ${idInstituicao}
-        GROUP BY 
-            a.tipo;
+        select 
+        (select count(a.idAlertas) from alertas a join maquina m on a.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} AND a.tipo = "atenção") 'qtdAlertasAtencao',  
+        (select count(a.idAlertas) from alertas a join maquina m on a.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} AND a.tipo = "urgente") 'qtdAlertasUrgente';
         `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
-            select count(tipo) 'qtdAlertas', tipo from alertas a
-               join maquina m on a.fkMaquina = m.idMaquina
-               where m.fkInstitucional = ${idInstituicao}
-               group by tipo;
+            select 
+            (select count(a.idAlertas) from alertas a join maquina m on a.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} AND a.tipo = "atenção") 'qtdAlertasAtencao',  
+            (select count(a.idAlertas) from alertas a join maquina m on a.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} AND a.tipo = "urgente") 'qtdAlertasUrgente';
             `;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
