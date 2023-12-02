@@ -1,7 +1,7 @@
 function entrar() {
     // aguardar();
 
-    var emailVar = ipt_email.value;
+    var emailVar = ipt_email.value.trim();
     var senhaVar = ipt_senha.value;
 
     if (emailVar == "" || senhaVar == "") {

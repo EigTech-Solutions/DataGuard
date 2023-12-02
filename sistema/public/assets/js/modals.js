@@ -94,3 +94,9 @@ function modalNivelDeLabs(){
     var informação = "Nesse gráfico de Nível de Preocupação dos Laboratórios em instituições oferece uma visão resumida do estado operacional e potenciais desafios em cada laboratório. Esse recurso permite uma avaliação rápida do status de equipamentos, segurança da rede e integridade dos dados. Ao categorizar os laboratórios por níveis de preocupação, os gestores podem priorizar ações corretivas, garantindo um ambiente de laboratório eficiente, seguro e adequado às necessidades institucionais."
     AbrirModal(informação); 
 }
+
+function modalInstDash(){
+    divModal.style.display = "flex";
+    var informação = "Quantidade de Instituições Cadastradas por Mês no ano de 2023."
+    AbrirModal(informação); 
+}
