@@ -148,7 +148,7 @@ function deletarInstituicao(idInstitucional) {
 function dadosUsuario() {
     var instrucao = "";
     if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucao = ` SELECT nome FROM usuario;`;
+        instrucao = ` SELECT idUsuario, nome FROM usuario;`;
     }
     else {
         instrucao = `

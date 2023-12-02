@@ -232,9 +232,9 @@ function cadastrarUser() {
 
                                 listarUsuarios();
                                 fecharModal();
-                                setTimeout(function(){
+                                setTimeout(function () {
                                     location.reload()
-                                },2000);
+                                }, 2000);
                             } else {
                                 throw ("houve um erro ao tentar se cadastrar");
                             }
@@ -264,9 +264,9 @@ function cadastrarUser() {
                                     // timer: 1500
                                 });
                                 fecharModal();
-                                setTimeout(function(){
+                                setTimeout(function () {
                                     location.reload()
-                                },2000);
+                                }, 2000);
                             } else {
                                 throw ("houve um erro ao tentar se cadastrar");
                             }
@@ -346,38 +346,38 @@ function abrirModalCardastarUser() {
     `;
     exibirSelect()
 }
-    function exibirSelect(){
-        fetch(`/instituicao/dadosGeraisInst`).then(function (resposta) {
-            if (resposta.ok) {
-                if (resposta.status == 204) {
-                    console.log("Nenhum resultado encontrado.");
-                    throw "Nenhum resultado encontrado!!";
-                }
-    
-                resposta.json().then(function (resposta) {
-                    console.log("Dados recebidos: ", JSON.stringify(resposta));
-    
-                    for (let i = 0; i < resposta.length; i++) {
-                        console.log('oieeeeeeeeeee');
-                        var instituicao = resposta[i];
-    
-                        ipt_instituicao.innerHTML += `
+function exibirSelect() {
+    fetch(`/instituicao/dadosGeraisInst`).then(function (resposta) {
+        if (resposta.ok) {
+            if (resposta.status == 204) {
+                console.log("Nenhum resultado encontrado.");
+                throw "Nenhum resultado encontrado!!";
+            }
+
+            resposta.json().then(function (resposta) {
+                console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                for (let i = 0; i < resposta.length; i++) {
+                    console.log('oieeeeeeeeeee');
+                    var instituicao = resposta[i];
+
+                    ipt_instituicao.innerHTML += `
                             <option value="${instituicao.idInstitucional}">${instituicao.nomeInstitucional}</option>
                         `;
-                    }
-    
-                    // finalizarAguardar();
-                });
-            } else {
-                throw ('Houve um erro na API!');
-            }
-        }).catch(function (resposta) {
-            console.error(resposta);
-            // finalizarAguardar();
-        });
-    }
+                }
 
-    
+                // finalizarAguardar();
+            });
+        } else {
+            throw ('Houve um erro na API!');
+        }
+    }).catch(function (resposta) {
+        console.error(resposta);
+        // finalizarAguardar();
+    });
+}
+
+
 
 
 function fecharModal() {
@@ -394,9 +394,9 @@ function dadosInstituicao() {
             console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
-    .catch(function (error) {
-        console.error(`Erro na obtenção dos dados: ${error.message}`);
-    });
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
 }
 
 dadosInstituicao();
@@ -461,32 +461,26 @@ function excluirInstituicao(idInstitucional) {
                 headers: {
                     "Content-Type": "application/json"
                 }
-            })
-            .then(function (resposta) {
+            }).then(function (resposta) {
                 if (resposta.ok) {
+                    Swal.fire(
+                        'Deletado!',
+                        'Instituição excluída com sucesso!',
+                        'success'
+                    );
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
                     return resposta.json();
                 } else {
+                    Swal.fire(
+                        'Erro!',
+                        'Houve um erro ao excluir a instituição.',
+                        'error'
+                    );
                     throw new Error(`Erro na exclusão: ${resposta.status}`);
                 }
             })
-            .then(function (resultado) {
-                Swal.fire(
-                    'Deletado!',
-                    'Instituição excluída com sucesso!',
-                    'success'
-                );
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            })
-            .catch(function (erro) {
-                console.error(`#ERRO: ${erro.message}`);
-                Swal.fire(
-                    'Erro!',
-                    'Houve um erro ao excluir a instituição.',
-                    'error'
-                );
-            });
         }
     });
 }
@@ -518,7 +512,7 @@ function abrirModalEditarInstituicao(idInstituicao, nomeAtual, enderecoAtual) {
     divModal.style.display = 'flex';
 }
 
-function editarInstituicao(idInstitucional){
+function editarInstituicao(idInstitucional) {
     var novoNome = document.getElementById("novoNome").value;
     var novoEndereco = document.getElementById("novoEndereco").value;
 
@@ -623,7 +617,7 @@ function abrirModalExbirInfosDetalhadas(dadosPuxados) {
         </div>
     `;
 
-     const blocoDeDados = document.getElementById('blocoDeDados');
+    const blocoDeDados = document.getElementById('blocoDeDados');
     blocoDeDados.innerHTML = '';
 
     for (let i = 0; i < dadosPuxados.length; i++) {
@@ -673,16 +667,16 @@ function dadosUsuario() {
             console.error('Nenhuma informação encontrada ou erro na API');
         }
     })
-    .catch(function (error) {
-        console.error(`Erro na obtenção dos dados: ${error.message}`);
-    });
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados: ${error.message}`);
+        });
 }
 
 dadosUsuario();
 
 function exibirInfoUser(infoDados) {
     blocoDeDadoUser.innerHTML = '';
-
+    console.log(infoDados);
     for (let i = 0; i < infoDados.length; i++) {
         const nomeUser = infoDados[i].nome;
         const idUser = infoDados[i].idUsuario;
@@ -714,6 +708,7 @@ function exibirInfoUser(infoDados) {
 }
 
 function executarAcaoUser(id, acao) {
+    console.log(id, acao);
     if (acao === 'excluir') {
         excluirUser(id);
     } else if (acao === 'editar') {
@@ -741,31 +736,26 @@ function excluirUser(idUser) {
                     "Content-Type": "application/json"
                 }
             })
-            .then(function (resposta) {
-                if (resposta.ok) {
-                    return resposta.json();
-                } else {
-                    throw new Error(`Erro na exclusão: ${resposta.status}`);
-                }
-            })
-            .then(function (result) {
-                Swal.fire(
-                    'Deletado!',
-                    'Usuario excluído com sucesso!',
-                    'success'
-                );
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            })
-            .catch(function (erro) {
-                console.error(`#ERRO: ${erro.message}`);
-                Swal.fire(
-                    'Erro!',
-                    'Houve um erro ao excluir o usuario.',
-                    'error'
-                );
-            });
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        Swal.fire(
+                            'Deletado!',
+                            'Usuario excluído com sucesso!',
+                            'success'
+                        );
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                        return resposta.json();
+                    } else {
+                        Swal.fire(
+                            'Erro!',
+                            'Houve um erro ao excluir o usuario.',
+                            'error'
+                        );
+                        throw new Error(`Erro na exclusão: ${resposta.status}`);
+                    }
+                })
         }
     });
 }
@@ -832,7 +822,7 @@ function abrirModalExbirInfosDetalhadasUser(puxarUser) {
         </div>
     `;
 
-     const blocoDeDados = document.getElementById('blocoDeDados');
+    const blocoDeDados = document.getElementById('blocoDeDados');
     blocoDeDados.innerHTML = '';
 
     for (let i = 0; i < puxarUser.length; i++) {
