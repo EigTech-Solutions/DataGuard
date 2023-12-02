@@ -296,7 +296,7 @@
 .alertas {
     margin-top: 0.3rem;
     width: auto;
-    height: 25vh;
+    height: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -312,7 +312,7 @@
 
 .tipo_notificacao {
     width: 8%;
-    height: 100%;
+    height: auto;
 }
 
 .tipo_notificacao_alerta_txt {
