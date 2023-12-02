@@ -71,7 +71,7 @@ function personalizarParametros() {
                 } else {
                     resposta.json().then(function (resposta) {
                         // verificando se a resposta contém o campo insertId
-                        if (resposta.insertId !== undefined) {
+                        if (resposta !== undefined) {
                             var idParametros = resposta.insertId;
                             console.log("Id do parametro inserido: " + idParametros);
 

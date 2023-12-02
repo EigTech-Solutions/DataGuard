@@ -34,8 +34,7 @@ function cadastrar(minCpu, maxCpu, minDisco, maxDisco, minRam, maxRam, minQtdDis
         `;
         return database.executar(instrucao).then(resultado => {
             // Aqui, você deve retornar o ID inserido no corpo da resposta
-            console.log(resultado);
-            return { insertId: resultado.idParametrosMonitoramento };
+            return { insertId: resultado[0].idParametrosMonitoramento };
         }).catch(erro => {
             console.log(erro);
             console.log("\nHouve um erro ao realizar o cadastro! Erro: ", erro.sqlMessage);
