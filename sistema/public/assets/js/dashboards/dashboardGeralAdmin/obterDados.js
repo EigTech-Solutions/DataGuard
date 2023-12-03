@@ -79,12 +79,17 @@ function buscarVariacaoStatusLabs() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(dados => {
-                dados.map((lab) => {
-                    estadoLabs.push(lab)
-                })
-                plotarGraficoVariacaoStatus(dados);
-            });
+            if (resposta.status == 204) {
+                console.log("Sem variaçoes de estado encontrado");
+                atualizarGraficoVariacaoStatus();
+            } else {
+                resposta.json().then(dados => {
+                    dados.map((lab) => {
+                        estadoLabs.push(lab)
+                    })
+                    plotarGraficoVariacaoStatus(dados);
+                });
+            }
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
@@ -137,37 +142,41 @@ function atualizarGraficoVariacaoStatus() {
             },
         }).then(function (resposta) {
             if (resposta.ok) {
-                resposta.json().then(response => {
+                if (resposta.status == 204) {
+                    console.log("sem variação de estados");
+                } else {
+                    resposta.json().then(response => {
 
-                    let teveAlteracao = isEquals(response)
+                        let teveAlteracao = isEquals(response)
 
-                    if (teveAlteracao) {
-                        //atualizando as legendas (nome das salas dos labs)
-                        let novoLabels = [];
-                        response.map((dados) => { novoLabels.push(dados.nomeSala) })
-                        dados.labels = novoLabels;
-                        // n° ativas
-                        let novosQtdAtivas = [];
-                        response.map((dados) => { novosQtdAtivas.push(dados.qtdMaquinasAtivas) })
-                        dados.datasets[0].data = novosQtdAtivas;
-                        // n° inativas
-                        let novosQtdInativas = [];
-                        response.map((dados) => { novosQtdInativas.push(dados.qtdMaquinasInativas) })
-                        dados.datasets[1].data = novosQtdInativas;
-                        // qtd total maquinas
-                        let novosQtdTotal = [];
-                        response.map((dados) => { novosQtdTotal.push(dados.qtdMaquinas) })
-                        dados.datasets[2].data = novosQtdTotal;
+                        if (teveAlteracao) {
+                            //atualizando as legendas (nome das salas dos labs)
+                            let novoLabels = [];
+                            response.map((dados) => { novoLabels.push(dados.nomeSala) })
+                            dados.labels = novoLabels;
+                            // n° ativas
+                            let novosQtdAtivas = [];
+                            response.map((dados) => { novosQtdAtivas.push(dados.qtdMaquinasAtivas) })
+                            dados.datasets[0].data = novosQtdAtivas;
+                            // n° inativas
+                            let novosQtdInativas = [];
+                            response.map((dados) => { novosQtdInativas.push(dados.qtdMaquinasInativas) })
+                            dados.datasets[1].data = novosQtdInativas;
+                            // qtd total maquinas
+                            let novosQtdTotal = [];
+                            response.map((dados) => { novosQtdTotal.push(dados.qtdMaquinas) })
+                            dados.datasets[2].data = novosQtdTotal;
 
-                        chartVariacao.update();
-                    }
+                            chartVariacao.update();
+                        }
 
-                    estadoLabs = [];
-                    response.map((lab) => {
-                        estadoLabs.push(lab)
-                    })
+                        estadoLabs = [];
+                        response.map((lab) => {
+                            estadoLabs.push(lab)
+                        })
 
-                });
+                    });
+                }
             } else {
                 console.log("Houve um erro ao tentar obter os dados de variacão dos status em tempo real :c");
                 resposta.text().then(texto => {
@@ -190,9 +199,14 @@ function buscarAlertas() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(dados => {
-                plotarGraficoAlertas(dados);
-            });
+            if (resposta.status == 204) {
+                console.log("Nenhum alerta encontrado");
+                atualizarGraficoAlertas();
+            } else {
+                resposta.json().then(dados => {
+                    plotarGraficoAlertas(dados);
+                });
+            }
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
@@ -353,10 +367,15 @@ function buscarRankingMaquinas() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(dados => {
-                atualizarTableMaquinas(dados);
+            if (resposta.status == 204) {
+                console.log("Sem dados de ranking encontrado");
                 atualizarRankingMaquinas(dados);
-            });
+            } else {
+                resposta.json().then(dados => {
+                    atualizarTableMaquinas(dados);
+                    atualizarRankingMaquinas(dados);
+                });
+            }
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
@@ -379,18 +398,22 @@ function atualizarRankingMaquinas(tabelaAnterior) {
             },
         }).then(function (resposta) {
             if (resposta.ok) {
-                resposta.json().then(response => {
-                    if (response.length > tabelaAnterior.length) {
-                        atualizarTableMaquinas(response);
-                    } else {
-                        response.forEach((maquina, i) => {
-                            if (maquina.idMaquina !== tabelaAnterior[i].idMaquina || maquina.qtdAlertas !== tabelaAnterior[i].qtdAlertas) {
-                                atualizarTableMaquinas(response);
-                                return;
-                            }
-                        })
-                    }
-                });
+                if (resposta.status == 204) {
+                    console.log("Sem novos dados de ranking");
+                } else {
+                    resposta.json().then(response => {
+                        if (response.length > tabelaAnterior.length) {
+                            atualizarTableMaquinas(response);
+                        } else {
+                            response.forEach((maquina, i) => {
+                                if (maquina.idMaquina !== tabelaAnterior[i].idMaquina || maquina.qtdAlertas !== tabelaAnterior[i].qtdAlertas) {
+                                    atualizarTableMaquinas(response);
+                                    return;
+                                }
+                            })
+                        }
+                    });
+                }
             } else {
                 console.log("Houve um erro ao tentar obter os dados do ranking de Maquinas em tempo real :c");
                 resposta.text().then(texto => {
@@ -427,10 +450,16 @@ function buscarColaboradores() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(dados => {
-                atualizarTableColaboradores(dados);
-                atualizarColaboradores(dados);
-            });
+            if (resposta.status == 204) {
+                console.log("Sem novos colaboradores");
+            } else {
+                resposta.json().then(dados => {
+                    console.log(dados);
+                    atualizarTableColaboradores(dados);
+                    atualizarColaboradores(dados);
+                });
+            }
+            atualizarColaboradores([])
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
@@ -444,7 +473,7 @@ function buscarColaboradores() {
 }
 
 //Função para atualizar o ranking de Maquinas a cada 5s
-function atualizarColaboradores(tabelaAnterior) {
+function atualizarColaboradores(tabelaAnteriorColaborador) {
     setInterval(() => {
         fetch(`/dashboards/dashboardGeralAdmin/colaboradoresCadastros/${sessionStorage.ID_INSTITUICAO}`, {
             method: "GET",
@@ -453,18 +482,15 @@ function atualizarColaboradores(tabelaAnterior) {
             },
         }).then(function (resposta) {
             if (resposta.ok) {
-                resposta.json().then(response => {
-                    if (response.length > tabelaAnterior.length) {
-                        atualizarTableColaboradores(response);
-                    } else {
-                        response.forEach((colaborador, i) => {
-                            if (colaborador.fkUsuario !== tabelaAnterior[i].fkUsuario) {
-                                atualizarTableColaboradores(response);
-                                return;
-                            }
-                        })
-                    }
-                });
+                if (resposta.status == 204) {
+                    console.log("Sem novos colaboradores");
+                } else {
+                    resposta.json().then(response => {
+                        if (response.length !== tabelaAnteriorColaborador.length) {
+                            atualizarTableColaboradores(response);
+                        }
+                    });
+                }
             } else {
                 console.log("Houve um erro ao tentar obter os dados do ranking de Maquinas em tempo real :c");
                 resposta.text().then(texto => {
