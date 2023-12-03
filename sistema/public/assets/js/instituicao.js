@@ -446,7 +446,7 @@ function excluirInstituicao(idInstitucional) {
     console.log(idInstitucional);
     Swal.fire({
         title: 'Tem certeza que deseja excluir essa instituição?',
-        text: "Após excluído você irá perder todos os dados referentes a essa máquina! Essa ação não poderá ser desfeita.",
+        text: "Após excluído você irá perder todos os dados referentes a essa instituição! Essa ação não poderá ser desfeita.",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

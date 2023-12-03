@@ -32,12 +32,10 @@
 }
 
 #blocoDeDado img{
-    width: 15px;
     margin-left: auto;
 }
 
 #blocoDeDadoUser img{
-    width: 15px;
     margin-left: auto;
 }
 
@@ -602,7 +600,12 @@ body.modal-open {
     margin-right: 10px;
     margin-top: 10px;
     width: 35px;
-    height: 20px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.Usuarios img:hover{
+    transform: scale(1.05);
 }
 
 .Instituicoes {
@@ -628,7 +631,12 @@ body.modal-open {
     margin-right: 10px;
     margin-top: 10px;
     width: 35px;
-    height: 20px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.Instituicoes img:hover{
+    transform: scale(1.05);
 }
 
 .imgClass{
@@ -636,4 +644,8 @@ body.modal-open {
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+#idTabela{
+    width: 100%;
 }
