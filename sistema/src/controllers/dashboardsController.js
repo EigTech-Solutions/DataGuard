@@ -132,7 +132,7 @@ function buscarFluxoRedeLabTempoReal(req, res) {
 
     console.log(`Recuperando dados de fluxo de rede em tempo real`);
 
-    dashboardsModel.buscarFluxoRedeLab(idLaboratorio).then(function (resultado) {
+    dashboardsModel.buscarFluxoRedeLabTempoReal(idLaboratorio).then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {

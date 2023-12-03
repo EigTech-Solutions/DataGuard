@@ -41,34 +41,9 @@ function buscarFluxoRede(idInstituicao) {
 
     if (process.env.AMBIENTE_PROCESSO == "producao") {
         instrucaoSql = `
-        SELECT 
-            FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
-            AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaLatencia',
-            AVG(CASE WHEN cm.tipo = 'Download' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaDownload',
-            AVG(CASE WHEN cm.tipo = 'Upload' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaUpload'
-        FROM 
-            medicoes me
-        JOIN 
-            componenteMonitorado cm ON me.fkComponente = cm.idComponente 
-        JOIN 
-            maquina m ON cm.fkMaquina = m.idMaquina
-        WHERE 
-            (cm.tipo IN ('Ping', 'Download', 'Upload')) AND m.fkInstitucional = ${idInstituicao}
-        GROUP BY 
-            me.dataHora
-        ORDER BY 
-            me.dataHora DESC
-        OFFSET 0 ROWS
-        FETCH FIRST 10 ROWS ONLY;
-        `;
-
-    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
-        instrucaoSql = `
             SELECT 
-            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
-            AVG(CASE WHEN cm.tipo = "Ping" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
-            AVG(CASE WHEN cm.tipo = "Download" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
-            AVG(CASE WHEN cm.tipo = "Upload" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+                FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
+                AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido END) AS 'MediaLatencia'
             FROM 
                 medicoes me
             JOIN 
@@ -76,7 +51,28 @@ function buscarFluxoRede(idInstituicao) {
             JOIN 
                 maquina m ON cm.fkMaquina = m.idMaquina
             WHERE 
-                (cm.tipo = "Ping" OR cm.tipo = "Download" OR cm.tipo = "Upload") AND m.fkInstitucional = ${idInstituicao}
+                (cm.tipo IN ('Ping')) AND m.fkInstitucional = ${idInstituicao}
+            GROUP BY 
+                me.dataHora
+            ORDER BY 
+                me.dataHora DESC
+            OFFSET 0 ROWS
+            FETCH FIRST 10 ROWS ONLY;
+        `;
+
+    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
+        instrucaoSql = `
+            SELECT 
+            DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
+            AVG(CASE WHEN cm.tipo = "Ping" AND m.fkInstitucional = ${idInstituicao} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia'
+            FROM 
+                medicoes me
+            JOIN 
+                componenteMonitorado cm ON me.fkComponente = cm.idComponente 
+            JOIN 
+                maquina m ON cm.fkMaquina = m.idMaquina
+            WHERE 
+                (cm.tipo = "Ping") AND m.fkInstitucional = ${idInstituicao}
             GROUP BY 
                 me.dataHora
             ORDER BY 
@@ -244,9 +240,7 @@ function buscarFluxoRedeLab(idLaboratorio) {
         instrucaoSql = `   
         SELECT TOP 10
         FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
-        AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaLatencia',
-        AVG(CASE WHEN cm.tipo = 'Download' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaDownload',
-        AVG(CASE WHEN cm.tipo = 'Upload' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaUpload'
+        AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaLatencia'
         FROM 
         medicoes me
         JOIN 
@@ -254,7 +248,7 @@ function buscarFluxoRedeLab(idLaboratorio) {
         JOIN 
         maquina m ON cm.fkMaquina = m.idMaquina
         WHERE 
-        cm.tipo IN ('Ping', 'Download', 'Upload') AND m.fkLaboratorio = ${idLaboratorio}
+        cm.tipo IN ('Ping') AND m.fkLaboratorio = ${idLaboratorio}
         GROUP BY 
         me.dataHora
         ORDER BY 
@@ -266,8 +260,6 @@ function buscarFluxoRedeLab(idLaboratorio) {
         SELECT 
         DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
         AVG(CASE WHEN cm.tipo = "Ping" AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
-        AVG(CASE WHEN cm.tipo = "Download" AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
-        AVG(CASE WHEN cm.tipo = "Upload" AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
         FROM 
             medicoes me
         JOIN 
@@ -275,7 +267,7 @@ function buscarFluxoRedeLab(idLaboratorio) {
         JOIN 
             maquina m ON cm.fkMaquina = m.idMaquina
         WHERE 
-            (cm.tipo = "Ping" OR cm.tipo = "Download" OR cm.tipo = "Upload") AND m.fkLaboratorio = ${idLaboratorio}
+            (cm.tipo = "Ping") AND m.fkLaboratorio = ${idLaboratorio}
         GROUP BY 
             me.dataHora
         ORDER BY 
@@ -299,9 +291,7 @@ function buscarFluxoRedeLabTempoReal(idLaboratorio) {
         instrucaoSql = `
         SELECT TOP 1
             FORMAT(me.dataHora, 'dd/MM/yyyy, HH:mm:ss') AS 'dataHora', 
-            AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaLatencia',
-            AVG(CASE WHEN cm.tipo = 'Download' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaDownload',
-            AVG(CASE WHEN cm.tipo = 'Upload' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaUpload'
+            AVG(CASE WHEN cm.tipo = 'Ping' AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido END) AS 'MediaLatencia'
         FROM 
             medicoes me
         JOIN 
@@ -309,7 +299,7 @@ function buscarFluxoRedeLabTempoReal(idLaboratorio) {
         JOIN 
             maquina m ON cm.fkMaquina = m.idMaquina
         WHERE 
-            cm.tipo IN ('Ping', 'Download', 'Upload') AND m.fkLaboratorio = ${idLaboratorio}
+            cm.tipo IN ('Ping') AND m.fkLaboratorio = ${idLaboratorio}
         GROUP BY 
             me.dataHora
         ORDER BY 
@@ -320,9 +310,7 @@ function buscarFluxoRedeLabTempoReal(idLaboratorio) {
         instrucaoSql = `
             SELECT 
             DATE_FORMAT(me.dataHora, '%d/%m/%Y, %H:%i:%s') AS 'dataHora', 
-            AVG(CASE WHEN cm.tipo = "Ping" AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia',
-            AVG(CASE WHEN cm.tipo = "Download" AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido ELSE NULL END) AS 'MediaDownload',
-            AVG(CASE WHEN cm.tipo = "Upload" AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido ELSE NULL END) AS 'MediaUpload'
+            AVG(CASE WHEN cm.tipo = "Ping" AND m.fkLaboratorio = ${idLaboratorio} THEN me.valorConsumido ELSE NULL END) AS 'MediaLatencia'
             FROM 
                 medicoes me
             JOIN 
@@ -330,7 +318,7 @@ function buscarFluxoRedeLabTempoReal(idLaboratorio) {
             JOIN 
                 maquina m ON cm.fkMaquina = m.idMaquina
             WHERE 
-                (cm.tipo = "Ping" OR cm.tipo = "Download" OR cm.tipo = "Upload") AND m.fkLaboratorio = ${idLaboratorio}
+                (cm.tipo = "Ping") AND m.fkLaboratorio = ${idLaboratorio}
             GROUP BY 
                 me.dataHora
             ORDER BY 
