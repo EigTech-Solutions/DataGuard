@@ -35,7 +35,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-height: 57vh;
+    max-height: 53vh;
     border-radius: 5px;
     background-color: rgba(18, 69, 89, 0.5);
     color: #f6f6f6;
@@ -51,7 +51,6 @@
 
 .more_info_btn_img {
     display: flex;
-    margin-top: 25px;
     width: 30px;
     align-items: center;
     align-self: flex-end;

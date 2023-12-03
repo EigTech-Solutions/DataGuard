@@ -419,29 +419,6 @@ hr {
     outline: none;
 }
 
-.div-instituicoes {
-    display: flex;
-    justify-content: space-between;
-}
-
-.div-instituicao {
-    padding-left: 2%;
-    display: flex;
-    height: 60vh;
-    border-radius: 20px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    flex-direction: column;
-}
-
-.div-usuario {
-    display: flex;
-    height: 60vh;
-    border-radius: 20px;
-    background: #598392;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    flex-direction: column;
-}
-
 .instituicoesTitulo {
     display: flex;
     align-items: center;
@@ -452,7 +429,7 @@ hr {
     background: #124559;;
     color: #FFF;
     text-align: center;
-    font-family: Poppins;
+    font-family: 'Poppins';
     font-size: 32px;
     font-style: normal;
     font-weight: 500;
@@ -464,7 +441,7 @@ hr {
     width: 18vw;
     color: black;
     text-align: center;
-    font-family: Poppins;
+    font-family: 'Poppins';
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -532,12 +509,4 @@ hr {
     height: 12vh;
     background: #263238;
     border-radius: 0px 0px 20px 20px;
-}
-
-.dadosInstituicoes {
-    display: flex;
-    height: 45vh;
-    width: 38.1vw;
-    background: #598392;
-    overflow-y: scroll; 
 }

@@ -377,9 +377,6 @@ function exibirSelect() {
     });
 }
 
-
-
-
 function fecharModal() {
     divModal.style.display = "none";
 }
@@ -438,7 +435,7 @@ function executarAcao(idInstitucional, acao) {
     if (acao === 'excluir') {
         excluirInstituicao(idInstitucional);
     } else if (acao === 'editar') {
-        editarInstituicao(idInstitucional);
+        abrirModalEditarInstituicao(idInstitucional)
     }
 }
 
@@ -485,70 +482,170 @@ function excluirInstituicao(idInstitucional) {
     });
 }
 
-function abrirModalEditarInstituicao(idInstituicao, nomeAtual, enderecoAtual) {
-    const inputNome = document.createElement('input');
-    inputNome.type = 'text';
-    inputNome.id = 'novoNome';
-    inputNome.value = nomeAtual;
-
-    const inputEndereco = document.createElement('input');
-    inputEndereco.type = 'text';
-    inputEndereco.id = 'novoEndereco';
-    inputEndereco.value = enderecoAtual;
-
-    const btnAtualizar = document.createElement('button');
-    btnAtualizar.classList.add('btnCadastrar');
-    btnAtualizar.textContent = 'Atualizar';
-    btnAtualizar.addEventListener('click', function () {
-        editarInstituicao(idInstituicao);
-    });
-
-    divModal.innerHTML = '';
-
-    divModal.appendChild(inputNome);
-    divModal.appendChild(inputEndereco);
-    divModal.appendChild(btnAtualizar);
-
-    divModal.style.display = 'flex';
-}
-
 function editarInstituicao(idInstitucional) {
-    var novoNome = document.getElementById("novoNome").value;
-    var novoEndereco = document.getElementById("novoEndereco").value;
+    var nomeInstVAR = ipt_nomeInst.value;
+    var cnpjInstbVAR = ipt_cnpjInst.value;
+    var emailInstbVAR = ipt_emailInst.value;
+    var telefoneInstbVAR = ipt_telefoneInst.value;
+    var cepInstbVAR = ipt_cepeInst.value;
+    var numeroInstbVAR = ipt_numeroInst.value;
+    var complementoInstbVAR = ipt_complementoInst.value;
 
-    if (!novoNome || !novoEndereco) {
+    if (nomeInstVAR.trim() === "" || cnpjInstbVAR.trim() === "" || emailInstbVAR.trim() === ""
+        || telefoneInstbVAR.trim() === "" || cepInstbVAR.trim() === "" || numeroInstbVAR.trim() === "") {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Erro ao Realizar Cadastro!',
+            text: 'Preencha todos os campos obrigatórios.',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    } else if (telefoneInstbVAR.length > 14 || telefoneInstbVAR.length < 10) {
         Swal.fire(
-            'Campos obrigatórios vazios.',
-            'Preencha todos os campos para continuar!',
+            'Número de telefone inválido.',
+            'Preencha corretamente para continuar!',
             'error'
         );
-        return;
+    } else if (!validarCNPJ(cnpjInstbVAR)) {
+        Swal.fire(
+            'Número de CNPJ inválido.',
+            'Preencha corretamente para continuar!',
+            'error'
+        );
+    } else if (cepInstbVAR.length !== 8) {
+        Swal.fire(
+            'Número de CEP inválido.',
+            'Preencha corretamente para continuar!',
+            'error'
+        );
+    } else {
+        fetch(`/instituicao/editarInstituicao/${idInstitucional}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nomeInstServer: nomeInstVAR,
+                cnpjInstServer: cnpjInstbVAR,
+                emailInstServer: emailInstbVAR,
+                telefoneInstServer: telefoneInstbVAR,
+                cepInstServer: cepInstbVAR,
+                numeroInstServer: numeroInstbVAR,
+                complementoInstServer: complementoInstbVAR,
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Cadastro Realizado com Sucesso!',
+                    text: 'Autenticando Informações...',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                fecharModal();
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Ocorreu um erro ao realizar o cadastro!',
+                    text: 'Realize alterações...',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                throw ("Houve um erro ao tentar se cadastrar");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        }).finally(function () {
+            setTimeout(function () {
+                location.reload();
+            }, 2000);
+        });
     }
 
-    fetch(`/instituicoes/editar/${idInstituicao}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            novoNome: novoNome,
-            novoEndereco: novoEndereco
-        })
-    }).then(function (resposta) {
+    fecharModal();
+}
+
+function abrirModalEditarInstituicao(idInstitucional) {
+    divModal.style.display = "flex";
+
+    fetch(`/instituicao/buscarUser/${idInstitucional}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Edição realizada com sucesso!',
-                showConfirmButton: true,
+            if (resposta.status == 204) {
+                console.log("Nenhum resultado encontrado.");
+                throw "Nenhum resultado encontrado!!";
+            }
+
+            resposta.json().then(function (resposta) {
+                console.log("Dados recebidos: ", JSON.stringify(resposta));
+                var user = resposta[0];
+
+                divModal.innerHTML = `
+                    <div class="containerModalUser">
+                        <!--  topo do pop up  -->
+                        <div class="topo">
+                            <div class="titulo"> Atualizar usuário </div>
+                            <img class="botaoFechar" src="../assets/images/close-circle-twotone.png" alt="icon fechar" onclick="fecharModal()">
+                        </div>
+
+                        <!--  meio do pop up  -->
+                        <div class="meioPopUp">
+                            <div class="divImagemUsuario">
+                                <img class="imagemUsuario" src="../assets/images/ftUsuario.png" alt="">
+                            </div>
+                            <div class="campoInput">
+                                <label for="">Nome:</label>
+                                <input placeholder="Ex: enzin" id="ipt_nome" type="text" value="${user.nome}">
+                                <label for="">Email:</label>
+                                <input placeholder="Ex: enzin@gmail.com" id="ipt_email" type="text" value="${user.email}">
+                                <label for="">Telefone:</label>
+                                <input placeholder="(11) 91234-5678" id="ipt_telefone" type="number" value="${user.telefone}">
+                                <label for="">Acessos:</label>
+                                <div class="checkboxs">
+                                    <input type="checkbox" id="adminCheckbox"> Administrador
+                                    <input type="checkbox" id="tecnicoCheckbox"> Técnico
+                                </div>
+                                
+                            </div>
+                        </div>
+                
+                
+                        <!--  senha e repetir senha  -->
+                        <div class="campoInputSenha">
+                            <div class="senha">
+                                <label for="">Reset de senha:</label> <br>
+                                <input placeholder="*******" id="ipt_senha" type="password" value="${user.senha}">
+                            </div>
+                            <div class="senha">
+                                <label for="">Repetir nova senha:</label> <br>
+                                <input placeholder="*******" id="ipt_repetirSenha" type="password" value="${user.senha}">
+                            </div>
+                        </div>
+
+                        <!--  fim do pop up  -->
+                        <div class="containerFinal">
+                            <button class="btnCadastrar" onclick="atualizar(${user.idUsuario})">Atualizar</button>
+                        </div>
+                    </div>
+                `;
+
+                if (user.acessoAdmin != 0) {
+                    adminCheckbox.checked = true;
+                }
+
+                if (user.acessoTecnico != 0) {
+                    tecnicoCheckbox.checked = true;
+                }
+
             });
-            listarInstituicoes();
-            fecharModal();
         } else {
-            throw ("Houve um erro ao tentar editar a instituição.");
+            throw ('Houve um erro na API!');
         }
     }).catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
+        console.error(resposta);
+        // finalizarAguardar();
     });
 }
 
@@ -561,7 +658,7 @@ function pesquisarInstituicao() {
         var nome = instituicao.getAttribute('data-nome').toLowerCase();
 
         if (nome.includes(busca.trim())) {
-            instituicao.style.display = 'block';
+            instituicao.style.display = 'flex';
         } else {
             instituicao.style.display = 'none';
         }
@@ -712,7 +809,7 @@ function executarAcaoUser(id, acao) {
     if (acao === 'excluir') {
         excluirUser(id);
     } else if (acao === 'editar') {
-        editarUser(id);
+        abrirModalEditarUser(id);
     }
 }
 
@@ -760,6 +857,263 @@ function excluirUser(idUser) {
     });
 }
 
+function editarUser(idUser) {
+    var nomeVAR = ipt_nome.value
+    var emailVAR = ipt_email.value
+    var telefoneVAR = ipt_telefone.value
+    var senhaVAR = ipt_senha.value
+    var repetirSenhaVAR = ipt_repetirSenha.value
+    var idInstituicaoVAR = sessionStorage.ID_INSTITUICAO;
+
+    var tecnicoCheckbox = document.getElementById("tecnicoCheckbox");
+    var adminCheckbox = document.getElementById("adminCheckbox");
+
+    var isTecnico = tecnicoCheckbox.checked;
+    var isAdmin = adminCheckbox.checked;
+
+    if (nomeVAR == "" || emailVAR == "" || telefoneVAR == "" || senhaVAR == "" || repetirSenhaVAR == "") {
+        Swal.fire(
+            'Campo obrigatório vazio.',
+            'Preencha todos os campos para continuar!',
+            'error'
+        );
+    } else if (senhaVAR != repetirSenhaVAR) {
+        Swal.fire(
+            'Senhas não coincidem!',
+            'Preencha novamente os campos para continuar!',
+            'error'
+        );
+    } else {
+        console.log(idUser, sessionStorage.ID_INSTITUICAO);
+        fetch(`/usuarios/atualizar/${idUser}/${sessionStorage.ID_INSTITUICAO}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nomeServer: nomeVAR,
+                emailServer: emailVAR,
+                telefoneServer: telefoneVAR,
+                senhaServer: senhaVAR,
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status === 200) {
+                    fetch(`/usuarios/buscarUser/${idUser}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+                        if (resposta.ok) {
+                            if (resposta.status == 204) {
+                                console.log("Nenhum resultado encontrado.");
+                                throw "Nenhum resultado encontrado!!";
+                            }
+
+                            resposta.json().then(function (resposta) {
+                                console.log("Dados recebidos: ", JSON.stringify(resposta));
+                                var user = resposta[0];
+
+                                if (isAdmin && user.acessoAdmin == 0) {
+                                    fetch("/usuarios/cadastrarAcesso", {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify({
+                                            idUserServer: user.idUsuario,
+                                            idInstituicaoServer: idInstituicaoVAR,
+                                            idAcessoServer: 2
+                                        })
+                                    }).then(function (resposta) {
+                                        if (resposta.ok) {
+                                            Swal.fire({
+                                                position: 'center',
+                                                icon: 'success',
+                                                title: 'Atualização realizada com sucesso!',
+                                                showConfirmButton: true,
+                                            });
+                                            listarUsuarios();
+                                        } else {
+                                            throw ("houve um erro ao tentar se cadastrar");
+                                        }
+                                    }).catch(function (resposta) {
+                                        console.log(`#ERRO: ${resposta}`);
+                                    });
+                                } else if (!isAdmin && user.acessoAdmin != 0) {
+                                    var idAcesso = 2;
+                                    fetch(`/usuarios/deletarAcesso/${idUser}/${idAcesso}/${sessionStorage.ID_INSTITUICAO}`, {
+                                        method: "DELETE",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        }
+                                    }).then(function (resposta) {
+                                        if (resposta.ok) {
+                                            Swal.fire({
+                                                position: 'center',
+                                                icon: 'success',
+                                                title: 'Atualização realizada com sucesso!',
+                                                showConfirmButton: true,
+                                            });
+                                            listarUsuarios();
+                                        } else if (resposta.status == 404) {
+                                            window.alert("Deu 404!");
+                                        } else {
+                                            throw ("Houve um erro ao tentar deletar o campo! Código da resposta: " + resposta.status);
+                                        }
+                                    }).catch(function (resposta) {
+                                        console.log(`#ERRO: ${resposta}`);
+                                    });
+                                }
+
+                                if (isTecnico && user.acessoTecnico == 0) {
+                                    fetch("/usuarios/cadastrarAcesso", {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify({
+                                            idUserServer: user.idUsuario,
+                                            idInstituicaoServer: idInstituicaoVAR,
+                                            idAcessoServer: 3
+                                        })
+                                    }).then(function (resposta) {
+                                        if (resposta.ok) {
+                                            Swal.fire({
+                                                position: 'center',
+                                                icon: 'success',
+                                                title: 'Atualização realizada com sucesso!',
+                                                showConfirmButton: true,
+                                            });
+                                            listarUsuarios();
+                                        } else {
+                                            throw ("houve um erro ao tentar se cadastrar");
+                                        }
+                                    }).catch(function (resposta) {
+                                        console.log(`#ERRO: ${resposta}`);
+                                    });
+                                } else if (!isTecnico && user.acessoTecnico != 0) {
+                                    var idAcesso = 3;
+                                    fetch(`/usuarios/deletarAcesso/${idUser}/${idAcesso}/${sessionStorage.ID_INSTITUICAO}`, {
+                                        method: "DELETE",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        }
+                                    }).then(function (resposta) {
+                                        if (resposta.ok) {
+                                            Swal.fire({
+                                                position: 'center',
+                                                icon: 'success',
+                                                title: 'Atualização realizada com sucesso!',
+                                                showConfirmButton: true,
+                                            });
+                                            listarUsuarios();
+                                        } else if (resposta.status == 404) {
+                                            window.alert("Deu 404!");
+                                        } else {
+                                            throw ("Houve um erro ao tentar deletar o campo! Código da resposta: " + resposta.status);
+                                        }
+                                    }).catch(function (resposta) {
+                                        console.log(`#ERRO: ${resposta}`);
+                                    });
+                                }
+                            });
+                        } else {
+                            throw ('Houve um erro na API!');
+                        }
+                    }).catch(function (resposta) {
+                        console.error(resposta);
+                        // finalizarAguardar();
+                    });
+                }
+            } else {
+                throw ("houve um erro ao tentar cadastrar");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    }
+
+    fecharModal();
+}
+
+function abrirModalEditarUser(idUser) {
+    divModal.style.display = "flex";
+
+    fetch(`/usuarios/buscarUser/${idUser}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+        if (resposta.ok) {
+            if (resposta.status == 204) {
+                console.log("Nenhum resultado encontrado.");
+                throw "Nenhum resultado encontrado!!";
+            }
+
+            resposta.json().then(function (resposta) {
+                console.log("Dados recebidos: ", JSON.stringify(resposta));
+                var user = resposta[0];
+
+                divModal.innerHTML = `
+                    <div class="containerModalUser">
+                        <!--  topo do pop up  -->
+                        <div class="topo">
+                            <div class="titulo"> Atualizar usuário </div>
+                            <img class="botaoFechar" src="../assets/images/close-circle-twotone.png" alt="icon fechar" onclick="fecharModal()">
+                        </div>
+
+                        <!--  meio do pop up  -->
+                        <div class="meioPopUp">
+                            <div class="divImagemUsuario">
+                                <img class="imagemUsuario" src="../assets/images/ftUsuario.png" alt="">
+                            </div>
+                            <div class="campoInput">
+                                <label for="">Nome:</label>
+                                <input placeholder="Ex: enzin" id="ipt_nome" type="text" value="${user.nome}">
+                                <label for="">Email:</label>
+                                <input placeholder="Ex: enzin@gmail.com" id="ipt_email" type="text" value="${user.email}">
+                                <label for="">Telefone:</label>
+                                <input placeholder="(11) 91234-5678" id="ipt_telefone" type="number" value="${user.telefone}">
+                                <label for="">Acessos:</label>
+                                <div class="checkboxs">
+                                    <input type="checkbox" id="adminCheckbox"> Administrador
+                                    <input type="checkbox" id="tecnicoCheckbox"> Técnico
+                                </div>
+                                
+                            </div>
+                        </div>
+                
+                
+                        <!--  senha e repetir senha  -->
+                        <div class="campoInputSenha">
+                            <div class="senha">
+                                <label for="">Reset de senha:</label> <br>
+                                <input placeholder="*******" id="ipt_senha" type="password" value="${user.senha}">
+                            </div>
+                            <div class="senha">
+                                <label for="">Repetir nova senha:</label> <br>
+                                <input placeholder="*******" id="ipt_repetirSenha" type="password" value="${user.senha}">
+                            </div>
+                        </div>
+
+                        <!--  fim do pop up  -->
+                        <div class="containerFinal">
+                            <button class="btnCadastrar" onclick="atualizar(${user.idUsuario})">Atualizar</button>
+                        </div>
+                    </div>
+                `;
+
+                if (user.acessoAdmin != 0) {
+                    adminCheckbox.checked = true;
+                }
+
+                if (user.acessoTecnico != 0) {
+                    tecnicoCheckbox.checked = true;
+                }
+
+            });
+        } else {
+            throw ('Houve um erro na API!');
+        }
+    }).catch(function (resposta) {
+        console.error(resposta);
+        // finalizarAguardar();
+    });
+}
+
 function pesquisarUsuario() {
     var busca = input_busca_user.value.toLowerCase();
 
@@ -769,7 +1123,7 @@ function pesquisarUsuario() {
         var nome = usuario.getAttribute('data-nome').toLowerCase();
 
         if (nome.includes(busca)) {
-            usuario.style.display = 'block';
+            usuario.style.display = 'flex';
         } else {
             usuario.style.display = 'none';
         }

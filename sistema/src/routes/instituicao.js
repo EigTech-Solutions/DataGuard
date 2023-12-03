@@ -51,4 +51,8 @@ router.get("/puxarLabs", function (req, res) {
     instituicaoController.puxarLabs(req, res);
 });
 
+router.put("/editarInst/:idInstituicional", function (req, res) {
+    usuarioController.editarInst(req, res);
+});
+
 module.exports = router;
