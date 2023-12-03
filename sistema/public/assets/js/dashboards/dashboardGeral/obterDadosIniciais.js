@@ -128,7 +128,9 @@ function buscarDadosFluxoDeRede() {
         },
     }).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status !== 204) {
+            if (resposta.status == 204) {
+                console.log("Sem novos dados de fluxo de rede");
+            } else {
                 resposta.json().then(dados => {
                     plotarGraficoFluxoDeRede(dados);
                 });
@@ -173,6 +175,7 @@ function atualizarGraficoFluxoRede() {
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(response => {
+                    console.log(response);
                     if ((dados.labels.length < 10) && (response[0].dataHora != dados.labels[dados.labels.length - 1])) {
                         dados.labels.push(response[0].dataHora);
                         // //ping
@@ -183,6 +186,8 @@ function atualizarGraficoFluxoRede() {
                         console.log("Sem novos registros!");
                     } else {
                         console.log("Novos dados!",);
+                        dados.labels.shift();
+                        dados.labels.push(response[0].dataHora);
                         // //ping
                         dados.datasets[0].data.shift();
                         dados.datasets[0].data.push(response[0].MediaLatencia)
