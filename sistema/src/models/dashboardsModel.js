@@ -786,9 +786,9 @@ function buscarQtdAlertas(idInstituicao) {
     if (process.env.AMBIENTE_PROCESSO == "producao") {
         instrucaoSql = `
         select 
-        (select count(a.idAlertas) from alertas a join maquina m on a.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} AND a.tipo = "atenção") 'qtdAlertasAtencao',  
-        (select count(a.idAlertas) from alertas a join maquina m on a.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} AND a.tipo = "urgente") 'qtdAlertasUrgente';
-        `;
+            (select count(a.idAlertas) from alertas a join maquina m on a.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} AND a.tipo = 'atenção') 'qtdAlertasAtencao',  
+            (select count(a.idAlertas) from alertas a join maquina m on a.fkMaquina = m.idMaquina where m.fkInstitucional = ${idInstituicao} AND a.tipo = 'urgente') 'qtdAlertasUrgente';
+            `;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql =
             `
