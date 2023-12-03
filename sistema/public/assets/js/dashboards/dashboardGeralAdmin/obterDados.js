@@ -111,15 +111,15 @@ function plotarGraficoVariacaoStatus(dadosParam) {
     // n° ativas
     let novosQtdAtivas = [];
     dadosParam.map((dados) => { novosQtdAtivas.push(dados.qtdMaquinasAtivas) })
-    dados.datasets[0].data = novosQtdAtivas.reverse();
+    dados.datasets[0].data = novosQtdAtivas;
     // n° inativas
     let novosQtdInativas = [];
     dadosParam.map((dados) => { novosQtdInativas.push(dados.qtdMaquinasInativas) })
-    dados.datasets[1].data = novosQtdInativas.reverse();
+    dados.datasets[1].data = novosQtdInativas;
     // qtd total maquinas
     let novosQtdTotal = [];
     dadosParam.map((dados) => { novosQtdTotal.push(dados.qtdMaquinas) })
-    dados.datasets[2].data = novosQtdTotal.reverse();
+    dados.datasets[2].data = novosQtdTotal;
 
     chartVariacao.update();
 
@@ -157,15 +157,15 @@ function atualizarGraficoVariacaoStatus() {
                             // n° ativas
                             let novosQtdAtivas = [];
                             response.map((dados) => { novosQtdAtivas.push(dados.qtdMaquinasAtivas) })
-                            dados.datasets[0].data = novosQtdAtivas.reverse();
+                            dados.datasets[0].data = novosQtdAtivas;
                             // n° inativas
                             let novosQtdInativas = [];
                             response.map((dados) => { novosQtdInativas.push(dados.qtdMaquinasInativas) })
-                            dados.datasets[1].data = novosQtdInativas.reverse();
+                            dados.datasets[1].data = novosQtdInativas;
                             // qtd total maquinas
                             let novosQtdTotal = [];
                             response.map((dados) => { novosQtdTotal.push(dados.qtdMaquinas) })
-                            dados.datasets[2].data = novosQtdTotal.reverse();
+                            dados.datasets[2].data = novosQtdTotal;
 
                             chartVariacao.update();
                         }
@@ -454,11 +454,12 @@ function buscarColaboradores() {
                 console.log("Sem novos colaboradores");
             } else {
                 resposta.json().then(dados => {
+                    console.log(dados);
                     atualizarTableColaboradores(dados);
                     atualizarColaboradores(dados);
                 });
             }
-            atualizarColaboradores(dados)
+            atualizarColaboradores([])
         } else {
             console.log("Houve um erro ao tentar obter os dados de fluxo de rede :c");
             resposta.text().then(texto => {
@@ -472,7 +473,7 @@ function buscarColaboradores() {
 }
 
 //Função para atualizar o ranking de Maquinas a cada 5s
-function atualizarColaboradores(tabelaAnterior) {
+function atualizarColaboradores(tabelaAnteriorColaborador) {
     setInterval(() => {
         fetch(`/dashboards/dashboardGeralAdmin/colaboradoresCadastros/${sessionStorage.ID_INSTITUICAO}`, {
             method: "GET",
@@ -485,15 +486,8 @@ function atualizarColaboradores(tabelaAnterior) {
                     console.log("Sem novos colaboradores");
                 } else {
                     resposta.json().then(response => {
-                        if (response.length > tabelaAnterior.length) {
+                        if (response.length !== tabelaAnteriorColaborador.length) {
                             atualizarTableColaboradores(response);
-                        } else {
-                            response.forEach((colaborador, i) => {
-                                if (colaborador.fkUsuario !== tabelaAnterior[i].fkUsuario) {
-                                    atualizarTableColaboradores(response);
-                                    return;
-                                }
-                            })
                         }
                     });
                 }
