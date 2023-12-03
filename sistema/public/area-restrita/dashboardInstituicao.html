@@ -15,7 +15,7 @@
     <!-- importando chartsjs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body onload="validarSessao()">
+<body onload="validarSessao(">
     <div class="menu-lateral" id="menuLateral"></div>
     <div class="container-geral">
         <div class="menu-top" id="menuTop"></div>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="container-dashboard">
                     <div class="more_info_btn_img">
-                        <button onclick="alertaInfo()">
+                        <button onclick="modalInstDash()">
                             <div class="divModal"></div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                              viewBox="0 0 30 30" fill="none">
@@ -71,5 +71,6 @@
 <!-- Importando o JavaScript da página -->
 <script src="../assets/js/basePageInstituicao.js"></script>
 <script src="../assets/js/sessao.js"></script>
+<script src="../assets/js/modals.js"></script>
 <!-- importando a biblioteca da API sweetalert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
