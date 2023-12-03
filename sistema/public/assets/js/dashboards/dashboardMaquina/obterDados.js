@@ -242,22 +242,15 @@ function buscarDadosFluxoDeRede() {
 
 //Iniciando o gráfico de fluxo de redes com os valores iniciais
 function plotarGraficoFluxoDeRede(dadosParam) {
+    console.log(dadosParam);
     //atualizando as legendas (data e hora dos registros)
     let novoLabels = [];
     dadosParam.map((dados) => { novoLabels.push(dados.dataHora) })
     dados.labels = novoLabels.reverse();
-    //download
-    let novoDadosDownload = [];
-    dadosParam.map((dados) => { novoDadosDownload.push(dados.MediaDownload) })
-    dados.datasets[0].data = novoDadosDownload.reverse();
-    //upload
-    let novosDadosUpload = [];
-    dadosParam.map((dados) => { novosDadosUpload.push(dados.MediaUpload) })
-    dados.datasets[1].data = novosDadosUpload.reverse();
     // //ping
     let novosDadosPing = [];
     dadosParam.map((dados) => { novosDadosPing.push(dados.MediaLatencia) })
-    dados.datasets[2].data = novosDadosPing.reverse();
+    dados.datasets[0].data = novosDadosPing.reverse();
 
     chartFluxoRede.update();
 
@@ -278,12 +271,8 @@ function atualizarGraficoFluxoRede() {
                 resposta.json().then(response => {
                     if ((dados.labels.length < 10) && (response[0].dataHora != dados.labels[dados.labels.length - 1])) {
                         dados.labels.push(response[0].dataHora);
-                        //download
-                        dados.datasets[0].data.push(response[0].MediaDownload)
-                        //upload
-                        dados.datasets[1].data.push(response[0].MediaUpload)
                         // //ping
-                        dados.datasets[2].data.push(response[0].MediaLatencia)
+                        dados.datasets[0].data.push(response[0].MediaLatencia)
 
                         chartFluxoRede.update();
                     } else if (response[0].dataHora == dados.labels[9] || (response[0].dataHora == dados.labels[dados.labels.length - 1])) {
@@ -292,15 +281,9 @@ function atualizarGraficoFluxoRede() {
                         console.log("Novos dados!",);
                         dados.labels.shift();
                         dados.labels.push(response[0].dataHora);
-                        //download
-                        dados.datasets[0].data.shift();
-                        dados.datasets[0].data.push(response[0].MediaDownload)
-                        //upload
-                        dados.datasets[1].data.shift();
-                        dados.datasets[1].data.push(response[0].MediaUpload)
                         // //ping
-                        dados.datasets[2].data.shift();
-                        dados.datasets[2].data.push(response[0].MediaLatencia)
+                        dados.datasets[0].data.shift();
+                        dados.datasets[0].data.push(response[0].MediaLatencia)
 
                         chartFluxoRede.update();
                     }

@@ -207,16 +207,13 @@ function buscarAlertas() {
 
 //Iniciando o gráfico de variacao de status das máquinas com os valores iniciais
 function plotarGraficoAlertas(dadosParam) {
+    let datasetNovo = dadosParam[0]
+    let qtdAlertasAtencao = datasetNovo.qtdAlertasAtencao == null ? 0 : datasetNovo.qtdAlertasAtencao;
+    let qtdAlertasUrgente = datasetNovo.qtdAlertasUrgente == null ? 0 : datasetNovo.qtdAlertasUrgente;
+    alertas.datasets[0].data[0] = qtdAlertasUrgente;
+    alertas.datasets[0].data[1] = qtdAlertasAtencao;
 
-    let qtdAlertasAtencao = dadosParam[0].qtdAlertas == undefined ? 0 : dadosParam[0].qtdAlertas;
-    let qtdAlertasUrgente = 0;
-    if (dadosParam.length > 1) {
-        qtdAlertasUrgente = dadosParam[1].qtdAlertas == undefined ? 0 : dadosParam[1].qtdAlertas;
-    }
-    alertas.datasets[0].data[0] = qtdAlertasAtencao;
-    alertas.datasets[0].data[1] = qtdAlertasUrgente;
     chartAlertas.update();
-
     atualizarGraficoAlertas();
 
 }
@@ -232,11 +229,15 @@ function atualizarGraficoAlertas() {
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(response => {
-                    if (alertas.datasets[0].data[0] != response[0].qtdAlertas) {
-                        alertas.datasets[0].data[0] = response[0].qtdAlertas
+                    let newDatas = response[0]
+                    let novoQtdAlertasAtencao = newDatas.qtdAlertasAtencao;
+                    let novoQtdAlertasUrgente = newDatas.qtdAlertasUrgente;
+
+                    if (alertas.datasets[0].data[0] != novoQtdAlertasUrgente) {
+                        alertas.datasets[0].data[0] = novoQtdAlertasUrgente
                     }
-                    if (alertas.datasets[0].data[1] != response[1].qtdAlertas) {
-                        alertas.datasets[0].data[1] = response[1].qtdAlertas
+                    if (alertas.datasets[0].data[1] != novoQtdAlertasAtencao) {
+                        alertas.datasets[0].data[1] = novoQtdAlertasAtencao
                     }
                     chartAlertas.update();
                 });

@@ -105,23 +105,47 @@ function cadastrar(nome, email, telefone, senha, idInstituicao) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, telefone, senha, idInstituicao);
 
     var instrucao = "";
-    instrucao = `
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `
             INSERT INTO usuario (nome, email, telefone, senha, fkInstitucional) 
-                VALUES ('${nome}', '${email}', '${telefone}', '${senha}', '${idInstituicao}');
-        `;
-
-    console.log("Executando a instrução SQL: \n" + instrucao);
-    return database.executar(instrucao);
+            OUTPUT INSERTED.idUsuario
+            VALUES ('${nome}', '${email}', '${telefone}', '${senha}', '${idInstituicao}');
+        `
+        return database.executar(instrucao).then(resultado => {
+            return { insertId: resultado[0].idUsuario };
+        }).catch(erro => {
+            console.log(erro);
+            console.log("\nHouve um erro ao realizar o cadastro! Erro: ", erro.sqlMessage);
+            throw erro;
+        });
+    } else {
+        instrucao = `
+                INSERT INTO usuario (nome, email, telefone, senha, fkInstitucional) 
+                    VALUES ('${nome}', '${email}', '${telefone}', '${senha}', '${idInstituicao}');
+            `;
+        console.log("Executando a instrução SQL: \n" + instrucao);
+        return database.executar(instrucao);
+    }
 }
 
 // cadastro de usuarios
 function cadastrarAcesso(idUser, idInstituicao, idAcesso) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", idUser, idInstituicao, idAcesso);
 
-    var instrucao = `
+    var instrucao = ""
+
+    if (process.env.AMBIENTE_PROCESSO == "producao") {
+        instrucao = `
         INSERT INTO acessoUsuario (fkUsuario, fkInstitucional, fkAcesso, dataAcessoUsuario) 
-            VALUES (${idUser}, ${idInstituicao}, ${idAcesso}, now());
+            VALUES (${idUser}, ${idInstituicao}, ${idAcesso}, GETDATE());
     `;
+    } else {
+        instrucao = `
+            INSERT INTO acessoUsuario (fkUsuario, fkInstitucional, fkAcesso, dataAcessoUsuario) 
+                VALUES (${idUser}, ${idInstituicao}, ${idAcesso}, now());
+        `;
+    }
+
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }

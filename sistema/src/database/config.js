@@ -7,7 +7,6 @@ var sqlServerConfig = {
     database: "dataguard",
     user: "sa",
     password: "eigtech2023",
-    port: 1433,
     pool: {
         max: 10,
         min: 0,

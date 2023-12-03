@@ -3,7 +3,7 @@ listarUsuarios();
 function listarUsuarios() {
     fetch(`/usuarios/listar/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
         if (resposta.ok) {
-            if (resposta.status == 204) {  
+            if (resposta.status == 204) {
                 console.log("Nenhum resultado encontrado.");
                 throw "Nenhum resultado encontrado!!";
             }
@@ -118,7 +118,7 @@ function cadastrar() {
                 telefoneServer: telefoneVAR,
                 senhaServer: senhaVAR,
                 idInstituicaoServer: idInstituicaoVAR,
-            })  
+            })
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (resposta) {
@@ -152,9 +152,9 @@ function cadastrar() {
                             }
                         }).catch(function (resposta) {
                             console.log(`#ERRO: ${resposta}`);
-                        });    
-                    } 
-                    
+                        });
+                    }
+
                     if (isTecnico) {
                         fetch("/usuarios/cadastrarAcesso", {
                             method: "POST",
@@ -221,6 +221,7 @@ function atualizar(idUser) {
             'error'
         );
     } else {
+        console.log(idUser, sessionStorage.ID_INSTITUICAO);
         fetch(`/usuarios/atualizar/${idUser}/${sessionStorage.ID_INSTITUICAO}`, {
             method: "PUT",
             headers: {
@@ -231,23 +232,21 @@ function atualizar(idUser) {
                 emailServer: emailVAR,
                 telefoneServer: telefoneVAR,
                 senhaServer: senhaVAR,
-            })  
+            })
         }).then(function (resposta) {
             if (resposta.ok) {
-                resposta.json().then(function (resposta) {
-                    console.log(resposta);
-
+                if (resposta.status === 200) {
                     fetch(`/usuarios/buscarUser/${idUser}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
                         if (resposta.ok) {
                             if (resposta.status == 204) {
                                 console.log("Nenhum resultado encontrado.");
                                 throw "Nenhum resultado encontrado!!";
                             }
-                
+
                             resposta.json().then(function (resposta) {
                                 console.log("Dados recebidos: ", JSON.stringify(resposta));
                                 var user = resposta[0];
-                
+
                                 if (isAdmin && user.acessoAdmin == 0) {
                                     fetch("/usuarios/cadastrarAcesso", {
                                         method: "POST",
@@ -267,13 +266,13 @@ function atualizar(idUser) {
                                                 title: 'Atualização realizada com sucesso!',
                                                 showConfirmButton: true,
                                             });
-                                            listarUsuarios();         
+                                            listarUsuarios();
                                         } else {
                                             throw ("houve um erro ao tentar se cadastrar");
                                         }
                                     }).catch(function (resposta) {
                                         console.log(`#ERRO: ${resposta}`);
-                                    });    
+                                    });
                                 } else if (!isAdmin && user.acessoAdmin != 0) {
                                     var idAcesso = 2;
                                     fetch(`/usuarios/deletarAcesso/${idUser}/${idAcesso}/${sessionStorage.ID_INSTITUICAO}`, {
@@ -289,7 +288,7 @@ function atualizar(idUser) {
                                                 title: 'Atualização realizada com sucesso!',
                                                 showConfirmButton: true,
                                             });
-                                            listarUsuarios();         
+                                            listarUsuarios();
                                         } else if (resposta.status == 404) {
                                             window.alert("Deu 404!");
                                         } else {
@@ -299,7 +298,7 @@ function atualizar(idUser) {
                                         console.log(`#ERRO: ${resposta}`);
                                     });
                                 }
-                                
+
                                 if (isTecnico && user.acessoTecnico == 0) {
                                     fetch("/usuarios/cadastrarAcesso", {
                                         method: "POST",
@@ -319,7 +318,7 @@ function atualizar(idUser) {
                                                 title: 'Atualização realizada com sucesso!',
                                                 showConfirmButton: true,
                                             });
-                                            listarUsuarios();         
+                                            listarUsuarios();
                                         } else {
                                             throw ("houve um erro ao tentar se cadastrar");
                                         }
@@ -341,7 +340,7 @@ function atualizar(idUser) {
                                                 title: 'Atualização realizada com sucesso!',
                                                 showConfirmButton: true,
                                             });
-                                            listarUsuarios();         
+                                            listarUsuarios();
                                         } else if (resposta.status == 404) {
                                             window.alert("Deu 404!");
                                         } else {
@@ -359,7 +358,7 @@ function atualizar(idUser) {
                         console.error(resposta);
                         // finalizarAguardar();
                     });
-                });
+                }
             } else {
                 throw ("houve um erro ao tentar cadastrar");
             }
@@ -367,7 +366,7 @@ function atualizar(idUser) {
             console.log(`#ERRO: ${resposta}`);
         });
     }
-    
+
     fecharModal();
 }
 
@@ -403,7 +402,7 @@ function excluirUser(idUser) {
                         position: 'center',
                         icon: 'error',
                         title: 'Erro ao deletar usuário',
-                        text: 'Possivelmente esse usuário está vinculado a outros objetos do sistema (como algum laboratório) desassocie primeiro para poder exclui-lo', 
+                        text: 'Possivelmente esse usuário está vinculado a outros objetos do sistema (como algum laboratório) desassocie primeiro para poder exclui-lo',
                         showConfirmButton: false,
                         timer: 1500
                     })
@@ -418,7 +417,7 @@ function excluirUser(idUser) {
 
 function abrirModalCardastarUser() {
     divModal.style.display = "flex";
-    
+
     divModal.innerHTML = `
         <div class="containerModalUser">
             <!--  topo do pop up  -->
