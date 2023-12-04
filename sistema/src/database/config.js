@@ -22,7 +22,7 @@ var sqlServerConfig = {
 var mySqlConfig = {
     host: "localhost",
     database: "dataguard",
-    user: "adminDataGuard",
+    user: "adminDataguard",
     password: "2023",
 };
 

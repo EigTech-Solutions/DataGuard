@@ -276,6 +276,18 @@ function puxarLabs() {
     return database.executar(instrucao);
 }
 
+function editarInst(nomeInst, cnpjInst, emailInst, telefoneInst, cepInst,
+    numeroInst, complementoInst, idInstitucional) {
+    var instrucao = `
+    UPDATE instituicao SET nomeInstitucional = '${nomeInst}', 
+    cnpj = '${cnpjInst}', email = '${emailInst}', telefone = '${telefoneInst}', cep = '${cepInst}', 
+    numeroEndereco = '${numeroInst}', complemento = '${complementoInst}' 
+    WHERE idInstitucional = ${idInstitucional};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
     cadastrar,
     puxarDados,
@@ -288,5 +300,6 @@ module.exports = {
     dadosGeraisUser,
     puxarUser,
     puxarMaquinas,
-    puxarLabs
+    puxarLabs,
+    editarInst
 };
