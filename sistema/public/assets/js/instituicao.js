@@ -777,6 +777,7 @@ function exibirInfoUser(infoDados) {
     for (let i = 0; i < infoDados.length; i++) {
         const nomeUser = infoDados[i].nome;
         const idUser = infoDados[i].idUsuario;
+        const idInstitucional = infoDados[i].idInstitucional;
 
         const divElement = document.createElement('div');
         divElement.classList.add('Usuarios');
@@ -797,7 +798,7 @@ function exibirInfoUser(infoDados) {
         });
 
         imgEditar.addEventListener('click', function () {
-            executarAcaoUser(idUser, 'editar');
+            executarAcaoUser(idUser, idInstitucional, 'editar');
         });
 
         blocoDeDadoUser.appendChild(divElement);
@@ -809,7 +810,7 @@ function executarAcaoUser(id, acao) {
     if (acao === 'excluir') {
         excluirUser(id);
     } else if (acao === 'editar') {
-        abrirModalEditarUser(id);
+        abrirModalEditarUser(idUser, idInstitucional);
     }
 }
 
@@ -857,13 +858,13 @@ function excluirUser(idUser) {
     });
 }
 
-function editarUser(idUser) {
+function editarUser(idUser, idInstitucional) {
     var nomeVAR = ipt_nome.value
     var emailVAR = ipt_email.value
     var telefoneVAR = ipt_telefone.value
     var senhaVAR = ipt_senha.value
     var repetirSenhaVAR = ipt_repetirSenha.value
-    var idInstituicaoVAR = sessionStorage.ID_INSTITUICAO;
+    var idInstituicaoVAR = id;
 
     var tecnicoCheckbox = document.getElementById("tecnicoCheckbox");
     var adminCheckbox = document.getElementById("adminCheckbox");
@@ -1033,10 +1034,12 @@ function editarUser(idUser) {
     fecharModal();
 }
 
-function abrirModalEditarUser(idUser) {
+function abrirModalEditarUser(idUser, idInstitucional) {
+    console.log('Esse é o id da Instituição', idInstitucional);
+    console.log('Esse é o id do user', idUser);
     divModal.style.display = "flex";
 
-    fetch(`/usuarios/buscarUser/${idUser}/${sessionStorage.ID_INSTITUICAO}`).then(function (resposta) {
+    fetch(`/usuarios/buscarUser/${idUser}/${idInstitucional}`).then(function (resposta) {
         if (resposta.ok) {
             if (resposta.status == 204) {
                 console.log("Nenhum resultado encontrado.");
